@@ -3,6 +3,7 @@ import crypto from 'node:crypto';
 import { queryAll, queryOne, execute } from '../db/database.js';
 import { encryptCredential, decryptCredential } from '../services/crypto.js';
 import { AuthRequest, requireAuth } from '../middleware/auth.js';
+import { vaultLimiter } from '../middleware/rateLimiter.js';
 
 export const credentialsRouter = Router();
 
@@ -93,7 +94,7 @@ credentialsRouter.post('/', (req: AuthRequest, res: Response): any => {
   res.status(201).json(created);
 });
 
-credentialsRouter.post('/:id/reveal', (req: AuthRequest, res: Response): any => {
+credentialsRouter.post('/:id/reveal', vaultLimiter, (req: AuthRequest, res: Response): any => {
   const { id } = req.params;
   const credential = queryOne('SELECT * FROM credentials WHERE id = ?', id);
   if (!credential) {

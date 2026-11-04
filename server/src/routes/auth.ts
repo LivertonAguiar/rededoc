@@ -2,10 +2,11 @@ import { Router, Request, Response } from 'express';
 import { db } from '../db/database.js';
 import { compareSystemPassword } from '../services/crypto.js';
 import { generateToken, authMiddleware, AuthRequest } from '../middleware/auth.js';
+import { loginLimiter } from '../middleware/rateLimiter.js';
 
 export const authRouter = Router();
 
-authRouter.post('/login', async (req: Request, res: Response): Promise<any> => {
+authRouter.post('/login', loginLimiter, async (req: Request, res: Response): Promise<any> => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json({ error: 'E-mail e senha são obrigatórios.' });
