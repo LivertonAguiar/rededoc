@@ -153,3 +153,4 @@ export const EquipmentLabelModal: React.FC<EquipmentLabelModalProps> = ({
     </div>
   );
 };
+

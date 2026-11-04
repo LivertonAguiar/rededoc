@@ -26,3 +26,4 @@ jobs:
 
       - name: Compilar Backend e Frontend
         run: npm run build
+
