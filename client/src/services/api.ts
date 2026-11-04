@@ -6,9 +6,36 @@ import {
 
 const API_BASE = '/api';
 
+// Cache em memória para navegação rápida e sem telas de carregamento repetitivas
+const apiCache = new Map<string, { data: any; expiresAt: number }>();
+const CACHE_TTL_MS = 60000; // 1 minuto de retenção para leituras
+
+export function invalidateApiCache(prefix?: string) {
+  if (!prefix) {
+    apiCache.clear();
+  } else {
+    for (const key of apiCache.keys()) {
+      if (key.includes(prefix)) {
+        apiCache.delete(key);
+      }
+    }
+  }
+}
+
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
+  const method = (options?.method || 'GET').toUpperCase();
   const token = localStorage.getItem('rededoc_token');
   const authHeaders: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+
+  // Em operações de escrita/mutação, invalida o cache automaticamente
+  if (method !== 'GET') {
+    invalidateApiCache();
+  } else {
+    const cached = apiCache.get(url);
+    if (cached && cached.expiresAt > Date.now()) {
+      return cached.data as T;
+    }
+  }
 
   const res = await fetch(`${API_BASE}${url}`, {
     headers: {
@@ -31,10 +58,16 @@ async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
     throw new Error(errorData.error || `Erro HTTP ${res.status}`);
   }
 
-  return res.json();
+  const data = await res.json();
+  if (method === 'GET') {
+    apiCache.set(url, { data, expiresAt: Date.now() + CACHE_TTL_MS });
+  }
+  return data;
 }
 
 export const api = {
+  // Limpeza explícita de cache
+  clearCache: () => invalidateApiCache(),
   // Autenticação & Sessão
   login: (credentials: { email: string; password: string }) =>
     fetchJson<{ token: string; user: User }>('/auth/login', {
