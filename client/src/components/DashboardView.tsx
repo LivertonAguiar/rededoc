@@ -135,8 +135,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     : `${remainingMinutes}m`;
   const completedOrdersCount = serviceOrders.filter(o => o.status === 'concluido').length;
 
-  // Identifica o Roteador / ONT principal real
-  const routerOnt = equipments.find(e => e.category === 'router_ont');
+  // Identifica o Roteador / ONT principal real (por categoria ou por IP WAN configurado)
+  const routerOnt = equipments.find(e => 
+    e.category === 'router_ont' || 
+    e.category === 'router' || 
+    e.category === 'ont' || 
+    Boolean(e.public_wan_ip)
+  ) || equipments.find(e => 
+    e.name?.toLowerCase().includes('ont') || 
+    e.name?.toLowerCase().includes('roteador')
+  );
   const hasEquipments = equipments.length > 0;
   const wanIp = routerOnt?.public_wan_ip || null;
 
@@ -225,10 +233,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           manufacturer: networkForm.manufacturer
         });
       } else {
+        // Garante que exista um local válido para associar o roteador
+        let locId = location?.id || client.locations?.[0]?.id;
+        if (!locId) {
+          const locs = await api.getLocations(client.id);
+          if (locs.length > 0) {
+            locId = locs[0].id;
+          } else {
+            const newLoc = await api.createLocation({
+              client_id: client.id,
+              name: 'Sede Principal',
+              address: client.address || 'Local Principal'
+            });
+            locId = newLoc.id;
+          }
+        }
+
         // Cria automaticamente o Roteador/ONT principal para o cliente
         await api.createEquipment({
           client_id: client.id,
-          location_id: location?.id || client.locations?.[0]?.id || '',
+          location_id: locId,
           name: 'Roteador / Gateway Principal',
           category: 'router_ont',
           manufacturer: networkForm.manufacturer || 'Genérico',
@@ -580,9 +604,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
       {/* 2. KPIs / Cards Superiores */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
-        <div className="bg-[#101C31] border border-[#1D3054] rounded-xl p-4 flex flex-col justify-between shadow-md">
+        <div 
+          onClick={handleOpenNetworkModal}
+          className="bg-[#101C31] border border-[#1D3054] hover:border-blue-500/50 rounded-xl p-4 flex flex-col justify-between shadow-md cursor-pointer transition group"
+        >
           <div className="flex items-center justify-between text-xs text-slate-400 font-medium">
-            <span>IP WAN (público)</span>
+            <span className="group-hover:text-blue-300 transition-colors">IP WAN (público)</span>
             {wanIp ? (
               <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-semibold">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -595,26 +622,21 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </span>
             )}
           </div>
-          <div className="text-lg font-bold font-mono text-white mt-2 tracking-tight">
+          <div className="text-lg font-bold font-mono text-white mt-2 tracking-tight group-hover:text-blue-200 transition-colors">
             {wanIp || '—'}
           </div>
           <div className="text-[11px] text-slate-400 mt-1 flex items-center justify-between">
             <span>{wanIp ? 'IP Dedicado' : 'Sem IP Público'}</span>
-            {routerOnt ? (
-              <button
-                onClick={handleOpenNetworkModal}
-                className="text-blue-400 hover:text-blue-300 font-semibold text-[11px]"
-              >
-                Editar
-              </button>
-            ) : (
-              <button
-                onClick={handleOpenAddEquipmentFromCatalog}
-                className="text-blue-400 hover:text-blue-300 font-semibold text-[11px]"
-              >
-                Configurar
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleOpenNetworkModal();
+              }}
+              className="text-blue-400 hover:text-blue-300 font-semibold text-[11px]"
+            >
+              {wanIp ? 'Editar' : 'Configurar'}
+            </button>
           </div>
         </div>
 
@@ -1474,7 +1496,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
             <div className="flex items-center justify-between pb-3 border-b border-[#1D3054]">
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
                 <Globe className="w-5 h-5 text-blue-400" />
-                Editar Parâmetros de Conexão e Sub-rede
+                {wanIp ? 'Editar Parâmetros de Conexão e Sub-rede' : 'Configurar IP WAN e Parâmetros de Rede'}
               </h2>
               <button onClick={() => setShowNetworkModal(false)} className="text-slate-400 hover:text-white">
                 <X className="w-5 h-5" />
@@ -1488,6 +1510,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <input
                     type="text"
                     required
+                    autoFocus
                     value={networkForm.public_wan_ip}
                     onChange={(e) => setNetworkForm(p => ({ ...p, public_wan_ip: e.target.value }))}
                     placeholder="203.0.113.45"
