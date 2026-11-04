@@ -46,3 +46,4 @@ export const TechnicalNotesCard: React.FC<TechnicalNotesCardProps> = ({
     </div>
   );
 };
+

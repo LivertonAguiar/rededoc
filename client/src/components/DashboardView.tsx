@@ -251,9 +251,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       local_ip: routerOnt?.local_ip || '192.168.1.1',
       subnet_mask: routerOnt?.subnet_mask || '255.255.255.0',
       gateway: routerOnt?.gateway || '192.168.1.1',
-      primary_dns: routerOnt?.primary_dns || '8.8.8.8',
-      secondary_dns: routerOnt?.secondary_dns || '8.8.4.4',
-      dhcp_range: routerOnt?.dhcp_range || '192.168.1.100 - 192.168.1.200',
+      primary_dns: routerOnt?.primary_dns || '',
+      secondary_dns: routerOnt?.secondary_dns || '',
+      dhcp_range: routerOnt?.dhcp_range || '',
       model: routerOnt?.model || 'Roteador / Gateway Principal',
       manufacturer: routerOnt?.manufacturer || 'Genérico'
     });
@@ -305,8 +305,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           local_ip: networkForm.local_ip || '192.168.1.1',
           subnet_mask: networkForm.subnet_mask || '255.255.255.0',
           gateway: networkForm.gateway || '192.168.1.1',
-          primary_dns: networkForm.primary_dns || '8.8.8.8',
-          secondary_dns: networkForm.secondary_dns || '8.8.4.4',
+          primary_dns: networkForm.primary_dns || undefined,
+          secondary_dns: networkForm.secondary_dns || undefined,
           dhcp_range: networkForm.dhcp_range || '',
           is_mac_reserved: 0
         });

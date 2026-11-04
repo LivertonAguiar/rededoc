@@ -224,3 +224,4 @@ export const ServiceOrdersHistorySection: React.FC<ServiceOrdersHistorySectionPr
     </div>
   );
 };
+

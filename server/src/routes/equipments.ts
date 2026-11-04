@@ -149,7 +149,7 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
   `,
     id, client_id, location_id, name, category, manufacturer || null, model || null, serial_number || null,
     mac_address || null, physical_location || null, photo_url || null, notes || null,
-    local_ip || null, subnet_mask || '255.255.255.0', gateway || null, primary_dns || '8.8.8.8', secondary_dns || '8.8.4.4', dhcp_range || null,
+    local_ip || null, subnet_mask || '255.255.255.0', gateway || null, primary_dns || null, secondary_dns || null, dhcp_range || null,
     interface_name || null, vlan || null, is_mac_reserved ? 1 : 0, public_wan_ip || null,
     access_url || null, management_port ? Number(management_port) : null, protocol || 'http', admin_username || null, config_path || null, access_notes || null,
     internal_notes || null, additional_info || null
@@ -200,7 +200,7 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
   `,
     name, category, manufacturer || null, model || null, serial_number || null,
     mac_address || null, physical_location || null, photo_url || null, notes || null,
-    local_ip || null, subnet_mask || '255.255.255.0', gateway || null, primary_dns || '8.8.8.8', secondary_dns || '8.8.4.4', dhcp_range || null,
+    local_ip || null, subnet_mask || '255.255.255.0', gateway || null, primary_dns || null, secondary_dns || null, dhcp_range || null,
     interface_name || null, vlan || null, is_mac_reserved ? 1 : 0, public_wan_ip || null,
     access_url || null, management_port ? Number(management_port) : null, protocol || 'http', admin_username || null, config_path || null, access_notes || null,
     internal_notes !== undefined ? internal_notes : (existing as any).internal_notes,
