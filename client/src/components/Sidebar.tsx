@@ -12,8 +12,10 @@ import {
   Database,
   ShieldCheck,
   Radio,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
+import { User } from '../types';
 
 interface SidebarProps {
   activeTab: string;
@@ -21,6 +23,8 @@ interface SidebarProps {
   selectedClientName?: string;
   isOpenMobile?: boolean;
   onCloseMobile?: () => void;
+  currentUser?: User | null;
+  onLogout?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -28,7 +32,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   setActiveTab,
   selectedClientName,
   isOpenMobile = false,
-  onCloseMobile
+  onCloseMobile,
+  currentUser,
+  onLogout
 }) => {
   const menuItems = [
     { id: 'overview', label: 'Visão Geral', icon: LayoutDashboard },
@@ -128,15 +134,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <div className="pt-1 flex items-center justify-between text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-blue-600/30 text-blue-400 font-bold flex items-center justify-center text-xs border border-blue-500/30">
-              LA
+          <div className="flex items-center gap-2 min-w-0">
+            <div className="w-7 h-7 rounded-full bg-blue-600/30 text-blue-400 font-bold flex items-center justify-center text-xs border border-blue-500/30 shrink-0">
+              {currentUser?.name
+                ? currentUser.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
+                : 'RD'}
             </div>
-            <div className="truncate max-w-[120px]">
-              <div className="text-slate-200 font-medium truncate">Liverton Aguiar</div>
-              <div className="text-[10px] text-slate-400">Técnico Resp.</div>
+            <div className="truncate max-w-[130px]">
+              <div className="text-slate-200 font-medium truncate text-xs">
+                {currentUser?.name || 'Técnico Autenticado'}
+              </div>
+              <div className="text-[10px] text-slate-400 capitalize">
+                {currentUser?.role === 'admin' ? 'Administrador' : currentUser?.role === 'tecnico' ? 'Técnico de Campo' : 'Visualizador'}
+              </div>
             </div>
           </div>
+
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition"
+              title="Encerrar Sessão (Logout)"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>

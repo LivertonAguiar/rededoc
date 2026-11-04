@@ -12,11 +12,15 @@ import { ClientsView } from './components/ClientsView';
 import { AuditHistoryView } from './components/AuditHistoryView';
 import { ReportsView } from './components/ReportsView';
 import { BackupView } from './components/BackupView';
-import { Client, Equipment, PortForward, Attachment } from './types';
+import { LoginView } from './components/LoginView';
+import { Client, Equipment, PortForward, Attachment, User } from './types';
 import { api } from './services/api';
 import { DialogProvider } from './context/DialogContext';
 
 export function App() {
+  const [currentUser, setCurrentUser] = useState<User | null>(api.getCurrentUser());
+  const [authChecking, setAuthChecking] = useState<boolean>(true);
+
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [historyStack, setHistoryStack] = useState<string[]>([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -28,6 +32,39 @@ export function App() {
   const [portForwards, setPortForwards] = useState<PortForward[]>([]);
   const [attachments, setAttachments] = useState<Attachment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  // Validação da Sessão do Usuário
+  useEffect(() => {
+    const token = api.getToken();
+    if (!token) {
+      setCurrentUser(null);
+      setAuthChecking(false);
+      return;
+    }
+
+    api.getMe()
+      .then(res => {
+        setCurrentUser(res.user);
+        localStorage.setItem('rededoc_user', JSON.stringify(res.user));
+      })
+      .catch(() => {
+        api.logout();
+        setCurrentUser(null);
+      })
+      .finally(() => {
+        setAuthChecking(false);
+      });
+  }, []);
+
+  const handleLoginSuccess = (user: User) => {
+    setCurrentUser(user);
+    loadClients();
+  };
+
+  const handleLogout = () => {
+    api.logout();
+    setCurrentUser(null);
+  };
 
   // Navegação contextual com histórico interno e navegador (popstate)
   const navigateToTab = (newTab: string, pushHistory = true) => {
@@ -135,6 +172,21 @@ export function App() {
     }
   };
 
+  if (authChecking) {
+    return (
+      <div className="min-h-screen bg-[#070D1B] flex items-center justify-center text-slate-400 text-xs">
+        <div className="flex items-center gap-2.5">
+          <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <span>Verificando sessão segura...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentUser) {
+    return <LoginView onLoginSuccess={handleLoginSuccess} />;
+  }
+
   return (
     <DialogProvider>
       <div className="flex min-h-screen bg-[#0B132B] text-slate-100">
@@ -145,6 +197,8 @@ export function App() {
           selectedClientName={selectedClient?.name}
           isOpenMobile={isMobileMenuOpen}
           onCloseMobile={() => setIsMobileMenuOpen(false)}
+          currentUser={currentUser}
+          onLogout={handleLogout}
         />
 
         {/* Conteúdo Principal */}

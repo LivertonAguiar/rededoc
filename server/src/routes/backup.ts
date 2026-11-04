@@ -1,10 +1,35 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import path from 'node:path';
 import fs from 'node:fs';
+import jwt from 'jsonwebtoken';
 import { ZipArchive } from 'archiver';
 import { db } from '../db/database.js';
 
+const JWT_SECRET = process.env.JWT_SECRET || 'rededoc-jwt-secret-condominio-aurora-2026';
+
 export const backupRouter = Router();
+
+// Valida token JWT via Header ou Query Parameter (para links diretos de download)
+function backupAuth(req: Request, res: Response, next: NextFunction): any {
+  const authHeader = req.headers.authorization;
+  const token = (authHeader && authHeader.startsWith('Bearer '))
+    ? authHeader.split(' ')[1]
+    : (req.query.token as string);
+
+  if (!token) {
+    return res.status(401).json({ error: 'Acesso não autorizado. Autenticação obrigatória para operações de backup.' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    (req as any).user = decoded;
+    next();
+  } catch {
+    return res.status(401).json({ error: 'Sessão inválida ou expirada.' });
+  }
+}
+
+backupRouter.use(backupAuth);
 
 // Endpoint: Exportação completa consolidada em ZIP (JSON + SQLite + Uploads)
 backupRouter.get('/export-zip', async (req: Request, res: Response) => {

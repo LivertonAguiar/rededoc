@@ -2,9 +2,12 @@ import { Router, Request, Response } from 'express';
 import crypto from 'node:crypto';
 import { queryAll, queryOne, execute } from '../db/database.js';
 import { encryptCredential, decryptCredential } from '../services/crypto.js';
-import { AuthRequest } from '../middleware/auth.js';
+import { AuthRequest, requireAuth } from '../middleware/auth.js';
 
 export const credentialsRouter = Router();
+
+// Cofre de senhas requer autenticação obrigatória
+credentialsRouter.use(requireAuth);
 
 credentialsRouter.get('/', (req: Request, res: Response) => {
   const { clientId, equipmentId } = req.query;

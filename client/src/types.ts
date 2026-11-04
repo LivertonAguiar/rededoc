@@ -1,3 +1,10 @@
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: 'admin' | 'tecnico' | 'cliente' | string;
+}
+
 export interface Client {
   id: string;
   name: string;

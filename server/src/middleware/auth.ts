@@ -16,21 +16,55 @@ export function generateToken(payload: { id: string; email: string; role: string
   return jwt.sign(payload, JWT_SECRET, { expiresIn: '7d' });
 }
 
+/**
+ * Middleware que extrai o token JWT caso fornecido
+ */
 export function authMiddleware(req: AuthRequest, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
-    // Para simplificar uso inicial e testes locais sem travar a interface, atribuímos um usuário padrão
-    req.user = { id: 'usr_default', email: 'tecnico@rededoc.com', role: 'admin', name: 'Liverton Aguiar' };
     return next();
   }
 
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader;
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as any;
     req.user = decoded;
-    next();
   } catch (err) {
-    req.user = { id: 'usr_default', email: 'tecnico@rededoc.com', role: 'admin', name: 'Liverton Aguiar' };
-    next();
+    // Token inválido ou expirado
   }
+  next();
+}
+
+/**
+ * Middleware que EXIGE autenticação válida
+ */
+export function requireAuth(req: AuthRequest, res: Response, next: NextFunction): any {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).json({ error: 'Acesso não autorizado. Faça login para continuar.' });
+  }
+
+  const token = authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : authHeader;
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    req.user = decoded;
+    return next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Sessão inválida ou expirada. Faça login novamente.' });
+  }
+}
+
+/**
+ * Middleware de controle de acesso baseado em papéis (RBAC)
+ */
+export function requireRole(...roles: string[]) {
+  return (req: AuthRequest, res: Response, next: NextFunction): any => {
+    if (!req.user) {
+      return res.status(401).json({ error: 'Acesso não autorizado.' });
+    }
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ error: 'Permissão insuficiente para executar esta ação.' });
+    }
+    next();
+  };
 }

@@ -1,5 +1,5 @@
 import {
-  Client, Location, Equipment, PortForward, Credential,
+  User, Client, Location, Equipment, PortForward, Credential,
   CredentialAuditLog, ServiceOrder, TopologyData, Attachment,
   AuditHistory, DashboardStats, TechnicalReportData, EquipmentCatalogItem
 } from '../types';
@@ -7,15 +7,26 @@ import {
 const API_BASE = '/api';
 
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
+  const token = localStorage.getItem('rededoc_token');
+  const authHeaders: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+
   const res = await fetch(`${API_BASE}${url}`, {
     headers: {
       'Content-Type': 'application/json',
+      ...authHeaders,
       ...(options?.headers || {})
     },
     ...options
   });
 
   if (!res.ok) {
+    if (res.status === 401) {
+      // Se não for rota de login e a sessão expirar, limpa token
+      if (!url.includes('/auth/login')) {
+        localStorage.removeItem('rededoc_token');
+        localStorage.removeItem('rededoc_user');
+      }
+    }
     const errorData = await res.json().catch(() => ({ error: 'Erro de comunicação com o servidor' }));
     throw new Error(errorData.error || `Erro HTTP ${res.status}`);
   }
@@ -24,6 +35,32 @@ async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
+  // Autenticação & Sessão
+  login: (credentials: { email: string; password: string }) =>
+    fetchJson<{ token: string; user: User }>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(credentials)
+    }),
+
+  getMe: () => fetchJson<{ user: User }>('/auth/me'),
+
+  logout: () => {
+    localStorage.removeItem('rededoc_token');
+    localStorage.removeItem('rededoc_user');
+  },
+
+  getToken: () => localStorage.getItem('rededoc_token'),
+
+  getCurrentUser: (): User | null => {
+    const raw = localStorage.getItem('rededoc_user');
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  },
+
   // Dashboard & Busca Rápida
   getDashboardStats: (clientId?: string) =>
     fetchJson<DashboardStats>(`/dashboard/stats${clientId ? `?clientId=${clientId}` : ''}`),
@@ -163,8 +200,8 @@ export const api = {
   },
 
   // Backup & Restore
-  exportBackupUrl: () => `${API_BASE}/backup/export`,
-  exportBackupZipUrl: () => `${API_BASE}/backup/export-zip`,
+  exportBackupUrl: () => `${API_BASE}/backup/export?token=${localStorage.getItem('rededoc_token') || ''}`,
+  exportBackupZipUrl: () => `${API_BASE}/backup/export-zip?token=${localStorage.getItem('rededoc_token') || ''}`,
   importBackup: (backupJson: any) =>
     fetchJson<{ message: string }>('/backup/import', { method: 'POST', body: JSON.stringify(backupJson) }),
 
