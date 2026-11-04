@@ -86,18 +86,38 @@ dashboardRouter.get('/stats', (req: Request, res: Response) => {
 
 dashboardRouter.get('/wan-check', async (req: Request, res: Response): Promise<any> => {
   const { clientId } = req.query;
-  let registeredIp: string | null = null;
-
-  if (clientId) {
-    const routerEq = queryOne(
-      "SELECT public_wan_ip FROM equipments WHERE client_id = ? AND public_wan_ip IS NOT NULL AND public_wan_ip != '' LIMIT 1",
-      clientId
-    ) as any;
-    registeredIp = routerEq?.public_wan_ip || null;
+  if (!clientId || typeof clientId !== 'string') {
+    return res.json({ hasChanged: false, status: 'ok' });
   }
 
-  const result = await checkClientWanStatus(registeredIp);
-  res.json(result);
+  // Verifica se há registro recente de alteração de IP WAN no histórico deste cliente específico
+  const recentWanChange = queryOne(`
+    SELECT ah.*, eq.name AS equipment_name
+    FROM audit_history ah
+    LEFT JOIN equipments eq ON eq.id = ah.equipment_id
+    WHERE ah.client_id = ? AND ah.action = 'ALTERACAO_WAN'
+    ORDER BY ah.created_at DESC
+    LIMIT 1
+  `, clientId) as any;
+
+  if (recentWanChange) {
+    return res.json({
+      hasChanged: true,
+      status: 'changed_in_history',
+      registeredIp: recentWanChange.old_value,
+      currentPublicIp: recentWanChange.new_value,
+      changedAt: recentWanChange.created_at,
+      userName: recentWanChange.user_name || 'Técnico',
+      equipmentName: recentWanChange.equipment_name || recentWanChange.entity_name || 'Roteador / ONT',
+      message: `Alteração de IP WAN registrada no histórico em ${recentWanChange.created_at} por ${recentWanChange.user_name || 'Técnico'}. IP anterior: ${recentWanChange.old_value} ➔ Novo IP: ${recentWanChange.new_value}.`
+    });
+  }
+
+  return res.json({
+    hasChanged: false,
+    status: 'ok',
+    message: 'IP WAN estável conforme registrado no cadastro.'
+  });
 });
 
 dashboardRouter.get('/quick-search', (req: Request, res: Response): any => {

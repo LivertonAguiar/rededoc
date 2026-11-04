@@ -209,6 +209,12 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
   );
 
   const user = req.user?.name || 'Técnico';
+  if (public_wan_ip && existing.public_wan_ip && public_wan_ip !== existing.public_wan_ip) {
+    execute(`
+      INSERT INTO audit_history (id, client_id, location_id, equipment_id, user_name, action, entity_type, entity_name, field_name, old_value, new_value)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_WAN', 'equipment', name, 'IP WAN (Público)', existing.public_wan_ip, public_wan_ip);
+  }
   if (local_ip && local_ip !== existing.local_ip) {
     execute(`
       INSERT INTO audit_history (id, client_id, location_id, equipment_id, user_name, action, entity_type, entity_name, field_name, old_value, new_value)
