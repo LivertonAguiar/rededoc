@@ -1,0 +1,2480 @@
+[
+  {
+    "id": "2a7625ab-36bd-809f-8b7a-f6ade2c36fb0",
+    "title": "",
+    "category": "",
+    "type": "button"
+  },
+  {
+    "id": "2a7625ab-36bd-8069-8b53-c808ccd21388",
+    "title": "",
+    "category": "",
+    "type": "text"
+  },
+  {
+    "id": "288625ab-36bd-80d2-b4ab-cc4a3ee7f8fd",
+    "title": "[Alphadigi] Conexão das câmeras LPR no Condfy",
+    "category": "Cadastro LPR (Reconhecimento de placas)",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-8082-ac03-d75f13e5e9b7",
+    "title": "[Alphadigi][Garen] Cadastro e exclusão de placas nas câmeras LPR",
+    "category": "Cadastro LPR (Reconhecimento de placas)",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-800b-b0cf-f95fd112e3ed",
+    "title": "[Alphadigi][Garen] Possível problema de não identificar a câmera no SGE na integração",
+    "category": "Cadastro LPR (Reconhecimento de placas),Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8034-a95a-e971e192c931",
+    "title": "[Azanonatec] Configurando e conectando o armário inteligente no Condfy",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8071-b553-f3550bbca9e2",
+    "title": "[BeNuvem] Como é a integração com o Condfy",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-80fb-89a5-ea1d21c3efda",
+    "title": "[Biccateca] Conexão de Caixa de Correio Inteligente e Box",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-805e-a86a-e7e431db1065",
+    "title": "[Biccateca] O que fazer quando não exporta apenas uma unidade para Biccateca e não gerou erro no processo de exportação?",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-8012-997d-c0560ab79dce",
+    "title": "[Bravas] Cadastro de credencial no Módulo Acesso",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-805b-b824-d3284a766ee7",
+    "title": "[Bravas] Cadastro de TAG veicular para controle de vagas",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "3b9625ab-36bd-80ee-88ab-eff0b9e6eb0d",
+    "title": "[Bravas] Como conectar um Módulo RF IP da Bravas?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80dd-9846-f048430ad1a3",
+    "title": "[Bravas] Como funciona o controle de vagas gerido pelo Módulo Acesso no Condfy?",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "37a625ab-36bd-8047-982c-e6e2e6cb2ec0",
+    "title": "[Bravas] Como limpar eventos pendentes do equipamento Bravas pelo Condfy?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-803d-9027-decb816a1b38",
+    "title": "[Bravas] Conexão do Módulo Acesso no Condfy",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-8038-a756-fa8442532370",
+    "title": "[Bravas] Configurando a face temporária pelo Módulo Acesso no Condfy",
+    "category": "Face Temporária (Exclusão Automática)",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-805a-8082-ce65889cdaf8",
+    "title": "[Bravas] Configurando o QR Code",
+    "category": "Acesso por QR Code (Leitor Físico)",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-805f-a16d-f53918c4702e",
+    "title": "[Bravas] Configurando os acionamentos no Condfy, utilizando as regras de intertravamento do Módulo Acesso",
+    "category": "Acionamentos",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-806b-8314-f538b6c971e7",
+    "title": "[Bravas] Desabilitando a opção “Enviar dados pessoais” para evitar erros de CPF duplicado no cadastro",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8088-871e-e322def1f99b",
+    "title": "[Bravas] Encontrando o IP privado do Módulo Acesso",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-804d-8047-f6c4938cc523",
+    "title": "[Bravas] Equipamentos integrados ao Módulo Acesso",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8027-a164-c29f62dafae7",
+    "title": "[Bravas] Procedimentos para inclusão de chave API de alto fluxo no Módulo Acesso",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8057-b378-e0049926fbe4",
+    "title": "[Bravas] Quais informações aparecem na impressão de QR Code da Impressora Bravas?",
+    "category": "Acesso por QR Code (Leitor Físico),QR Ticket (Impressão de QR Code)",
+    "type": "page"
+  },
+  {
+    "id": "37a625ab-36bd-8061-9a77-f0f7b86b4f81",
+    "title": "[Bravas] Verificações para serem feitas quando o modulo Bravas não está reportando eventos ao Condfy",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-802c-9d34-c95616612a30",
+    "title": "[Bravas][Moni] Configurando o reporte do evento de “Dupla passagem” do Módulo Acesso para o Moni",
+    "category": "Integrações,Moni",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-804c-8d67-decb7b131cb1",
+    "title": "[Brevo] Configurando o servidor de e-mails gratuito",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "3fe625ab-36bd-8018-ba53-f3827148cce9",
+    "title": "[Caixas de Correio Inteligente] O que é necessário para um morador receber via e-mail o código de retirada / QR Code da entrega?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80ed-a9e3-f265063e0e53",
+    "title": "[Control iD] Ajustando o tempo entre identificação de uma mesma pessoa no iD Face",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-806c-b41e-e27846941e53",
+    "title": "[Control ID] Cadastro de credenciais em equipamentos Control ID",
+    "category": "Gestão de credenciais,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "3d0625ab-36bd-80c3-9769-e246522be669",
+    "title": "[Control ID] Como desativar a opção “Limpar usuários expirados”",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-803e-8cc1-e21c11c94d52",
+    "title": "[Control ID] Conexão da impressora Print iD no Condfy",
+    "category": "Equipamentos,QR Ticket (Impressão de QR Code)",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-8063-8b46-f420994c2ce5",
+    "title": "[Control ID] Conexão dos equipamentos de controle de acesso no Condfy",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-807c-9682-d744c7ea60b2",
+    "title": "[Control iD] Conexão dos leitores faciais",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-8044-ad51-d611b4c09c30",
+    "title": "[Control ID] Configurando o Anti-passback nos equipamentos",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8014-8cad-e31851b7f2b8",
+    "title": "[Control iD] Configurando o modo de detecção de pedestre ou veículo no iD Face",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-80cf-b7ae-c8da2ec56360",
+    "title": "[Control iD] Configurando o tempo de desistência na catraca iD Block Next",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-8075-a0d7-e808a15712d3",
+    "title": "[Control ID] Criando e configurando acionamentos no Condfy",
+    "category": "Acionamentos,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8054-ad74-e21cb0b33101",
+    "title": "[Control iD] Habilitando o recurso QR Code nas leitoras faciais iD Face",
+    "category": "Acesso por QR Code (Leitor Físico),Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8045-b9d4-f116e04c3ca2",
+    "title": "[Control iD] Imagem do cadastrado não aparece no cadastro do iD Face",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80b5-b609-f887f36bcf1a",
+    "title": "[Control iD] Integração do Condfy com a catraca iD Block Next",
+    "category": "Integrações,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80d8-b369-ec3e537a6f53",
+    "title": "[Control iD] Modo de operação “Offline” (standalone-autônomo)",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8031-a262-d2cba3b47478",
+    "title": "[Control iD] Principais características e diferenças entre as versões das leitoras iD Face Lite, PRO e MAX",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8051-8399-ed043805b4f0",
+    "title": "[Control iD] Quais informações aparecem na impressão de QR Code da Impressora Control ID?",
+    "category": "Acesso por QR Code (Leitor Físico),Equipamentos,QR Ticket (Impressão de QR Code)",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80ce-8358-f5acc6c37518",
+    "title": "[Control iD] Registrando o SIP no iD Face",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8069-bf0d-ddcbb34f819a",
+    "title": "[D-Guard] Visualização layout com vários DVRs no App Condfy",
+    "category": "Câmeras pelo App",
+    "type": "page"
+  },
+  {
+    "id": "3e3625ab-36bd-8011-a816-cd5700ffe8fb",
+    "title": "[Foto Adicional] Como configurar o recurso de foto adicional?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "2a1625ab-36bd-801d-b0b8-e99f9afb76f8",
+    "title": "[Garen] Conexão das câmeras LPR no Condfy",
+    "category": "Cadastro LPR (Reconhecimento de placas),Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-801b-92ef-c2c5b3d203cc",
+    "title": "[Hikvision] Aumentando a precisão do reconhecimento facial das leitoras faciais",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-807d-8768-e79f936a29c4",
+    "title": "[Hikvision] Cadastro de credenciais em leitoras faciais",
+    "category": "Gestão de credenciais,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-80eb-a5d9-c62114e23c70",
+    "title": "[Hikvision] Cadastro e exclusão de placas nas câmeras LPR",
+    "category": "Cadastro LPR (Reconhecimento de placas),Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-80ea-9b13-ceca5c2da8ef",
+    "title": "[Hikvision] Conexão das câmeras LPR no Condfy",
+    "category": "Cadastro LPR (Reconhecimento de placas),Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-80bc-8814-c5c3cd3aed66",
+    "title": "[Hikvision] Conexão dos leitores faciais",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-8005-96f1-f6970981d7b2",
+    "title": "[Hikvision] Definindo o intervalo de autenticação (Anti-Passback)",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80ac-9016-c33d87123964",
+    "title": "[Hikvision] Definir o tipo de armazenamento de eventos dos faciais",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-80f7-91a3-e078f17130f4",
+    "title": "[Hikvision] Desabilitando a criptografia de DVRs (Hik-Connect)",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-800e-99b1-d1019cbc347c",
+    "title": "[Hikvision] Eventos de “Alarm Arming/Disarming”",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-807a-9211-ea8b3af39b1e",
+    "title": "[Hikvision] Identificando as placas cadastradas pela interface web da LPR DS-TCG405-E",
+    "category": "Cadastro LPR (Reconhecimento de placas),Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8039-abfe-d8356d359faf",
+    "title": "[Hikvision] LPR H8 iDS-2CD7A46G0/P-IZHS - Desativando a detecção de movimentos",
+    "category": "Cadastro LPR (Reconhecimento de placas),Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8038-ab7f-f6e8ad25d128",
+    "title": "[Hikvision] LPR H8 iDS-2CD7A46G0/P-IZHS - Lista de permissões / bloqueio",
+    "category": "Cadastro LPR (Reconhecimento de placas),Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-801a-9230-e54075a2832a",
+    "title": "[Hikvision] Registrando o SIP em um Facial 671, 672 ou 673",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-808f-b8ac-caa300b92363",
+    "title": "[Hikvision] Verificações para falhas de reporte de eventos",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80ff-ac0a-c345b3e04442",
+    "title": "[Hikvision] Verificando a versão de firmware",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80f7-a64c-df3b02b2ffa1",
+    "title": "[Hospy] Conexão Hospy - Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-803f-832b-ea6a9df6dff3",
+    "title": "[Hospy] Documento de Referência - Integração",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-8028-a263-d3bb3cf3831e",
+    "title": "[Intelbras] Atualizando o firmware do MIP 1000 IP",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-80d7-87aa-da21fc17e9e7",
+    "title": "[Intelbras] Cadastro de controle remoto no MIP 1000 IP",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-8037-962d-d1775503a97e",
+    "title": "[Intelbras] Cadastro de credenciais em leitoras faciais",
+    "category": "Gestão de credenciais,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-8040-b5d8-ca9dd9d5847f",
+    "title": "[Intelbras] Cadastro de Tag/Chaveiro no MIP 1000 IP",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-80df-ba79-faa428d263fa",
+    "title": "[Intelbras] Conexão do MIP 100 v2 utilizando o Remote no Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-804a-b261-cce4623d7f15",
+    "title": "[Intelbras] Conexão do MIP 1000 IP no Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-8069-a59a-ebb8a952aeff",
+    "title": "[Intelbras] Conexão dos leitores faciais da linha SS",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-8021-b80a-f0d4238c73eb",
+    "title": "[Intelbras] Configuração de zona de tempo nas leitoras faciais",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-8008-8de1-e416f6af4be2",
+    "title": "[Intelbras] Configuração do SIP nas leitoras faciais da linha SS",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-802c-b67d-d3f825611172",
+    "title": "[Intelbras] Configurando o volume SIP da linha SS para o Voicy?",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-801c-a747-d3bf49516be4",
+    "title": "[Intelbras] Desabilitando o recurso “Codecs de vídeo” na linha XPE para sincronizar com o Voicy",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80a5-b2e0-d129306a34c3",
+    "title": "[Intelbras] É possível conectar o XPE3200 no Condfy e no Moni software simultaneamente?",
+    "category": "Equipamentos,Moni",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8007-8e8c-ed1554981e57",
+    "title": "[Intelbras] Equipamento não aceita a conexão no Condfy, mas abre pela Web",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8013-aa14-f23698b38470",
+    "title": "[Intelbras] Integração com o vídeo porteiro XPE3200",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-8008-9f7c-db678a04853b",
+    "title": "[Intelbras] Modelo de leitoras faciais linha SS compatíveis com o Voicy",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80a6-834f-ef3d8a1e33c2",
+    "title": "[Intelbras] Quais periféricos podem ser conectados a controladora MIP 1000 IP?",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8074-9895-d9cef4fc1469",
+    "title": "[Intelbras] Quais verificações precisam ser feitas quando acionamentos do MIP 1000 IP geram erros de conexão e/ou timeout?",
+    "category": "Acionamentos,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80f6-93cc-e3a8df6aecaf",
+    "title": "[Intelbras] Qual a versão mínima de firmware para conectar o XPE3200 no Condfy?",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-801e-a8f3-f76d8689adba",
+    "title": "[Intelbras] Registrando o SIP no TV IP 3000",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8092-b77f-ecc7eff55d8c",
+    "title": "[Intelbras] Registrando o SIP no XPE 3115",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8041-89a4-cb0fc1c59f3b",
+    "title": "[Intelbras] Registrando o SIP no XPE 3200",
+    "category": "Chamadas VoIP com Abertura de Portões,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8084-bb59-fd2bc65c8d58",
+    "title": "[Intelbras] Topologia de conexão de periféricos no MIP 1000 IP",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8030-b3a8-ef7cd232d943",
+    "title": "[Intelbras] Uso de senhas em equipamentos da linha SS",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "3e3625ab-36bd-8077-8824-c6bb222c5642",
+    "title": "[Intelbras SS] Configuração para utilização de QR Code",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-8045-a79a-f6ef29ff8f24",
+    "title": "[Meu Locker] Conexão de Caixa de Correio Inteligente",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "285625ab-36bd-8000-9a16-f44a57416013",
+    "title": "[Moni] Bloqueando eventos de interfone reportados pelo Moni Software",
+    "category": "Integrações,Moni",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-8024-ba48-fa1b8c51ed96",
+    "title": "[Moni] Configuração para que os cadastros de foto feitos via Condfy, sejam enviados para as faciais conectadas no Moni",
+    "category": "Integrações,Moni",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-806e-a0bb-dbdc54b94211",
+    "title": "[Moni] Configurando o convite facial",
+    "category": "Convite Facial,Moni",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-80d3-adb1-d4410e451396",
+    "title": "[Moni] Criando uma ocorrência manual no Moni. (Teste de replicação de eventos)",
+    "category": "Gerador de Ocorrências,Moni",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-8097-ac14-d577000dc314",
+    "title": "[Moni] Entendendo e configurando o recurso “ClickAprova”",
+    "category": "Click Aprova,Moni",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8043-8366-c8cf1aa869d7",
+    "title": "[Moni] Lista de eventos Bravas que são reportados para o Moni",
+    "category": "Moni",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8098-bd35-fee74391e188",
+    "title": "[Moni] O que significa o erro \"Não foi possível enviar os dados para o servidor da portaria, tente novamente em alguns minutos ou entre em contato.\" na integração com o Moni?",
+    "category": "Integrações,Moni",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80ea-93dd-cc78030df73b",
+    "title": "[Moni] Os acionamentos gerados no Condfy quando o servidor do Moni estiver offline serão sincronizados quando a conexão for reestabelecida?",
+    "category": "Acionamentos,Moni",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8050-9817-c75e75750163",
+    "title": "[Moni] Quais usuários podem ter acesso aos recursos do Condfy na tela do Moni?",
+    "category": "Moni",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-800c-8a92-f26fdb192657",
+    "title": "[Moni] Recurso ClickAprova",
+    "category": "Click Aprova,Moni",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80e4-9021-d3d12d272b5c",
+    "title": "[Moni] Recursos integrados com a Condfy",
+    "category": "Integrações,Moni",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8044-a7ec-fea49cc08dd3",
+    "title": "[Moni] Sincronização dos dados com o Condfy",
+    "category": "Moni",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8094-8d9a-ee957fab279c",
+    "title": "[Monuv] Integração com o Condfy",
+    "category": "Integrações,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-806c-aa38-f537dea6e527",
+    "title": "[Nice] Atualização dos receptores do Módulo Guarita",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8099-af23-daa39a8cc926",
+    "title": "[Nice] Cadastro de credenciais RFID no Condfy utilizando o cadastrador de mesa Desktop Reader LN-106",
+    "category": "Gestão de credenciais,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-8081-a025-d6b82238226c",
+    "title": "[Nice] Cadastro de credencial no Módulo Guarita",
+    "category": "Gestão de credenciais,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-8009-8f7f-c0c3ddcd0f39",
+    "title": "[Nice] Conexão do Módulo Ethernet2 no Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-8004-92cb-c35c2cff5d1b",
+    "title": "[Nice] Conexão do Módulo Guarita no Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-807d-8c4d-d31a52344f65",
+    "title": "[Nice] Conexão dos leitores faciais",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-80f0-bd7e-d3ed3027b8ff",
+    "title": "[Nice] Configurando grupos de horários na facial FR300",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80f1-807f-e5e8f9cdd494",
+    "title": "[Nice] Criando um acionamento endereçando o CAN e o relé específico do Módulo Guarita",
+    "category": "Acionamentos,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8017-9032-ea02552a01a3",
+    "title": "[Nice] Qual a versão mínima de firmware para conectar o módulo Ethernet 2 no Condfy?",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-802a-a017-cb108aa28d1a",
+    "title": "[Nice] Verificando se o reporte de eventos da facial está direcionado para o Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-8076-afd7-e0186ad9d040",
+    "title": "[NSE] Configurando acionamentos do módulo IPNet44 por URL de comando",
+    "category": "Acionamentos,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-805f-9eab-c8b419af804d",
+    "title": "[Pináculo] Configurações e conexão no Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80c2-ab93-d9b75fbffa2c",
+    "title": "[Pináculo] Procedimento para ajuste na integração",
+    "category": "Integrações,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8086-bf26-d0eead947402",
+    "title": "[Pináculo] Sequência de distribuição de ligações",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-80a0-8566-f5ac84bb6a13",
+    "title": "[Projetos] Controlando locais com entrada única diária",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-80ee-819b-c2660ead9ece",
+    "title": "[Projetos] Controle de caixa d’água",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-80de-84f0-fdc099df0e2f",
+    "title": "[Projetos] Controle de vagas",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-8086-9525-f38d103fc700",
+    "title": "[Projetos] Utilizando a solução Condfy para locais com Airbnb",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-80c9-9a6d-e1b9de57e057",
+    "title": "[Projetos] Utilizando reconhecimento facial para controlar o acesso de elevadores por andar",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-809c-b2fa-c37995114f55",
+    "title": "[PxTalk] Acessando os contatos na plataforma Web PxTalk",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-80f8-b1f4-f5ad27d63c4b",
+    "title": "[PxTalk] Integrando os serviços PxTalk com uma licença no Condfy",
+    "category": "Integrações,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-805a-b1c7-c64fbcc08422",
+    "title": "[Sem Parar] Conectando em uma licença no Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-80cd-8759-c0c58db9363f",
+    "title": "[Sem Parar] Integração e funcionamento",
+    "category": "Integrações,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8057-9d56-d3b73041342e",
+    "title": "[Sigma] Como resolver erro ao enviar moradores?",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80c7-b70e-fac04f523948",
+    "title": "[Sigma] Configurando a identificação de qual porta foi aberta",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-806d-a85d-ecf1fd48bfb4",
+    "title": "[Sigma] Erros ocasionais que podem acontecer na integração e vinculação da licença",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-804e-a576-cc8b2653ab18",
+    "title": "[Sigma] Recursos integrados com a Condfy",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "3fb625ab-36bd-8026-902c-ebad24fd2984",
+    "title": "[Smart Lockers] O que é necessário para um morador receber via e-mail o código de retirada / QR Code da entrega?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8078-b70f-eaea39c1c348",
+    "title": "[Smart Lockers] Procedimento de registro nos armários e notificações de entregas no Condfy",
+    "category": "Controle de Entregas,Gerenciamento Autônomo de Entregas,Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-80cb-b5c7-fd028b226da5",
+    "title": "[Sonoff] Conexão dos módulos de relés com firmware Tasmota",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-807f-9e8e-fd300f64b8ba",
+    "title": "[Sonoff] Configurando o usuário e senha no Sonoff com o Flash Tasmota",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80db-b7fb-d8281f7b3553",
+    "title": "[Sonoff] Qual equipamento é compatível com o Condfy?",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "3ba625ab-36bd-800b-a442-c6d67b5e2240",
+    "title": "[Starlink] Como ativar o modo de bypass na Starlink?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "3b9625ab-36bd-8010-a035-d1c4a577365f",
+    "title": "[Starlink] Como fazer o direcionamento de portas com internet Starlink?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-80fe-a597-d3e1ac1d5238",
+    "title": "[Tellicom] Configurando a prioridade de ligações",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-808d-9a1a-ea29b1555023",
+    "title": "[Voicy] Baixando e configurando o MicroSIP para teste do Voicy",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-809d-af54-da5e7d530fa3",
+    "title": "[Voicy] Cloud PABX - Precificação para contratação do Autoatendimento VoIP",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "3e4625ab-36bd-80ef-9fcd-eeb56ae883b5",
+    "title": "[Voicy] Transbordo com Linha SS + Khomp.",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-8061-b98d-db506db37ce7",
+    "title": "A Condfy garante a entrega de SMSs?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-80d9-bfd1-c878a47de4dd",
+    "title": "Acessando “Acionamentos” por atalho",
+    "category": "Acionamentos",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-808b-8482-f6f4de476c81",
+    "title": "Acessando a aba “Recursos” por atalho",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80a6-a3f8-ea6659acb260",
+    "title": "Acessando os dados financeiros do contrato",
+    "category": "Contratos e Subcontratos (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-801a-b76b-c913b4b06963",
+    "title": "Adicionando campos à tela de registro de acessos da Portaria",
+    "category": "Tela de Atendimento (Portaria/Recepção)",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-808f-b931-ffe339bd6ec6",
+    "title": "Adicionando documentos na unidade",
+    "category": "Documentos",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-80f5-9c3e-f5c95fd2ffe3",
+    "title": "Adicionando documentos públicos para visualização dos agentes na licença",
+    "category": "Documentos",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-80db-900f-dae81dc75b6c",
+    "title": "Adicionando uma lista de convidados da unidade",
+    "category": "Autorização Prévia de Pessoas,Licenças Blocos e Unidades,Lista de Festas",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-8009-a167-c12e673704a7",
+    "title": "Agendando uma manutenção para controle e notificações",
+    "category": "Manutenções Preventivas",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-805b-8cb5-c64a342aa1c7",
+    "title": "Ajustando automaticamente todas as linhas e colunas no Excel.",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-80a7-97b0-d5e4e71472fa",
+    "title": "Ajustando o relatório extraído do Condfy (acentos errados)",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-800e-90ea-d46ea87fcf84",
+    "title": "Alterando a senha de um usuário manualmente",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8084-a2d3-dfaec8e82393",
+    "title": "Alterando a visibilidade de uma licença na pesquisa",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-80ff-b594-dc11da74ee5e",
+    "title": "Alterando dados de um cadastro realizado pelo “Controle de acesso” (Tela do porteiro)",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-80bf-a1fd-f6446431d7a1",
+    "title": "Alterando o perfil de um usuário já existente",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-807c-b5ce-cac224663923",
+    "title": "Alterando os dados de contato da minha empresa que são mostrados no App",
+    "category": "Contratos e Subcontratos (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-8027-a15d-dda1a58c6602",
+    "title": "Alterando permissões de um perfil",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-8056-a7de-dbc027e79cd0",
+    "title": "Aplicando filtro no Excel",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-80f0-8dec-c4631a04ecbd",
+    "title": "Aprovar, editar ou recusar solicitações de face feitas via App",
+    "category": "Cadastro de Face pelo App",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-8067-a299-f11e6e875d69",
+    "title": "Ativando a visualização “Dark mode” no Google Chrome ",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-80ff-a068-e292d03f375a",
+    "title": "Ativar/Desativar notificações para perfis vinculados ao contrato",
+    "category": "Contratos e Subcontratos (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-808f-95ac-db20fba5964b",
+    "title": "Atualizações da plataforma Condfy",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-803a-ae68-ee1aa10477da",
+    "title": "Auditando um acesso por “Face temporária” a partir de “Portaria”",
+    "category": "Face Temporária (Exclusão Automática)",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-802e-8d28-f8c50ed64e42",
+    "title": "Autocadastro do agente principal, sem envio de convite",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-801c-9e4f-e1e253769c1d",
+    "title": "Entrega Autônoma - Como é feito o depósito de encomendas pelos entregadores",
+    "category": "Controle de Entregas,Gerenciamento Autônomo de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-808e-8107-e7eb76eb246b",
+    "title": "Autotriagem com CPF Bloqueado",
+    "category": "Autotriagem",
+    "type": "page"
+  },
+  {
+    "id": "285625ab-36bd-80fe-8d38-f9a915e78ccf",
+    "title": "Baixando o App Condfy em .APK para testes ou em dispositivos Android sem loja",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "285625ab-36bd-8048-9d18-d2012425badf",
+    "title": "Baixando o App Condfy na Play Store e Apple Store",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-80ce-957c-e84c5c78927b",
+    "title": "Bilhete para o porteiro, da inclusão à visualização",
+    "category": "Bilhetes",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8004-8d3e-f1dbe4bf120c",
+    "title": "Bloqueando o agendamento de áreas comuns para uma ou mais unidades da licença",
+    "category": "Agendamento de Áreas Comuns",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-80c8-aa38-f38f439f6f5e",
+    "title": "Bloqueando um CPF no Condfy",
+    "category": "Tela de Atendimento (Portaria/Recepção)",
+    "type": "page"
+  },
+  {
+    "id": "285625ab-36bd-805b-bd3c-c793a200e78c",
+    "title": "Bloqueando/habilitando credenciais",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "285625ab-36bd-8010-b3b9-f95ea326c467",
+    "title": "Bloquear um perfil para não acessar o App Condfy",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "285625ab-36bd-809a-92a8-dfc930ef9610",
+    "title": "Bloquear um perfil para não acessar o Condfy pela Web",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-80e1-bc2c-e9dfa51ce756",
+    "title": "Bloqueio da plataforma por inadimplência",
+    "category": "Contratos e Subcontratos (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-806f-b029-faca732cc424",
+    "title": "Buscando o pré-cadastro realizado pelo link de Autotriagem",
+    "category": "Autotriagem",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80c3-90d2-cbe4a411433a",
+    "title": "Cadastrando biometrias digitais com o Cadastrados Biométrico Condfy",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "285625ab-36bd-8049-a961-eb61d6e27ca7",
+    "title": "Cadastrando e configurando cartão temporário",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-8088-b298-d5e20b794cc6",
+    "title": "Cadastrando o “Agente principal” de forma manual na unidade",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8085-83cd-d23d570409b6",
+    "title": "Cadastrando um servidor de e-mails próprio no Condfy",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-805d-8f3d-c323b8e3e93a",
+    "title": "Cadastrando um telefone fixo na unidade",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-80b5-9f8e-c230d544caf1",
+    "title": "Cadastro de “Objetos” para controle de retiradas e devoluções",
+    "category": "Controle de Objetos",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-80d3-9bff-dd53538b5a57",
+    "title": "Cadastro de Prestadores e Funcionários fixos da unidade pelo App",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos,Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-8043-aa54-edd164933a5f",
+    "title": "Cadastro de um Agente Principal pelo App",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-8019-ad64-ed31f0ff4933",
+    "title": "Cadastro de um prestador de serviço autorizado na unidade",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos,Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-801b-80f2-cd4bb7b549f6",
+    "title": "Cadastro de um visitante ou familiar autorizado pelo App",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "286625ab-36bd-80a0-bb4b-d646a778dc05",
+    "title": "Cadastro de veículos na unidade",
+    "category": "Licenças Blocos e Unidades,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-803d-8c67-f363b6344709",
+    "title": "Cadastro dos animais domésticos (Pets) das unidades",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-8080-9f19-f48d5e2a77ac",
+    "title": "Cancelamento de um convite facial pela plataforma Web",
+    "category": "Convite Facial",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-800e-b507-eaaad4c95340",
+    "title": "CFTV - Métodos de carregamento",
+    "category": "Câmeras pelo App",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80f8-be84-f92edd489093",
+    "title": "CGNAT - Métodos para liberação de portas",
+    "category": "Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "401625ab-36bd-8068-8ac6-cacfcd6c1843",
+    "title": "Como configurar a rota de acesso para os agendamentos de área comum?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "3fe625ab-36bd-80ba-8180-cfbb827476e8",
+    "title": "Como configurar um número de telefone para aparecer no Fale Conosco do APP?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "3e3625ab-36bd-808e-97ad-c465047b5d73",
+    "title": "Como funciona o processo de sugestão de melhorias?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "401625ab-36bd-80aa-9cc0-f44946e314c9",
+    "title": "Como habilitar a obrigatoriedade do CPF e Foto ao enviar um convite de cadastro?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8099-a1f4-d2d237054b65",
+    "title": "Como tabular um arquivo .CSV",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-8027-a77b-e6e40f0f017f",
+    "title": "Concedendo acesso a mais unidades na mesma licença no App para um usuário",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80f7-b169-ee24ae219e8a",
+    "title": "Conectando um interfone analógico a um ATA",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-80d5-8b85-d20be6faa2d8",
+    "title": "Conexão de equipamentos de controle de acesso no Condfy",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "288625ab-36bd-800f-a5e1-f766c2e01c1b",
+    "title": "Conexão e configurações de CFTV no Condfy",
+    "category": "Câmeras pelo App",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80e3-9fd6-c1bdef8730b6",
+    "title": "Configurações mínimas de celular para uso do Voicy Cloud PBX",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-80d8-aba9-ce16dd5256bd",
+    "title": "Configurações mínimas necessárias de celulares para utilizar o App Condfy",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-80c2-b939-edfae4fd3f19",
+    "title": "Configurando a “Autotriagem” em uma licença",
+    "category": "Autotriagem",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-80cd-a773-fb4533264e13",
+    "title": "Configurando a “Solicitação de Face”",
+    "category": "Cadastro de Face pelo App,Solicitação de Faces (Mediação)",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80f9-8191-fd32e8e7bf6e",
+    "title": "Configurando a AutoRetirada de encomendas por autenticação",
+    "category": "Controle de Entregas,Gerenciamento Autônomo de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8028-a503-dcdf2d34c093",
+    "title": "Configurando a AutoRetirada de encomendas por QR Scanner",
+    "category": "Controle de Entregas,Gerenciamento Autônomo de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-804b-9e94-c645ad5d8583",
+    "title": "Configurando a Chave virtual",
+    "category": "Chave Virtual",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-8003-9cca-da885fdb453e",
+    "title": "Configurando a ordem de ligações na licença para serviços de PABX em nuvem",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8029-9a28-d86e0a9fc993",
+    "title": "Configurando as notificações de eventos",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-8076-9c5b-f5ed5ff5f26f",
+    "title": "Configurando as rotas de acesso por agente na licença",
+    "category": "Equipamentos,Rotas de Acesso",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-80cf-a353-f20fc1e1218b",
+    "title": "Configurando confirmação de recebimento de entregas",
+    "category": "Controle de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8083-ac70-cfb7bb85f5fa",
+    "title": "Configurando layouts personalizados de acesso aos canais do CFTV no App (permissões de acesso)",
+    "category": "Câmeras pelo App",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-80d4-9164-e84e17881678",
+    "title": "Configurando o Autocadastro na licença",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-8038-a2c1-cd0e43d10ab3",
+    "title": "Configurando o “Acesso autônomo” na Autotriagem",
+    "category": "Acesso autônomo,Autotriagem",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80a2-b300-cd85966c1ce4",
+    "title": "Configurando o “Acesso autônomo” na Autotriagem com cadastro permanente",
+    "category": "Acesso autônomo,Autorização Prévia de Pessoas,Autotriagem,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-80fa-9349-dc1fa96d9572",
+    "title": "Configurando o \"Auto cadastro de face\" para o agente principal",
+    "category": "Cadastro de Face pelo App",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-8034-aca4-c56cc62daa32",
+    "title": "Configurando a Entrega Autônoma",
+    "category": "Controle de Entregas,Gerenciamento Autônomo de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-806d-b807-f854f6718950",
+    "title": "Configurando o convite por Face temporária (Convite facial)",
+    "category": "Convite Facial,Face Temporária (Exclusão Automática)",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-8092-85a7-ca36aed8c1ce",
+    "title": "Configurando o QR Code",
+    "category": "Acesso por QR Code (Leitor Físico)",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-806f-afd2-ca869d0e7ad9",
+    "title": "Configurando o QR Scanner",
+    "category": "QR Code (Scanner)",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-8009-ab52-e92f34c398a0",
+    "title": "Configurando o recurso “No local” da tela da “Portaria para controle de visitantes e prestadores",
+    "category": "Tela de Atendimento (Portaria/Recepção)",
+    "type": "page"
+  },
+  {
+    "id": "2a4625ab-36bd-8098-beaa-cceef483c77d",
+    "title": "Configurando o reporte do evento de “Dupla passagem” do Bravas para o Moni",
+    "category": "Integrações,Moni",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8032-9490-eea6671a190d",
+    "title": "Configurando os acionamentos de entrada e saída para controle de acessos de visitantes e prestadores temporários",
+    "category": "Acionamentos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80e9-96f0-d6baae5c2a69",
+    "title": "Configurando quais notificações o usuário quer receber no App",
+    "category": "Notificações de Acesso",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8056-8525-e0bd9ffc661d",
+    "title": "Configurando recursos e funcionalidades da tela “Portaria”",
+    "category": "Tela de Atendimento (Portaria/Recepção)",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-807c-9c7d-f5d7c900c86c",
+    "title": "Consulta de acessos",
+    "category": "Histórico de acessos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-809e-8c8b-ff846688bf60",
+    "title": "Consulta segura de CPF  – Como funciona",
+    "category": "Consulta segura de CPF",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-809f-93f2-e5c13c4049fa",
+    "title": "Consulta segura de CPF - LGPD",
+    "category": "Consulta segura de CPF",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8063-98a3-e089f39faa5b",
+    "title": "Consulta segura de CPF – Pacotes",
+    "category": "Consulta segura de CPF",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80d1-855c-fe33a5aca77a",
+    "title": "Consultando a data de cadastro de um agente",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8090-9c9a-e0dbfb4a0645",
+    "title": "Consultando a data de criação da licença",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80da-ac32-c8d020c9dbdc",
+    "title": "Consultando a versão do App",
+    "category": "Aplicativo",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-801c-9b51-e8e83129c62d",
+    "title": "Consultando detalhes das credenciais vinculadas",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8095-8fc4-f90fd1c4fd1e",
+    "title": "Contato do DPO (Encarregado de dados) da Condfy para dúvidas técnicas sobre dados e segurança",
+    "category": "Política de Privacidade de Dados e LGPD",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-8004-921e-d5fbd2c74d4d",
+    "title": "Contratando e configurando o Voicy em uma licença",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-800b-8edc-c2d36f3c600b",
+    "title": "Contratando e configurando um DDNS gratuito na plataforma No-IP",
+    "category": "Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-805f-9610-e5d4dcf860ae",
+    "title": "Conversor de código decimal ou hexadecimal para Wiegand",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-8079-9a5b-f9f866d74e29",
+    "title": "Convertendo valores decimais, hexadecimais, binários ou octal com a calculadora do Windows",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-8065-8ec1-c4a1b45f7dff",
+    "title": "Convidando o agente principal para acessar o Aplicativo",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "3fe625ab-36bd-80a7-ad90-ec855b43721c",
+    "title": "Convites de cadastro",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-80d5-bd37-eeffd3b09288",
+    "title": "Copiando os dados cadastrais de um agente e transferindo suas credenciais para outra unidade",
+    "category": "Autorização Prévia de Pessoas,Gestão de credenciais,Gestão de Pessoas e Veículos,Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-803f-a871-f676431ebc2c",
+    "title": "Criando blocos e unidades em uma licença",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-806a-8177-eca038a05b43",
+    "title": "Criando e configurando acionamentos no Condfy",
+    "category": "Acionamentos",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-80d9-9b91-cc46ed6e02d2",
+    "title": "Criando e configurando uma área comum na licença",
+    "category": "Agendamento de Áreas Comuns",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-8087-bdb3-f10ccedcc9fe",
+    "title": "Criando um “Botão de pânico” para utilizar no App",
+    "category": "Gerador de Ocorrências",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-80cc-8496-cd049af4220f",
+    "title": "Criando um perfil personalizado",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-8079-a5e6-dbcd51e96906",
+    "title": "Criando um relatório de turno",
+    "category": "Registro de Turno",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-8077-b6bf-dcb457ec319c",
+    "title": "Criando um usuário de forma manual (sem envio de convite)",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-80a5-acf0-e5d675a019b6",
+    "title": "Criando uma estrutura de minimercado autônomo no Condfy",
+    "category": "Autotriagem",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-80ac-b4d5-f5e00385c10f",
+    "title": "Criando uma lista de convidados da unidade pela plataforma Web Condfy",
+    "category": "Autorização Prévia de Pessoas,Licenças Blocos e Unidades,Lista de Festas",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-807d-a353-dd1f56b41877",
+    "title": "Criando uma nova licença",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-8009-b0d6-fb171dfee524",
+    "title": "Criando unidades em massa em uma licença de estrutura horizontal",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-80aa-bc17-c307dfc5a210",
+    "title": "Criando unidades em massa em uma licença de estrutura vertical",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-8017-af9f-d3faf3e2ffd3",
+    "title": "Definindo os horários que o usuário poderá receber ligações Voicy no App",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-80df-930f-d254135b4c2f",
+    "title": "Definindo os recursos da licença",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80ac-a2be-f06b245343d6",
+    "title": "Definindo permissões de visualização de documentos para o perfil do agente principal",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80ab-863c-d0b89ba81cba",
+    "title": "Definindo permissões de visualização de telefones para o perfil do agente principal",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-8089-b22f-f21555b2a053",
+    "title": "Definindo permissões para retirada de entregas",
+    "category": "Controle de Entregas,Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-80b4-a668-ee02d12b5777",
+    "title": "Definindo validade da credencial de Visitantes ou Prestadores autorizados",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "292625ab-36bd-80ce-878e-c126dea5e546",
+    "title": "Desabilitando a função \"Importar foto ao vincular credencial”",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8068-bc42-e9f0bf4e5f3d",
+    "title": "Dicas para solucionar problemas comuns com DDNS no roteador",
+    "category": "Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80ac-b343-c4a63c9aaaa2",
+    "title": "É possível baixar um backup de todos os dados de uma licença?",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-807e-8360-ebfe63d0fd2b",
+    "title": "É possível recuperar dados alterados ou excluídos por um usuário?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80fc-b92b-f394123316d8",
+    "title": "Em condomínios residenciais e corporativos, como personalizar a nomenclatura?",
+    "category": "Personalização de Campos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8040-a0fd-ec90a7eb0a93",
+    "title": "Entendendo o significado de cada status dos agendamentos de áreas comuns",
+    "category": "Agendamento de Áreas Comuns",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8025-80b6-f39e36a0a3fb",
+    "title": "Entendendo o significado de cada status em “Pedidos”",
+    "category": "Pedidos e Manifestações",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-806d-922c-de5f1e1ddc9c",
+    "title": "Envio de convite de cadastro unitário com perfil de usuário pré definido",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-801c-babd-c58b28e2089a",
+    "title": "Envio de convite para um novo agente pelo App",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8050-890b-c45c996e0c8b",
+    "title": "Envio de convites de cadastro em massa",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80af-a522-f0a4ba2306c5",
+    "title": "Equipamentos homologados para ligação VoIP com o Voicy Cloud PBX via SIP",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-803f-87bb-dba6059f1933",
+    "title": "Equipamentos integrados ao Condfy",
+    "category": "Equipamentos,Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80de-aea0-d65eab5cb584",
+    "title": "Exclusão Automática de Face Temporária e Ajuste de Horas",
+    "category": "Face Temporária (Exclusão Automática)",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-8002-ac21-cfdfaadc3607",
+    "title": "Exclusão de credencial vinculada a um cadastro",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-80ea-beeb-fe4562c50a65",
+    "title": "Exclusão de todas as credenciais de um equipamento específico conectado à licença",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-804e-9307-d937e99344df",
+    "title": "Exclusão de um agente",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-808c-8b89-dfda8af74b5e",
+    "title": "Exclusão de um perfil de usuário",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-803f-897b-e848368e7d76",
+    "title": "Exclusão de uma licença",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-805a-b3af-ea818762479b",
+    "title": "Exemplos de modelos de relatório de exclusão de dados pessoais e licenças",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8082-ab46-ffc001b7d1fe",
+    "title": "Expirando o cadastro de um visitante ou prestador e bloqueando sua credencial",
+    "category": "Autorização Prévia de Pessoas,Gestão de credenciais,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8058-8a0f-c9721647055e",
+    "title": "Exportando um relatório",
+    "category": "Relatórios",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80a9-ad21-ddf353cdbba1",
+    "title": "Formatando campos na planilha modelo do Excel",
+    "category": "Ferramentas externas,Relatórios",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8047-a516-e0d46366053d",
+    "title": "Funcionamento da ligação de autoatendimento com sistemas de PABX em nuvem integrados",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8083-a300-ebc15a697ea9",
+    "title": "Funcionamento do Autoatendimento VoIP com o Voicy Cloud PBX",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80f2-8f3a-d4df8b951231",
+    "title": "Funcionamento do plantão técnico",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8024-8525-dd07abcb8ad1",
+    "title": "Funcionamento do Reconhecimento Facial, relação entre Condfy e o equipamento",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8043-95d5-f6b7c547fe71",
+    "title": "Gerando solicitações de cadastro facial em massa",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80f4-b92a-ee16f10425ef",
+    "title": "Gerando um termo de uso para aceite no acesso ao App",
+    "category": "Política de Privacidade de Dados e LGPD",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80bc-a571-db97cff21806",
+    "title": "Habilitando a aprovação automática da solicitação de cadastro de faces pelo App",
+    "category": "Cadastro de Face pelo App",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-809e-8bea-f85f0cd95737",
+    "title": "Habilitando a inclusão obrigatória de documentos nos cadastros",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "3e6625ab-36bd-8089-90fc-cb64b4801a8c",
+    "title": "Habilitando a notificação do Alerta de consulta",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8017-ba39-f0a43d6f3adf",
+    "title": "Habilitando a notificação de acordo com o período para acessos de visitantes e prestadores",
+    "category": "Tela de Atendimento (Portaria/Recepção)",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-801f-a512-d19a35d1d31f",
+    "title": "Habilitando a permissão de “Gestão de credenciais” para perfis da licença",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-805e-bfc8-f83fbfff937d",
+    "title": "Habilitando a permissão de acesso à localização para utilizar convites por QR Scanner e Chave Virtual",
+    "category": "Chave Virtual",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8075-94e4-dfafea720358",
+    "title": "Habilitando as notificações por pop up para o App no Android",
+    "category": "Aplicativo",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-80f5-926f-e65054a99ead",
+    "title": "Habilitando e imprimindo o QR Phone do Voicy",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8010-bc2e-f96fadea221d",
+    "title": "Habilitando o envio de notificações por e-mail",
+    "category": "Notificações de Acesso",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8088-a9e3-c504d54ebda1",
+    "title": "Habilitando/desabilitando a solicitação de motivo para alterações",
+    "category": "Contratos e Subcontratos (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80e0-a18e-efbed3caa695",
+    "title": "Identificando se o IP do provedor é CGNAT",
+    "category": "Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8011-8741-d3f09b85583a",
+    "title": "Implantação completa e eficiente com o Condfy",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80ec-9774-c225ae891fde",
+    "title": "Importando as credenciais de um equipamento para o Condfy",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-8056-a459-e67c658d5d5b",
+    "title": "* Importando cadastros de agentes em massa",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80fd-89e2-dad182735253",
+    "title": "Informações sobre Cache",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-800a-b469-dbc67ec9729e",
+    "title": "Integração com os armários inteligentes",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-801a-b9ee-c40ba2567023",
+    "title": "Integração com soluções Short Stay (Hospy, Magikey e outros que virão)",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "2cb625ab-36bd-80e9-a2f3-f5ddf3a864d6",
+    "title": "LGPD - Portal de Privacidade",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8086-934a-c072ee27af39",
+    "title": "Liberando um perfil para configurar a Autotriagem",
+    "category": "Autotriagem",
+    "type": "page"
+  },
+  {
+    "id": "285625ab-36bd-8032-b991-f17b0073da38",
+    "title": "Liberando uma porta para acesso externo no roteador/modem",
+    "category": "Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8055-83d8-c0d64df69630",
+    "title": "Liberando usuários com perfil de portaria/recepção para visualização de relatórios Quantitativos e Qualitativos",
+    "category": "Usuários e Permissões,Relatórios",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8084-995e-e3c3d21a0151",
+    "title": "Licença Showroom",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-808e-993a-f8ccf50ec08b",
+    "title": "Limpeza de cache dos principais navegadores",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "296625ab-36bd-80b7-876f-ea66020b7359",
+    "title": "Localizando a URL SMTP, porta e tipo de segurança do servidor de e-mails",
+    "category": "Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-807e-ac06-fb843e7c6030",
+    "title": "LPR - Modo informativo",
+    "category": "Cadastro LPR (Reconhecimento de placas)",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-80dd-9c8b-c936a7e97471",
+    "title": "Migração eficiente de outro software para o Condfy",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-8032-ace1-ce91e8a0c27c",
+    "title": "Mural de avisos",
+    "category": "Mural de avisos",
+    "type": "page"
+  },
+  {
+    "id": "3e3625ab-36bd-80b5-afe3-c168628be62d",
+    "title": "O que acontece quando envio uma sugestão?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80c4-af08-d3fbace4a111",
+    "title": "O acontece quando um usuário é excluído?",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80ab-ad9b-d5449d5c32a1",
+    "title": "O que acontece se na rotina de exclusão automática de credenciais expiradas da Condfy os equipamentos estiverem desconectados?",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-801f-9d51-d2c313296c23",
+    "title": "O que é a ocorrência “Entrada assistida”?",
+    "category": "Gerador de Ocorrências",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80a4-876d-df2feb04f714",
+    "title": "O que é o Condfy?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-806b-af2c-d88667e936d0",
+    "title": "O que é o recurso “Acesso autônomo”?",
+    "category": "Acesso autônomo",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80bf-9dae-dcd7e6246bcb",
+    "title": "O que é o recurso de customização?",
+    "category": "Personalização de Campos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8056-b938-f9df303a9f05",
+    "title": "O que é o Voicy Cloud PBX?",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8016-a7f8-ffd8551dc6a9",
+    "title": "O que fazer quando o equipamento reportar a mensagem \"Não foi possível completar a sincronização. Status: Busy\"?",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80a1-8caa-de449c7e6a95",
+    "title": "O que pode causar falha ao aprovar uma solicitação de face?",
+    "category": "Cadastro de Face pelo App,Solicitação de Faces (Mediação)",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80bf-9925-ec07e65e5239",
+    "title": "Ocultando a opção “Fale conosco” no App",
+    "category": "Contratos e Subcontratos (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "40d625ab-36bd-8045-914c-c19951cd337d",
+    "title": "Origem das informações da Consulta Segura",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80bc-b977-f89378fa47bf",
+    "title": "Para que serve o recurso “Turno”",
+    "category": "Registro de Turno",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80ae-a0e5-ec5270fbe23d",
+    "title": "Permitindo o acesso de um perfil ao recurso “Mudança”",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-8057-a631-d902544dd09a",
+    "title": "Personalizando as nomenclaturas da licença",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-808c-9963-ce296ffdac3c",
+    "title": "Personalizando os campos de convites por Chave Virtual, Face Temporária, QR Code e QR Scanner",
+    "category": "Acesso por QR Code (Leitor Físico),Chave Virtual,Face Temporária (Exclusão Automática)",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-802f-9fbe-d43d8cb1bb48",
+    "title": "Pesquisando o histórico de acessos na plataforma Web",
+    "category": "Histórico de acessos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-800d-a8a3-efb071cfc7f2",
+    "title": "Pesquisando o histórico de acessos no App",
+    "category": "Histórico de acessos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-800d-899b-f30dac1b741c",
+    "title": "Por que meu aplicativo personalizado ainda não foi atualizado com os novos recursos Condfy?",
+    "category": "Contratos e Subcontratos (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8036-9fd2-ed84eed8aacf",
+    "title": "Por que o Condfy não possui dois campos para inserção de endereços IP, permitindo que, em caso de falha de uma conexão de Internet, a outra entre em vigor automaticamente?",
+    "category": "Informações gerais,Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-805e-96f0-fceee0f048b8",
+    "title": "Por que preciso cadastrar um servidor de e-mail para disparar convites em massa?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80cf-9af4-eaf66c9bfb05",
+    "title": "Por que usamos Cookies para convites limitados a um único aparelho em vez de endereço MAC?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8035-99bf-cd107e41eee8",
+    "title": "Porque não aparece “Código” e “Identificação” no Sigma, quando gero uma ocorrência no Condfy?",
+    "category": "Gerador de Ocorrências",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-803a-bb3e-fbbde2566c1c",
+    "title": "Porque não é possível fazer o vinculo automático das credenciais do equipamento no Condfy?",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "28e625ab-36bd-80d0-a6f9-fa2cdfc6beeb",
+    "title": "Pré-cadastrando conclusões para agilizar o registro de acesso na Portaria",
+    "category": "Tela de Atendimento (Portaria/Recepção)",
+    "type": "page"
+  },
+  {
+    "id": "28b625ab-36bd-80c9-af8a-fb7f3a0cccd3",
+    "title": "Preenchendo os “Dados cadastrais” e configurando a “Geolocalização” na nova licença",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-80d3-a899-c9947d8802ba",
+    "title": "Preenchimento correto das planilhas modelo para importação de cadastros",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80a5-b7f7-eb438619ada6",
+    "title": "Procedimentos a serem realizados quando não conseguir visualizar as câmeras no APP",
+    "category": "Câmeras pelo App",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-803a-95ea-c3beebe4d4fc",
+    "title": "Quais as configurações recomendadas para utilizar a plataforma Web Condfy no PC ou notebook?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80c2-9c8e-d5c02df2cac7",
+    "title": "Quais empresas da minha cidade trabalham com Condfy? Tem outra empresa da minha cidade que trabalha com Condfy? Fulano trabalha com Condfy? Quantas empresas/clientes utilizam Condfy?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-805c-808f-fd424ebd5ead",
+    "title": "Quais leitores de código de barras USB são integrados com o Condfy?",
+    "category": "Integrações",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-802f-b66c-c7f6b2b6905a",
+    "title": "Quais recursos a Condfy oferece para Portaria Autoatendimento?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8020-9da2-cc8090044489",
+    "title": "Quais recursos podemos usar em um projeto para Escolas?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-802d-aa3e-d6a249dc48e0",
+    "title": "Quais recursos podemos usar em um projeto para Faculdades?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-809c-b92f-ea40e21ef1cd",
+    "title": "Quais recursos/funções um Leitor Facial possui com a plataforma Condfy?",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80a2-a8d1-f035c83ebca0",
+    "title": "Quais são as diferenças de permissões entre os perfis de usuário vinculados ao contrato ou à licença?",
+    "category": "Contratos e Subcontratos (White Label),Licenças Blocos e Unidades,Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80a0-ab4f-f471e69593ca",
+    "title": "Quais são as restrições de um CPF bloqueado?",
+    "category": "Informações gerais,Tela de Atendimento (Portaria/Recepção)",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8041-949e-d14d170ab4af",
+    "title": "Quais são os diferenciais do produto Condfy?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80ce-88b6-c7866931f8cc",
+    "title": "Quais são os IPs da Condfy?",
+    "category": "Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8088-8932-c94072b49b4c",
+    "title": "Quais são os limites para exibição e exportação de registros no histórico de acesso?",
+    "category": "Histórico de acessos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8021-9802-eb6d9a7f4ed8",
+    "title": "Quais são os recursos oferecido pelo software Condfy?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80bc-97b2-f9e8883524ed",
+    "title": "Quais são os requisitos para conectar um Porteiro Eletrônico no Voicy Cloud PABX?",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-801b-a643-d76aa7b5a70b",
+    "title": "Quais sistemas operacionais e dispositivos são compatíveis com o Condfy?",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-801f-be4e-e6903a1139d1",
+    "title": "Qual é o limite máximo de registros que é possível extrair em um relatório de entregas?",
+    "category": "Controle de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80ae-9667-d636376da812",
+    "title": "Qual modelo do ATA testado e validado em bancada que funciona com o Voicy?",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80ed-8532-e089e467be1a",
+    "title": "Qual o tempo máximo de uma ligação no Voicy Cloud PBX?",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "281625ab-36bd-80fe-8783-f6dd891950fe",
+    "title": "Qual serviço é utilizado pelo Condfy para ajustar horário dos equipamentos?",
+    "category": "Equipamentos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-801a-97b5-d4cc0d0a437e",
+    "title": "Qual versão mínima IOS e Android para utilizar o app Condfy?",
+    "category": "Aplicativo,Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8018-892f-ef91b85e2354",
+    "title": "Quando importar credenciais do equipamento?",
+    "category": "Equipamentos,Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "28d625ab-36bd-80f8-9f85-cfd994e67899",
+    "title": "Quem são os “Agentes” no Condfy?",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8065-a033-c977f5ef9f47",
+    "title": "Realizando uma auditoria no Condfy",
+    "category": "Auditoria",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-804e-9d8a-c1d32ecf73a7",
+    "title": "Recomendações de Segurança para Senhas e Acessos de Usuários",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-805d-bd2c-fab696e73463",
+    "title": "Recurso Mudança",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-8034-a043-feb95c112852",
+    "title": "Recurso Relatórios",
+    "category": "Relatórios",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8014-9c0b-ff40bdfc9da9",
+    "title": "Reduzindo o tamanho do arquivo de imagens",
+    "category": "Ferramentas externas,Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "287625ab-36bd-8043-a967-e31ba07c627e",
+    "title": "Registrando novo acesso por face temporária pela tela \"Portaria”",
+    "category": "Face Temporária (Exclusão Automática)",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-805c-acf4-c6a7463ed9bf",
+    "title": "Registrando o recebimento de uma entrega pela plataforma Web",
+    "category": "Controle de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80aa-a79a-f8e0a41c5ce2",
+    "title": "Registrando o recebimento de uma entrega pelo App",
+    "category": "Controle de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-809c-8594-c1a030cbcc2a",
+    "title": "[Grandstream] Registrando o SIP em um ATA",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-80ae-aba6-dafe9016b74e",
+    "title": "Registrando um acesso manual na tela de Portaria",
+    "category": "Tela de Atendimento (Portaria/Recepção)",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-804c-a16f-c8bb815aeb86",
+    "title": "Regras de exibição do histórico de acessos no App",
+    "category": "Histórico de acessos",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80e4-b1f0-e0ec0fb7429e",
+    "title": "Repasse de Portas no MikroTik para Equipamentos Faciais, DVRs, NVRs e Câmeras IP",
+    "category": "Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-80ee-9473-d4251ea3f7cd",
+    "title": "Restaurar backup de credenciais",
+    "category": "Backup de Credenciais,Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8053-a37b-e390ce35465d",
+    "title": "Restrição da visualização de documentos na tela da Portaria",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-80ae-9b90-f55f713c0fc7",
+    "title": "Restrição de acesso por bloco nas rotas de acesso para controladoras",
+    "category": "Equipamentos,Rotas de Acesso",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-808e-90d8-f87e08a9f3c4",
+    "title": "Restringindo o acesso de um perfil de usuário, somente na rede da empresa",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8027-aef9-c0f7d44d4343",
+    "title": "Restringindo o acesso de um perfil por dispositivo",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "284625ab-36bd-80a5-85dc-cebb0999fb8b",
+    "title": "Servidor de e-mails alternativo",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-8062-9e38-e0f888b2d4ed",
+    "title": "Solicitação de cadastro facial pelo App",
+    "category": "Cadastro de Face pelo App",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-807b-9f39-c417b382db05",
+    "title": "Solicitando recuperação de senha pelo App",
+    "category": "Aplicativo",
+    "type": "page"
+  },
+  {
+    "id": "28f625ab-36bd-803c-a62e-f46c38b5718e",
+    "title": "Subcontrato - personalização de logo, tema de cores e perfis de contrato para clientes",
+    "category": "Personalização da Identidade Visual (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80c9-ab8f-f3cdf53ea582",
+    "title": "Substituição da senha de acesso de um morador pela unidade",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8068-9c56-e62ac23c9584",
+    "title": "Tempo de armazenamento de dados da licença, registros e cadastros na Condfy",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8025-a8d7-f54eb54d9a7f",
+    "title": "Tenho dois links de internet no condomínio. Quando o link principal cai, preciso trocar manualmente todos os IPs dos equipamentos no Condfy para o IP do link secundário. Qual a melhor solução pra isso?",
+    "category": "Rede e Internet",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80f8-8d0c-cd68d98041b7",
+    "title": "Teste de servidores SMTP",
+    "category": "Informações gerais,Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-808f-b111-d936bd41a5e7",
+    "title": "Teste de string RTSP no VLC Player",
+    "category": "Informações gerais,Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-800b-be7a-fb889bd4389c",
+    "title": "Teste de Webcam",
+    "category": "Informações gerais,Ferramentas externas",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8080-b23c-c3c92aa8384a",
+    "title": "Transferência de uma licença de um contrato para outro",
+    "category": "Contratos e Subcontratos (White Label),Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8050-b5fb-ec0a5a7e0779",
+    "title": "Transferência de vínculo da credencial de um agente para outro",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80d5-b3f0-c3218cd4ac9a",
+    "title": "Transferindo um morador de endereço na mesma licença",
+    "category": "Autorização Prévia de Pessoas,Gestão de Pessoas e Veículos",
+    "type": "page"
+  },
+  {
+    "id": "29c625ab-36bd-8028-a973-c15d05d3bccc",
+    "title": "URL personalizada em subcontratos",
+    "category": "Contratos e Subcontratos (White Label)",
+    "type": "page"
+  },
+  {
+    "id": "29a625ab-36bd-806f-aab3-fe97093b924a",
+    "title": "Utilizando o Condfy para check in e check out em hotéis com portaria presencial",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "299625ab-36bd-8021-bc81-c0667ca4cf55",
+    "title": "Utilizando o recurso Boletos no Condfy",
+    "category": "Boleto",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-801e-a36c-d841ebc95df0",
+    "title": "Validação da Conexão do Equipamento para Face Temporária",
+    "category": "Equipamentos,Face Temporária (Exclusão Automática)",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-80fe-8036-d05819ec695e",
+    "title": "Verificações a serem feitas no App para o bom funcionamento do Voicy Cloud PBX",
+    "category": "Chamadas VoIP com Abertura de Portões",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80c3-b8b9-eaa1fd0176b3",
+    "title": "Verificando o status de um convite ao aplicativo",
+    "category": "Informações gerais",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-8042-b9e4-dd704f3c7a14",
+    "title": "Verificando se as permissões para notificações estão habilitadas no Android e no IOS",
+    "category": "Aplicativo",
+    "type": "page"
+  },
+  {
+    "id": "28c625ab-36bd-8048-955d-c2d2ee2ad9d1",
+    "title": "Vinculando um vídeo de apresentação ou de instruções nos convites",
+    "category": "Personalização de Campos",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80d8-b6bd-e167e564b467",
+    "title": "Vinculando uma credencial importada de um equipamento a um cadastrado no Condfy",
+    "category": "Gestão de credenciais",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8008-8925-f7245769dd7a",
+    "title": "Visualizar Entregas de Moradores no Controle de Acesso",
+    "category": "Controle de Entregas",
+    "type": "page"
+  },
+  {
+    "id": "29d625ab-36bd-8080-9926-cf178417f208",
+    "title": "Visualizar via Web as notificações recebidas pelo agente principal",
+    "category": "Licenças Blocos e Unidades",
+    "type": "page"
+  },
+  {
+    "id": "3e3625ab-36bd-803e-a768-eaa7c94126e1",
+    "title": "Vocês conseguem desenvolver uma melhoria sob demanda para minha empresa?",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "29b625ab-36bd-80f8-9f51-d4635b79d46a",
+    "title": "Voltando às permissões de um perfil para o padrão inicial.",
+    "category": "Usuários e Permissões",
+    "type": "page"
+  },
+  {
+    "id": "2aa625ab-36bd-80e1-b1fa-ffca4400e4cf",
+    "title": "Template",
+    "category": "",
+    "type": "page"
+  },
+  {
+    "id": "3e3625ab-36bd-8017-a23c-f48b746948bf",
+    "title": "",
+    "category": "",
+    "type": "text"
+  },
+  {
+    "id": "3e3625ab-36bd-80ac-bee3-c8c44ef6fcb0",
+    "title": "",
+    "category": "",
+    "type": "text"
+  },
+  {
+    "id": "3d0625ab-36bd-8069-8899-e5d0b0791d13",
+    "title": "",
+    "category": "",
+    "type": "text"
+  },
+  {
+    "id": "3b9625ab-36bd-8087-8881-e41a33c71fd2",
+    "title": "",
+    "category": "",
+    "type": "text"
+  },
+  {
+    "id": "2c5625ab-36bd-8078-9925-fc75b1a79225",
+    "title": "",
+    "category": "",
+    "type": "text"
+  }
+]

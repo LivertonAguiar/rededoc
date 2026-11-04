@@ -1,0 +1,4308 @@
+{
+  "cursor": {
+    "stack": []
+  },
+  "recordMap": {
+    "__version__": 3,
+    "block": {
+      "2a2625ab-36bd-8095-b110-feb23fe42b04": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a2625ab-36bd-8095-b110-feb23fe42b04",
+            "version": 167,
+            "type": "page",
+            "properties": {
+              "title": [
+                [
+                  "Rede e Internet"
+                ]
+              ]
+            },
+            "content": [
+              "2a2625ab-36bd-8084-b76d-c9f8f028a1ed",
+              "2af625ab-36bd-80a9-b963-ed70c368e88a"
+            ],
+            "format": {
+              "page_icon": "attachment:b47f4457-3afc-4f2f-8f9e-362af31a2136:RedeInternet.png",
+              "page_cover": "attachment:0df987d4-3c91-463c-941a-08e0de139ae3:Ativo_211Capa_RedeInternet.svg",
+              "page_cover_position": 0.5,
+              "social_media_image_preview_url": "attachment:992fe171-65de-4cd3-a80d-a025e9911a12:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1762348026620,
+            "last_edited_time": 1764163638193,
+            "parent_id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "parent_table": "collection",
+            "alive": true,
+            "file_ids": [
+              "2b2e1ce2-0d1e-4fc6-8b08-972fed558823",
+              "0df987d4-3c91-463c-941a-08e0de139ae3",
+              "992fe171-65de-4cd3-a80d-a025e9911a12",
+              "b47f4457-3afc-4f2f-8f9e-362af31a2136"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "1Gs7Q64ci4ffRic90Qp77w,\"start\",\"end\"",
+                "n": {
+                  "1Gs7Q64ci4ffRic90Qp77w,\"start\",\"end\"": {
+                    "s": {
+                      "x": "1Gs7Q64ci4ffRic90Qp77w",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "nyo_kSwdpeM3",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 15,
+                          "c": "Rede e Internet"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "nyo_kSwdpeM3",
+                            16
+                          ],
+                          "o": [
+                            "nyo_kSwdpeM3",
+                            15
+                          ],
+                          "l": -1
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a0625ab-36bd-8015-aeac-dac65eaec472": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-8015-aeac-dac65eaec472",
+            "version": 112,
+            "type": "collection_view",
+            "view_ids": [
+              "2a0625ab-36bd-8016-8178-000cef6f2806"
+            ],
+            "collection_id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "format": {
+              "collection_pointer": {
+                "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+                "table": "collection",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              },
+              "collection_pointers": [
+                {
+                  "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+                  "table": "collection",
+                  "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+                }
+              ],
+              "hide_inline_collection_name": true
+            },
+            "created_time": 1762198280323,
+            "last_edited_time": 1765393701148,
+            "parent_id": "281625ab-36bd-80c0-ad17-e5fb1498943e",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "fyQ0AozlZTHUIP4tWPO2Lw,\"start\",\"end\"",
+                "n": {
+                  "fyQ0AozlZTHUIP4tWPO2Lw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "fyQ0AozlZTHUIP4tWPO2Lw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a3625ab-36bd-802a-9c31-fd4abc8da647": {
+        "value": {
+          "value": {
+            "id": "2a3625ab-36bd-802a-9c31-fd4abc8da647",
+            "version": 5,
+            "type": "collection_view",
+            "view_ids": [
+              "2a3625ab-36bd-80d2-a79d-000c7b679f52"
+            ],
+            "created_time": 1762434728084,
+            "last_edited_time": 1762434732719,
+            "parent_id": "2a0625ab-36bd-8085-847d-006e66d21ba3",
+            "parent_table": "layout",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "IpoxYLIvt4SqIfVBs2J6mA,\"start\",\"end\"",
+                "n": {
+                  "IpoxYLIvt4SqIfVBs2J6mA,\"start\",\"end\"": {
+                    "s": {
+                      "x": "IpoxYLIvt4SqIfVBs2J6mA",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "281625ab-36bd-80c0-ad17-e5fb1498943e": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "281625ab-36bd-80c0-ad17-e5fb1498943e",
+            "version": 209,
+            "type": "page",
+            "properties": {
+              "title": [
+                [
+                  "Central de Ajuda Condfy"
+                ]
+              ]
+            },
+            "content": [
+              "281625ab-36bd-8011-b365-f7deedb5208a",
+              "2a0625ab-36bd-8015-aeac-dac65eaec472",
+              "2a0625ab-36bd-8059-b10a-d3dc7c5eee20"
+            ],
+            "format": {
+              "site_id": "2a2625ab-36bd-8062-8e6a-007971ca966c",
+              "page_icon": "🚨",
+              "seo_title": "Central de Ajuda Condfy | Notion",
+              "page_cover": "attachment:c5c55439-a11f-4a9e-8f1e-352c86af740a:CapaFAQ.png",
+              "page_full_width": true,
+              "seo_description": "Seja bem vindo à Central de Ajuda Condfy. Esta página destina-se a apresentar informações importantes sobre funcionalidades e recursos do software Condfy em tópicos e referências.\nPara facilitar a busca por temas específicos ou por palavras, utilize a ferramenta de pesquisa no canto superior direito da página.\nCaso não encontre a informação que procura, entre em contato com nosso time de Suporte Técnico, clicando aqui.",
+              "page_cover_position": 0.5,
+              "social_media_image_preview_url": "attachment:46f0e54e-bdae-440c-90c0-7b481a3a9d7f:SocialMediaPreviewImage.png"
+            },
+            "permissions": [
+              {
+                "role": "reader",
+                "type": "public_permission",
+                "is_site": true,
+                "added_timestamp": 1762354113670,
+                "allow_duplicate": false
+              }
+            ],
+            "created_time": 1759504997060,
+            "last_edited_time": 1773918075205,
+            "parent_id": "10e625ab-36bd-81d3-9210-0042ce410086",
+            "parent_table": "team",
+            "alive": true,
+            "file_ids": [
+              "949cdbfd-2739-4d51-b2f5-b3212e208a59",
+              "76eb661b-4a82-43a9-99d7-08f77048cd3b",
+              "4edf63ca-d9eb-4fc2-b126-c56a713486eb",
+              "2f1e8717-2196-4862-84c2-5af6c995f2bc",
+              "b95ba177-1c8b-4cf7-b3ce-363e1e440711",
+              "e7a700de-2d87-4b6c-9619-4c6113848562",
+              "107318d7-46da-4b90-9f9e-abe3b5f02665",
+              "c5c55439-a11f-4a9e-8f1e-352c86af740a",
+              "1a688c93-9ccb-4d5f-8e1a-85153805490d",
+              "fe20fc24-0679-42d1-8e9f-e578442988fe",
+              "c383e310-085f-4f0c-bd68-5575a2da3635",
+              "46f0e54e-bdae-440c-90c0-7b481a3a9d7f"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "OM37swXRFKGCnpBrI6bDxg,\"start\",\"end\"",
+                "n": {
+                  "OM37swXRFKGCnpBrI6bDxg,\"start\",\"end\"": {
+                    "s": {
+                      "x": "OM37swXRFKGCnpBrI6bDxg",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 11,
+                          "c": "Central de "
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            15
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            11
+                          ],
+                          "l": 12,
+                          "c": "Ajuda Condfy"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            12
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            11
+                          ],
+                          "l": -3
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a2625ab-36bd-8084-b76d-c9f8f028a1ed": {
+        "value": {
+          "value": {
+            "id": "2a2625ab-36bd-8084-b76d-c9f8f028a1ed",
+            "version": 30,
+            "type": "button",
+            "format": {
+              "block_color": "purple_background",
+              "automation_id": "2a2625ab-36bd-80b7-b76a-004df2fc26d7"
+            },
+            "created_time": 1762348036675,
+            "last_edited_time": 1762348054954,
+            "parent_id": "2a2625ab-36bd-8095-b110-feb23fe42b04",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "aSUM52gSnnyGYU1pd9nlxA,\"start\",\"end\"",
+                "n": {
+                  "aSUM52gSnnyGYU1pd9nlxA,\"start\",\"end\"": {
+                    "s": {
+                      "x": "aSUM52gSnnyGYU1pd9nlxA",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2af625ab-36bd-80a9-b963-ed70c368e88a": {
+        "value": {
+          "value": {
+            "id": "2af625ab-36bd-80a9-b963-ed70c368e88a",
+            "version": 3,
+            "type": "column_list",
+            "content": [
+              "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+              "2af625ab-36bd-8026-ad4a-c71c0546aa37"
+            ],
+            "created_time": 1763490738770,
+            "last_edited_time": 1763490738776,
+            "parent_id": "2a2625ab-36bd-8095-b110-feb23fe42b04",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "75ph2vh5gluukZrSVnvxeA,\"start\",\"end\"",
+                "n": {
+                  "75ph2vh5gluukZrSVnvxeA,\"start\",\"end\"": {
+                    "s": {
+                      "x": "75ph2vh5gluukZrSVnvxeA",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2af625ab-36bd-8075-a52e-f3d19d6fc2f1": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "version": 22,
+            "type": "column",
+            "content": [
+              "2af625ab-36bd-8088-b92f-ee7e1d95791f",
+              "2af625ab-36bd-80ce-9e0a-e62b77481e39",
+              "2a8625ab-36bd-805c-a3f6-f092cf367ed8",
+              "2a8625ab-36bd-80df-80ab-fe75fa535570",
+              "2a8625ab-36bd-8062-b30c-f40fc0dfc0b8",
+              "2a8625ab-36bd-8089-a19f-d661f32643ad",
+              "2a8625ab-36bd-800c-b290-e2978a378280",
+              "2af625ab-36bd-809f-ace0-c2a82efd1fef"
+            ],
+            "format": {
+              "column_ratio": 0.5
+            },
+            "created_time": 1763490738770,
+            "last_edited_time": 1763490832797,
+            "parent_id": "2af625ab-36bd-80a9-b963-ed70c368e88a",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "nIfhbP94TtQzPqvD-jB2BQ,\"start\",\"end\"",
+                "n": {
+                  "nIfhbP94TtQzPqvD-jB2BQ,\"start\",\"end\"": {
+                    "s": {
+                      "x": "nIfhbP94TtQzPqvD-jB2BQ",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2af625ab-36bd-8026-ad4a-c71c0546aa37": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2af625ab-36bd-8026-ad4a-c71c0546aa37",
+            "version": 19,
+            "type": "column",
+            "content": [
+              "2a2625ab-36bd-8039-9904-ffbae52677e8",
+              "2a2625ab-36bd-80b9-aec1-f2c3171d43cf",
+              "2a8625ab-36bd-80d8-9df6-da4218f1e24a",
+              "2a8625ab-36bd-804b-89f8-d106b0b032f7",
+              "2a8625ab-36bd-8045-90a5-c82009dbeb53",
+              "2a8625ab-36bd-8012-a2c1-d28bb7956054"
+            ],
+            "format": {
+              "column_ratio": 0.5
+            },
+            "created_time": 1763490738770,
+            "last_edited_time": 1763490841767,
+            "parent_id": "2af625ab-36bd-80a9-b963-ed70c368e88a",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "0Ix5Bd0NEnG6h0CNNx8LAg,\"start\",\"end\"",
+                "n": {
+                  "0Ix5Bd0NEnG6h0CNNx8LAg,\"start\",\"end\"": {
+                    "s": {
+                      "x": "0Ix5Bd0NEnG6h0CNNx8LAg",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2af625ab-36bd-8088-b92f-ee7e1d95791f": {
+        "value": {
+          "value": {
+            "id": "2af625ab-36bd-8088-b92f-ee7e1d95791f",
+            "version": 21,
+            "type": "sub_header",
+            "properties": {
+              "title": [
+                [
+                  "Tutoriais"
+                ]
+              ]
+            },
+            "created_time": 1763490742704,
+            "last_edited_time": 1763490745511,
+            "parent_id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "5YrsrIofJ8MKzzNXIgBxYw,\"start\",\"end\"",
+                "n": {
+                  "5YrsrIofJ8MKzzNXIgBxYw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "5YrsrIofJ8MKzzNXIgBxYw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "8teIdEX1S9XC",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 9,
+                          "c": "Tutoriais"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2af625ab-36bd-80ce-9e0a-e62b77481e39": {
+        "value": {
+          "value": {
+            "id": "2af625ab-36bd-80ce-9e0a-e62b77481e39",
+            "version": 3,
+            "type": "divider",
+            "created_time": 1763490748095,
+            "last_edited_time": 1763490748096,
+            "parent_id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "JXWDFxBxRKJR06e4tUJTpA,\"start\",\"end\"",
+                "n": {
+                  "JXWDFxBxRKJR06e4tUJTpA,\"start\",\"end\"": {
+                    "s": {
+                      "x": "JXWDFxBxRKJR06e4tUJTpA",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-805c-a3f6-f092cf367ed8": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-805c-a3f6-f092cf367ed8",
+            "version": 13,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "29c625ab-36bd-80f8-be84-f92edd489093",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860164311,
+            "last_edited_time": 1763490816257,
+            "parent_id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "uBuM2sYc3lbKFjxXfsmukA,\"start\",\"end\"",
+                "n": {
+                  "uBuM2sYc3lbKFjxXfsmukA,\"start\",\"end\"": {
+                    "s": {
+                      "x": "uBuM2sYc3lbKFjxXfsmukA",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -109,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "uBuM2sYc3lbKFjxXfsmukA",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                110
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  109
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/CGNAT-M-todos-para-libera-o-de-portas-29c625ab36bd80f8be84f92edd489093?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            111
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            109
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "uBuM2sYc3lbKFjxXfsmukA",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                113
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  111
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  111
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "29c625ab-36bd-80f8-be84-f92edd489093",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            112
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            111
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-80df-80ab-fe75fa535570": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-80df-80ab-fe75fa535570",
+            "version": 13,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "28e625ab-36bd-800b-8edc-c2d36f3c600b",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860183738,
+            "last_edited_time": 1763490820594,
+            "parent_id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "aaSPWyiA6Ycc-mi79rjHcQ,\"start\",\"end\"",
+                "n": {
+                  "aaSPWyiA6Ycc-mi79rjHcQ,\"start\",\"end\"": {
+                    "s": {
+                      "x": "aaSPWyiA6Ycc-mi79rjHcQ",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -135,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "aaSPWyiA6Ycc-mi79rjHcQ",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                136
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  135
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/Contratando-e-configurando-um-DDNS-gratuito-na-plataforma-No-IP-28e625ab36bd800b8edcc2d36f3c600b?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            137
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            135
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "aaSPWyiA6Ycc-mi79rjHcQ",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                139
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  137
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  137
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "28e625ab-36bd-800b-8edc-c2d36f3c600b",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            138
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            137
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-8062-b30c-f40fc0dfc0b8": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-8062-b30c-f40fc0dfc0b8",
+            "version": 13,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "29a625ab-36bd-80e0-a18e-efbed3caa695",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860216791,
+            "last_edited_time": 1763490825684,
+            "parent_id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "lgqihAK9DmAWSg1A_BOusg,\"start\",\"end\"",
+                "n": {
+                  "lgqihAK9DmAWSg1A_BOusg,\"start\",\"end\"": {
+                    "s": {
+                      "x": "lgqihAK9DmAWSg1A_BOusg",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -111,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "lgqihAK9DmAWSg1A_BOusg",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                112
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  111
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/Identificando-se-o-IP-do-provedor-CGNAT-29a625ab36bd80e0a18eefbed3caa695?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            113
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            111
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "lgqihAK9DmAWSg1A_BOusg",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                115
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  113
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  113
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "29a625ab-36bd-80e0-a18e-efbed3caa695",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            114
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            113
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-8089-a19f-d661f32643ad": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-8089-a19f-d661f32643ad",
+            "version": 13,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "285625ab-36bd-8032-b991-f17b0073da38",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860232110,
+            "last_edited_time": 1763490829421,
+            "parent_id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "-dfVWtZhHekGynETo7-S7A,\"start\",\"end\"",
+                "n": {
+                  "-dfVWtZhHekGynETo7-S7A,\"start\",\"end\"": {
+                    "s": {
+                      "x": "-dfVWtZhHekGynETo7-S7A",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -129,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "-dfVWtZhHekGynETo7-S7A",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                130
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  129
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/Liberando-uma-porta-para-acesso-externo-no-roteador-modem-285625ab36bd8032b991f17b0073da38?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            131
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            129
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "-dfVWtZhHekGynETo7-S7A",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                133
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  131
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  131
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "285625ab-36bd-8032-b991-f17b0073da38",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            132
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            131
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-800c-b290-e2978a378280": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-800c-b290-e2978a378280",
+            "version": 13,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "29d625ab-36bd-80e4-b1f0-e0ec0fb7429e",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860285564,
+            "last_edited_time": 1763490832797,
+            "parent_id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "AMyBtC1aR6OfgIR73zh_Qw,\"start\",\"end\"",
+                "n": {
+                  "AMyBtC1aR6OfgIR73zh_Qw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "AMyBtC1aR6OfgIR73zh_Qw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -150,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "AMyBtC1aR6OfgIR73zh_Qw",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                151
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  150
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/Repasse-de-Portas-no-MikroTik-para-Equipamentos-Faciais-DVRs-NVRs-e-C-meras-IP-29d625ab36bd80e4b1f0e0ec0fb7429e?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            152
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            150
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "AMyBtC1aR6OfgIR73zh_Qw",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                154
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  152
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  152
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "29d625ab-36bd-80e4-b1f0-e0ec0fb7429e",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            153
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            152
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2af625ab-36bd-809f-ace0-c2a82efd1fef": {
+        "value": {
+          "value": {
+            "id": "2af625ab-36bd-809f-ace0-c2a82efd1fef",
+            "version": 3,
+            "type": "text",
+            "created_time": 1763490748114,
+            "last_edited_time": 1763490748115,
+            "parent_id": "2af625ab-36bd-8075-a52e-f3d19d6fc2f1",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "kUbTcNYrZJwKk3EeIRZ_4w,\"start\",\"end\"",
+                "n": {
+                  "kUbTcNYrZJwKk3EeIRZ_4w,\"start\",\"end\"": {
+                    "s": {
+                      "x": "kUbTcNYrZJwKk3EeIRZ_4w",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a2625ab-36bd-8039-9904-ffbae52677e8": {
+        "value": {
+          "value": {
+            "id": "2a2625ab-36bd-8039-9904-ffbae52677e8",
+            "version": 51,
+            "type": "sub_header",
+            "properties": {
+              "title": [
+                [
+                  "Tópicos e perguntas"
+                ]
+              ]
+            },
+            "created_time": 1762348062565,
+            "last_edited_time": 1763490768546,
+            "parent_id": "2af625ab-36bd-8026-ad4a-c71c0546aa37",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "8m_nfacgvfEDwadpUwDtJg,\"start\",\"end\"",
+                "n": {
+                  "8m_nfacgvfEDwadpUwDtJg,\"start\",\"end\"": {
+                    "s": {
+                      "x": "8m_nfacgvfEDwadpUwDtJg",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "nyo_kSwdpeM3",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 4,
+                          "c": "Tópi"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "nyo_kSwdpeM3",
+                            6
+                          ],
+                          "o": [
+                            "nyo_kSwdpeM3",
+                            4
+                          ],
+                          "l": 3,
+                          "c": "cos"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "8teIdEX1S9XC",
+                            9
+                          ],
+                          "o": [
+                            "nyo_kSwdpeM3",
+                            8
+                          ],
+                          "l": 12,
+                          "c": " e perguntas"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "nyo_kSwdpeM3",
+                            5
+                          ],
+                          "o": [
+                            "nyo_kSwdpeM3",
+                            4
+                          ],
+                          "l": -1
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a2625ab-36bd-80b9-aec1-f2c3171d43cf": {
+        "value": {
+          "value": {
+            "id": "2a2625ab-36bd-80b9-aec1-f2c3171d43cf",
+            "version": 6,
+            "type": "divider",
+            "created_time": 1762348068778,
+            "last_edited_time": 1763490758438,
+            "parent_id": "2af625ab-36bd-8026-ad4a-c71c0546aa37",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "8OaTXEuEX4crMonH-Hgx5g,\"start\",\"end\"",
+                "n": {
+                  "8OaTXEuEX4crMonH-Hgx5g,\"start\",\"end\"": {
+                    "s": {
+                      "x": "8OaTXEuEX4crMonH-Hgx5g",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-80d8-9df6-da4218f1e24a": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-80d8-9df6-da4218f1e24a",
+            "version": 13,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "29b625ab-36bd-8068-bc42-e9f0bf4e5f3d",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860199173,
+            "last_edited_time": 1763490837165,
+            "parent_id": "2af625ab-36bd-8026-ad4a-c71c0546aa37",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "8CmL_QEdawS5O1P8YYf30A,\"start\",\"end\"",
+                "n": {
+                  "8CmL_QEdawS5O1P8YYf30A,\"start\",\"end\"": {
+                    "s": {
+                      "x": "8CmL_QEdawS5O1P8YYf30A",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -131,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "8CmL_QEdawS5O1P8YYf30A",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                132
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  131
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/Dicas-para-solucionar-problemas-comuns-com-DDNS-no-roteador-29b625ab36bd8068bc42e9f0bf4e5f3d?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            133
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            131
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "8CmL_QEdawS5O1P8YYf30A",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                135
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  133
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  133
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "29b625ab-36bd-8068-bc42-e9f0bf4e5f3d",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            134
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            133
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-804b-89f8-d106b0b032f7": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-804b-89f8-d106b0b032f7",
+            "version": 13,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "29c625ab-36bd-8036-9fd2-ed84eed8aacf",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860248347,
+            "last_edited_time": 1763490777810,
+            "parent_id": "2af625ab-36bd-8026-ad4a-c71c0546aa37",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "5Kx5gza8gFF2ialJIuMeZw,\"start\",\"end\"",
+                "n": {
+                  "5Kx5gza8gFF2ialJIuMeZw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "5Kx5gza8gFF2ialJIuMeZw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -169,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "5Kx5gza8gFF2ialJIuMeZw",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                170
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  169
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/Por-que-o-Condfy-n-o-possui-dois-campos-para-inser-o-de-endere-os-IP-permitindo-que-em-caso-de-fa-29c625ab36bd80369fd2ed84eed8aacf?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            171
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            169
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "5Kx5gza8gFF2ialJIuMeZw",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                173
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  171
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  171
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "29c625ab-36bd-8036-9fd2-ed84eed8aacf",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            172
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            171
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-8045-90a5-c82009dbeb53": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-8045-90a5-c82009dbeb53",
+            "version": 13,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "29d625ab-36bd-80ce-88b6-c7866931f8cc",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860267429,
+            "last_edited_time": 1763490785120,
+            "parent_id": "2af625ab-36bd-8026-ad4a-c71c0546aa37",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "5AOD2V_RcGgH0SHa6e5iLQ,\"start\",\"end\"",
+                "n": {
+                  "5AOD2V_RcGgH0SHa6e5iLQ,\"start\",\"end\"": {
+                    "s": {
+                      "x": "5AOD2V_RcGgH0SHa6e5iLQ",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -98,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "5AOD2V_RcGgH0SHa6e5iLQ",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                99
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  98
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/Quais-s-o-os-IPs-da-Condfy-29d625ab36bd80ce88b6c7866931f8cc?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            100
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            98
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "5AOD2V_RcGgH0SHa6e5iLQ",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                102
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  100
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  100
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "29d625ab-36bd-80ce-88b6-c7866931f8cc",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            101
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            100
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a8625ab-36bd-8012-a2c1-d28bb7956054": {
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-8012-a2c1-d28bb7956054",
+            "version": 14,
+            "type": "text",
+            "properties": {
+              "title": [
+                [
+                  "‣",
+                  [
+                    [
+                      "p",
+                      "29d625ab-36bd-8025-a8d7-f54eb54d9a7f",
+                      "19241446-e0a2-4199-9488-238a315499e0"
+                    ]
+                  ]
+                ],
+                [
+                  " "
+                ]
+              ]
+            },
+            "created_time": 1762860299048,
+            "last_edited_time": 1763490790322,
+            "parent_id": "2af625ab-36bd-8026-ad4a-c71c0546aa37",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "ymtLyGr0Sh5zdlleqyM1Ww,\"start\",\"end\"",
+                "n": {
+                  "ymtLyGr0Sh5zdlleqyM1Ww,\"start\",\"end\"": {
+                    "s": {
+                      "x": "ymtLyGr0Sh5zdlleqyM1Ww",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -170,
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "ymtLyGr0Sh5zdlleqyM1Ww",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                171
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  170
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://www.notion.so/Tenho-dois-links-de-internet-no-condom-nio-Quando-o-link-principal-cai-preciso-trocar-manualmente--29d625ab36bd8025a8d7f54eb54d9a7f?source=copy_link"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            172
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            170
+                          ],
+                          "l": 1,
+                          "c": "‣",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "ymtLyGr0Sh5zdlleqyM1Ww",
+                              "l": "",
+                              "i": [
+                                "NtkfbDupppEU",
+                                174
+                              ],
+                              "s": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  172
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "NtkfbDupppEU",
+                                  172
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "p",
+                                "29d625ab-36bd-8025-a8d7-f54eb54d9a7f",
+                                "19241446-e0a2-4199-9488-238a315499e0"
+                              ]
+                            }
+                          ],
+                          "a": []
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "NtkfbDupppEU",
+                            173
+                          ],
+                          "o": [
+                            "NtkfbDupppEU",
+                            172
+                          ],
+                          "l": 1,
+                          "c": " "
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": [
+                      "UW5PLQrFBtQB2XSPNvWgvQ,[\"8teIdEX1S9XC\",21],\"end\""
+                    ]
+                  },
+                  "UW5PLQrFBtQB2XSPNvWgvQ,[\"8teIdEX1S9XC\",21],\"end\"": {
+                    "s": {
+                      "x": "UW5PLQrFBtQB2XSPNvWgvQ",
+                      "i": [
+                        {
+                          "t": "p",
+                          "i": [
+                            "8teIdEX1S9XC",
+                            21
+                          ],
+                          "o": "start"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": "l"
+                    },
+                    "c": [
+                      "gEoc0to5hPpDYP6HraCrKw,[\"8teIdEX1S9XC\",21],\"end\""
+                    ]
+                  },
+                  "gEoc0to5hPpDYP6HraCrKw,[\"8teIdEX1S9XC\",21],\"end\"": {
+                    "s": {
+                      "x": "gEoc0to5hPpDYP6HraCrKw",
+                      "i": [
+                        {
+                          "t": "p",
+                          "i": [
+                            "8teIdEX1S9XC",
+                            21
+                          ],
+                          "o": "start"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": "l"
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "29c625ab-36bd-80f8-be84-f92edd489093": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "29c625ab-36bd-80f8-be84-f92edd489093",
+            "version": 115,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "CGNAT - Métodos para liberação de portas"
+                ]
+              ]
+            },
+            "content": [
+              "29c625ab-36bd-80c6-aa68-ef470faf4c75",
+              "29c625ab-36bd-80b9-8b86-c56bffc5fce4",
+              "29c625ab-36bd-80ad-9160-d4368f5005fe",
+              "29c625ab-36bd-80a0-b4a3-d888d84c789a",
+              "29c625ab-36bd-805e-8519-fea7af49eef7",
+              "29c625ab-36bd-804f-8dd0-e209def7b66d",
+              "29c625ab-36bd-80e5-8c89-f0ff89f0a6dc",
+              "29c625ab-36bd-805c-a442-d199fe0c6122",
+              "29c625ab-36bd-80c5-b38f-d070920942b9",
+              "29c625ab-36bd-8008-88c5-cb648be0544f"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:12eaaa17-1b21-4733-a718-5f0ee6bbc12c:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1761836499146,
+            "last_edited_time": 1786461510471,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "12eaaa17-1b21-4733-a718-5f0ee6bbc12c"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "ISk8N7TTRYQDng_ki4lJpw,\"start\",\"end\"",
+                "n": {
+                  "ISk8N7TTRYQDng_ki4lJpw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "ISk8N7TTRYQDng_ki4lJpw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "Xkr-5hAysUko",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 40,
+                          "c": "CGNAT - Métodos para liberação de portas"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "28e625ab-36bd-800b-8edc-c2d36f3c600b": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "28e625ab-36bd-800b-8edc-c2d36f3c600b",
+            "version": 59,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "Contratando e configurando um DDNS gratuito na plataforma No-IP"
+                ]
+              ]
+            },
+            "content": [
+              "28e625ab-36bd-801e-afa7-ea9124fda697",
+              "28e625ab-36bd-808a-9378-ce7709da80c3",
+              "28e625ab-36bd-800d-847a-d804a9a1015f",
+              "28e625ab-36bd-807d-81ec-f75df4c43605",
+              "28e625ab-36bd-8066-88cd-d21a801f7a51",
+              "28e625ab-36bd-8000-ba62-e8fd7ddbaaa5",
+              "28e625ab-36bd-809a-80cf-fd381d2d25d4",
+              "28e625ab-36bd-80ca-bda2-d69cace6a7ff",
+              "28e625ab-36bd-8076-ad8d-facfff1dba4d",
+              "28e625ab-36bd-8073-81ae-c6419f2a3877",
+              "28e625ab-36bd-80b7-ac35-f86b0c05d34e",
+              "28e625ab-36bd-80ab-bd4e-eddb717f256d",
+              "28e625ab-36bd-80f5-8903-f331a940262d",
+              "28e625ab-36bd-8046-9d20-eb6eeae0a5bf",
+              "28e625ab-36bd-8096-b4ff-fd1b1e5b16a0",
+              "28e625ab-36bd-80e1-8b02-c5ff97a3754a",
+              "28e625ab-36bd-8016-b028-f1e425c41aad",
+              "28e625ab-36bd-8038-9b03-dff1512f254c",
+              "28e625ab-36bd-806d-a4ee-f40295d49257",
+              "28e625ab-36bd-803d-a7de-ff3111f56487",
+              "28e625ab-36bd-8093-a3a4-c8eca1f62109",
+              "28e625ab-36bd-8045-b56b-db0c412f6d78",
+              "28e625ab-36bd-8051-a43a-f8d3f292d08a",
+              "28e625ab-36bd-80b1-983e-dbda675ce2b2",
+              "28e625ab-36bd-8074-a1ac-c315cd98b2ff",
+              "28e625ab-36bd-806b-936e-fc437ea4e718",
+              "28e625ab-36bd-8089-aab8-da119b87799d",
+              "28e625ab-36bd-803b-8d05-ea519cf62039",
+              "28e625ab-36bd-804c-849d-e8420934405d",
+              "28e625ab-36bd-807d-9b2d-c4d0b7dea41d",
+              "28e625ab-36bd-808c-ab5b-c76dc77d2563",
+              "28e625ab-36bd-80bd-8bb4-e6101b01c4b7",
+              "28e625ab-36bd-80d5-a4a8-cff82d217375",
+              "28e625ab-36bd-804c-b07a-dbbd906dbac5",
+              "28e625ab-36bd-80c9-b0c3-fa31f8a4051e"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:260a9d97-b0eb-4738-8ff8-7560f8cc7576:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1760648163471,
+            "last_edited_time": 1762869072147,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "260a9d97-b0eb-4738-8ff8-7560f8cc7576"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "RjPY12_ayEl7KZHWRM53Kw,\"start\",\"end\"",
+                "n": {
+                  "RjPY12_ayEl7KZHWRM53Kw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "RjPY12_ayEl7KZHWRM53Kw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "IpyvmFM79QmZ",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 63,
+                          "c": "Contratando e configurando um DDNS gratuito na plataforma No-IP"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "29a625ab-36bd-80e0-a18e-efbed3caa695": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "29a625ab-36bd-80e0-a18e-efbed3caa695",
+            "version": 169,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "Identificando se o IP do provedor é CGNAT"
+                ]
+              ]
+            },
+            "content": [
+              "29a625ab-36bd-80a8-ab45-ccfe72e4960a",
+              "29a625ab-36bd-804b-a20d-e905062f1096",
+              "29a625ab-36bd-80b4-8fb7-f340eeed8aa7",
+              "29a625ab-36bd-80e4-9566-df1c55604d04",
+              "29a625ab-36bd-8033-9315-d447265ef83a",
+              "29a625ab-36bd-8073-97b2-f5f4b43c7489"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:0797d207-1b7c-4938-b925-a1047cc06c8a:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1761656756410,
+            "last_edited_time": 1762870459376,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "0797d207-1b7c-4938-b925-a1047cc06c8a"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "igk50z7Yn0p2TmMGmQbDlw,\"start\",\"end\"",
+                "n": {
+                  "igk50z7Yn0p2TmMGmQbDlw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "igk50z7Yn0p2TmMGmQbDlw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "FpEEl5_L_fLH",
+                            11
+                          ],
+                          "o": "start",
+                          "l": 12,
+                          "c": "Identificand"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "FpEEl5_L_fLH",
+                            24
+                          ],
+                          "o": [
+                            "FpEEl5_L_fLH",
+                            22
+                          ],
+                          "l": 2,
+                          "c": "o "
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "FpEEl5_L_fLH",
+                            29
+                          ],
+                          "o": [
+                            "FpEEl5_L_fLH",
+                            25
+                          ],
+                          "l": 27,
+                          "c": "se o IP do provedor é CGNAT"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "FpEEl5_L_fLH",
+                            26
+                          ],
+                          "o": [
+                            "FpEEl5_L_fLH",
+                            25
+                          ],
+                          "l": -3
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "FpEEl5_L_fLH",
+                            23
+                          ],
+                          "o": [
+                            "FpEEl5_L_fLH",
+                            22
+                          ],
+                          "l": -1
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "FpEEl5_L_fLH",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -10
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "285625ab-36bd-8032-b991-f17b0073da38": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "285625ab-36bd-8032-b991-f17b0073da38",
+            "version": 151,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "Liberando uma porta para acesso externo no roteador/modem"
+                ]
+              ]
+            },
+            "content": [
+              "285625ab-36bd-8035-9cec-f2d93e6ee3bf",
+              "285625ab-36bd-806a-ada8-d292a12ff0b4",
+              "285625ab-36bd-8049-bd40-c13a6ea730fa",
+              "285625ab-36bd-8024-84e3-ed71cd2265a5",
+              "285625ab-36bd-8050-a0ff-e2cfe08d2b1f",
+              "285625ab-36bd-8098-a51e-f3852ea63fc2",
+              "285625ab-36bd-80a6-a265-ec5ac7194361",
+              "285625ab-36bd-8068-a152-dd5299d1fe82",
+              "285625ab-36bd-8040-95c9-f997f38117b7",
+              "285625ab-36bd-80b6-82c4-ec378f3852cf",
+              "285625ab-36bd-80e1-b9e4-df6d8cc11f0d"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:04bef551-4ab7-41ce-b355-604b846526fb:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1759858453548,
+            "last_edited_time": 1762870780514,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "04bef551-4ab7-41ce-b355-604b846526fb"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "i0ytxPYvy54c8iLEkETm8w,\"start\",\"end\"",
+                "n": {
+                  "i0ytxPYvy54c8iLEkETm8w,\"start\",\"end\"": {
+                    "s": {
+                      "x": "i0ytxPYvy54c8iLEkETm8w",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "6Vpt-hDp864b",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 20,
+                          "c": "Liberando uma porta "
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "6Vpt-hDp864b",
+                            32
+                          ],
+                          "o": [
+                            "6Vpt-hDp864b",
+                            20
+                          ],
+                          "l": 20,
+                          "c": "para acesso externo "
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "6Vpt-hDp864b",
+                            21
+                          ],
+                          "o": [
+                            "6Vpt-hDp864b",
+                            20
+                          ],
+                          "l": 11,
+                          "c": "no roteador"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "6Vpt-hDp864b",
+                            52
+                          ],
+                          "o": [
+                            "6Vpt-hDp864b",
+                            31
+                          ],
+                          "l": 6,
+                          "c": "/modem"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "29d625ab-36bd-80e4-b1f0-e0ec0fb7429e": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "29d625ab-36bd-80e4-b1f0-e0ec0fb7429e",
+            "version": 57,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "Repasse de Portas no MikroTik para Equipamentos Faciais, DVRs, NVRs e Câmeras IP"
+                ]
+              ]
+            },
+            "content": [
+              "29d625ab-36bd-8027-99ff-c334d4d50db5",
+              "29d625ab-36bd-80bf-9c38-ce504ace1cc2",
+              "29d625ab-36bd-80fc-a8d0-d071893b1cad",
+              "29d625ab-36bd-8013-a753-f119e1bdc80e",
+              "29d625ab-36bd-8016-a50a-c8d3dcd50d31",
+              "29d625ab-36bd-80b1-8a36-fabb0adefeed",
+              "29d625ab-36bd-801c-a198-cc8a87b5f101",
+              "29d625ab-36bd-8061-a008-dbba4d39faf3",
+              "29d625ab-36bd-8066-a57a-f5867374b1b5",
+              "29d625ab-36bd-80fb-8a0f-ee47683828c7",
+              "29d625ab-36bd-8080-ad17-cb256fc495ff",
+              "29d625ab-36bd-8015-ab07-ee83a6a683dc",
+              "29d625ab-36bd-8016-82c4-cf92aa279ee4",
+              "29d625ab-36bd-808a-9551-cb37ad8b96f8",
+              "29d625ab-36bd-80c1-8d13-ef2b15cf63ed",
+              "29d625ab-36bd-80a9-a000-fb90edcea15c",
+              "29d625ab-36bd-8069-94f1-c13174bc8848",
+              "29d625ab-36bd-80aa-b4cc-d953c5dcb0bd",
+              "29d625ab-36bd-8003-9fa2-f6f12ded1fbb",
+              "29d625ab-36bd-80be-9d5c-fbc3ce619d6b",
+              "29d625ab-36bd-803c-9b87-fd7f7c8214e9",
+              "29d625ab-36bd-803a-877b-d3a63ba89c56",
+              "29d625ab-36bd-80c4-8cee-d90793cff63d",
+              "29d625ab-36bd-80fd-988c-e77d4a6efab9",
+              "29d625ab-36bd-80ae-b648-e6ce36747c53",
+              "29d625ab-36bd-806b-9567-cfc76553165d",
+              "29d625ab-36bd-8069-9cde-c7fdbe2e3753",
+              "29d625ab-36bd-8020-b458-dff00b6558fa",
+              "29d625ab-36bd-8018-8083-dcc4402a8a4c",
+              "29d625ab-36bd-803e-be28-dd95a0fda4ef",
+              "29d625ab-36bd-806f-8c45-f495745bbdc6",
+              "29d625ab-36bd-8066-adcb-d3eb5cd699d2",
+              "29d625ab-36bd-8050-b259-c979af1cb18b"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:5de409e7-adf8-4709-854a-dec902a46f3b:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1761920477333,
+            "last_edited_time": 1762872958518,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "5de409e7-adf8-4709-854a-dec902a46f3b"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "Gc3l5glL4ZtnTCGUmugqiA,\"start\",\"end\"",
+                "n": {
+                  "Gc3l5glL4ZtnTCGUmugqiA,\"start\",\"end\"": {
+                    "s": {
+                      "x": "Gc3l5glL4ZtnTCGUmugqiA",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "YwM7fmH5UE_2",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 80,
+                          "c": "Repasse de Portas no MikroTik para Equipamentos Faciais, DVRs, NVRs e Câmeras IP"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "YwM7fmH5UE_2",
+                            81
+                          ],
+                          "o": [
+                            "YwM7fmH5UE_2",
+                            80
+                          ],
+                          "l": -1
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "29b625ab-36bd-8068-bc42-e9f0bf4e5f3d": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "29b625ab-36bd-8068-bc42-e9f0bf4e5f3d",
+            "version": 34,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "Dicas para solucionar problemas comuns com DDNS no roteador"
+                ]
+              ]
+            },
+            "content": [
+              "29b625ab-36bd-8069-8023-dd65aef8670a",
+              "29b625ab-36bd-80f5-900f-f1ad316996af",
+              "29b625ab-36bd-80d9-9405-ce34c9bab631",
+              "29b625ab-36bd-804e-8b79-ed70d9aff509",
+              "29b625ab-36bd-80cd-8e62-f79eae735d52",
+              "29b625ab-36bd-8065-97f1-fe0d90da44c6",
+              "29b625ab-36bd-8054-b601-fd9707744007",
+              "29b625ab-36bd-8076-8a17-fc0be44a8cd7",
+              "29b625ab-36bd-8054-a812-fc7e2635149d",
+              "29b625ab-36bd-80ee-af49-e7ce7d09cef6",
+              "29b625ab-36bd-807d-9fb2-c8dc7c667fa3"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:c2d08bd3-59ba-496e-804d-369ec99e8815:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1761768188306,
+            "last_edited_time": 1762869778751,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "c2d08bd3-59ba-496e-804d-369ec99e8815"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "DkUKCIZnbbZyozJM8xoq_A,\"start\",\"end\"",
+                "n": {
+                  "DkUKCIZnbbZyozJM8xoq_A,\"start\",\"end\"": {
+                    "s": {
+                      "x": "DkUKCIZnbbZyozJM8xoq_A",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "PqI38RFa9Uof",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 59,
+                          "c": "Dicas para solucionar problemas comuns com DDNS no roteador"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "29c625ab-36bd-8036-9fd2-ed84eed8aacf": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "29c625ab-36bd-8036-9fd2-ed84eed8aacf",
+            "version": 33,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Informações gerais,Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "Por que o Condfy não possui dois campos para inserção de endereços IP, permitindo que, em caso de falha de uma conexão de Internet, a outra entre em vigor automaticamente?",
+                  [
+                    [
+                      "b"
+                    ]
+                  ]
+                ]
+              ]
+            },
+            "content": [
+              "29c625ab-36bd-80e3-8d27-ce8c3233679c",
+              "29c625ab-36bd-80ea-8a22-ff6d1d723429",
+              "29c625ab-36bd-8000-a958-e624f18c5bc6",
+              "29c625ab-36bd-801b-a0c2-fda0dcd27500",
+              "29c625ab-36bd-8059-804b-e804f7cf2f44"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:71f24c76-ead0-4628-9f12-a243c411c918:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1761850759961,
+            "last_edited_time": 1762871794963,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "71f24c76-ead0-4628-9f12-a243c411c918"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "XJEu9n8h6kP2s1PXQpElJw,\"start\",\"end\"",
+                "n": {
+                  "XJEu9n8h6kP2s1PXQpElJw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "XJEu9n8h6kP2s1PXQpElJw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "Xkr-5hAysUko",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 171,
+                          "c": "Por que o Condfy não possui dois campos para inserção de endereços IP, permitindo que, em caso de falha de uma conexão de Internet, a outra entre em vigor automaticamente?",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "XJEu9n8h6kP2s1PXQpElJw",
+                              "l": "",
+                              "i": [
+                                "Xkr-5hAysUko",
+                                172
+                              ],
+                              "s": {
+                                "i": [
+                                  "Xkr-5hAysUko",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": "end",
+                                "a": "b"
+                              },
+                              "a": [
+                                "b"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "t": "e",
+                          "b": []
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "29d625ab-36bd-80ce-88b6-c7866931f8cc": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "29d625ab-36bd-80ce-88b6-c7866931f8cc",
+            "version": 143,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "Quais são os IPs da Condfy?"
+                ]
+              ]
+            },
+            "content": [
+              "29d625ab-36bd-8074-b9b3-cc206e9a5e21",
+              "29d625ab-36bd-8078-9578-f70262682b54",
+              "29d625ab-36bd-80db-9549-d5040c4a5119",
+              "29d625ab-36bd-80a1-8196-d3bb7b44110b"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:adadc4aa-75b7-4038-a448-e0e7c3afe00a:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1761913095664,
+            "last_edited_time": 1786621274410,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "adadc4aa-75b7-4038-a448-e0e7c3afe00a"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "2XlzIUhemxilJc07xkAPjg,\"start\",\"end\"",
+                "n": {
+                  "2XlzIUhemxilJc07xkAPjg,\"start\",\"end\"": {
+                    "s": {
+                      "x": "2XlzIUhemxilJc07xkAPjg",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "OGFiDdjzDTfv",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 18,
+                          "c": "Quais são os IPs d"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "OGFiDdjzDTfv",
+                            21
+                          ],
+                          "o": [
+                            "OGFiDdjzDTfv",
+                            18
+                          ],
+                          "l": 9,
+                          "c": "a Condfy?"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "OGFiDdjzDTfv",
+                            19
+                          ],
+                          "o": [
+                            "OGFiDdjzDTfv",
+                            18
+                          ],
+                          "l": -2
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "29d625ab-36bd-8025-a8d7-f54eb54d9a7f": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "29d625ab-36bd-8025-a8d7-f54eb54d9a7f",
+            "version": 31,
+            "type": "page",
+            "properties": {
+              "@taw": [
+                [
+                  "Rede e Internet"
+                ]
+              ],
+              "title": [
+                [
+                  "Tenho dois links de internet no condomínio. Quando o link principal cai, preciso trocar manualmente todos os IPs dos equipamentos no Condfy para o IP do link secundário. Qual a melhor solução pra isso?",
+                  [
+                    [
+                      "b"
+                    ]
+                  ]
+                ]
+              ]
+            },
+            "content": [
+              "29d625ab-36bd-8034-83df-f4d089af5027",
+              "29d625ab-36bd-80cc-a7f1-ef6e9f79c968",
+              "29d625ab-36bd-8002-b8ff-e7ac809366fa",
+              "29d625ab-36bd-8043-bf4b-c7726166a176",
+              "29d625ab-36bd-80e1-bf8b-d82038c0fbcd",
+              "29d625ab-36bd-80cb-90dd-e72c0bbf1f29",
+              "29d625ab-36bd-80aa-b1b6-fc3036ead4ef",
+              "29d625ab-36bd-8036-9de2-d9c50ee3e9b7"
+            ],
+            "format": {
+              "page_icon": "notion://custom_emoji/19241446-e0a2-4199-9488-238a315499e0/2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+              "page_full_width": true,
+              "social_media_image_preview_url": "attachment:e1a64be8-bcb8-4a04-9a39-7c96db8d0a62:SocialMediaPreviewImage.png"
+            },
+            "created_time": 1761921332861,
+            "last_edited_time": 1762873180043,
+            "parent_id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "parent_table": "block",
+            "alive": true,
+            "file_ids": [
+              "e1a64be8-bcb8-4a04-9a39-7c96db8d0a62"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "enpDV3Kn2cvaAMakMv9bkQ,\"start\",\"end\"",
+                "n": {
+                  "enpDV3Kn2cvaAMakMv9bkQ,\"start\",\"end\"": {
+                    "s": {
+                      "x": "enpDV3Kn2cvaAMakMv9bkQ",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "YwM7fmH5UE_2",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 201,
+                          "c": "Tenho dois links de internet no condomínio. Quando o link principal cai, preciso trocar manualmente todos os IPs dos equipamentos no Condfy para o IP do link secundário. Qual a melhor solução pra isso?",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "enpDV3Kn2cvaAMakMv9bkQ",
+                              "l": "",
+                              "i": [
+                                "YwM7fmH5UE_2",
+                                202
+                              ],
+                              "s": {
+                                "i": [
+                                  "YwM7fmH5UE_2",
+                                  1
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": "end",
+                                "a": "b"
+                              },
+                              "a": [
+                                "b"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "t": "e",
+                          "b": []
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a7625ab-36bd-805a-9973-cbd8b009c101": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a7625ab-36bd-805a-9973-cbd8b009c101",
+            "version": 734,
+            "type": "page",
+            "properties": {
+              "title": [
+                [
+                  "Base de Dados"
+                ]
+              ]
+            },
+            "content": [
+              "2a7625ab-36bd-809f-8b7a-f6ade2c36fb0",
+              "2a7625ab-36bd-8069-8b53-c808ccd21388",
+              "288625ab-36bd-80d2-b4ab-cc4a3ee7f8fd",
+              "287625ab-36bd-8082-ac03-d75f13e5e9b7",
+              "29c625ab-36bd-800b-b0cf-f95fd112e3ed",
+              "29b625ab-36bd-8034-a95a-e971e192c931",
+              "299625ab-36bd-8071-b553-f3550bbca9e2",
+              "287625ab-36bd-80fb-89a5-ea1d21c3efda",
+              "29c625ab-36bd-805e-a86a-e7e431db1065",
+              "286625ab-36bd-8012-997d-c0560ab79dce",
+              "286625ab-36bd-805b-b824-d3284a766ee7",
+              "3b9625ab-36bd-80ee-88ab-eff0b9e6eb0d",
+              "29d625ab-36bd-80dd-9846-f048430ad1a3",
+              "37a625ab-36bd-8047-982c-e6e2e6cb2ec0",
+              "288625ab-36bd-803d-9027-decb816a1b38",
+              "28b625ab-36bd-8038-a756-fa8442532370",
+              "28d625ab-36bd-805a-8082-ce65889cdaf8",
+              "28d625ab-36bd-805f-a16d-f53918c4702e",
+              "292625ab-36bd-806b-8314-f538b6c971e7",
+              "296625ab-36bd-8088-871e-e322def1f99b",
+              "29c625ab-36bd-804d-8047-f6c4938cc523",
+              "29c625ab-36bd-8027-a164-c29f62dafae7",
+              "29c625ab-36bd-8057-b378-e0049926fbe4",
+              "37a625ab-36bd-8061-9a77-f0f7b86b4f81",
+              "28d625ab-36bd-802c-9d34-c95616612a30",
+              "28c625ab-36bd-804c-8d67-decb7b131cb1",
+              "3fe625ab-36bd-8018-ba53-f3827148cce9",
+              "29b625ab-36bd-80ed-a9e3-f265063e0e53",
+              "286625ab-36bd-806c-b41e-e27846941e53",
+              "3d0625ab-36bd-80c3-9769-e246522be669",
+              "288625ab-36bd-803e-8cc1-e21c11c94d52",
+              "288625ab-36bd-8063-8b46-f420994c2ce5",
+              "28f625ab-36bd-807c-9682-d744c7ea60b2",
+              "28c625ab-36bd-8044-ad51-d611b4c09c30",
+              "29b625ab-36bd-8014-8cad-e31851b7f2b8",
+              "28c625ab-36bd-80cf-b7ae-c8da2ec56360",
+              "28e625ab-36bd-8075-a0d7-e808a15712d3",
+              "296625ab-36bd-8054-ad74-e21cb0b33101",
+              "29c625ab-36bd-8045-b9d4-f116e04c3ca2",
+              "29c625ab-36bd-80b5-b609-f887f36bcf1a",
+              "29b625ab-36bd-80d8-b369-ec3e537a6f53",
+              "29c625ab-36bd-8031-a262-d2cba3b47478",
+              "29c625ab-36bd-8051-8399-ed043805b4f0",
+              "29a625ab-36bd-80ce-8358-f5acc6c37518",
+              "29c625ab-36bd-8069-bf0d-ddcbb34f819a",
+              "3e3625ab-36bd-8011-a816-cd5700ffe8fb",
+              "2a1625ab-36bd-801d-b0b8-e99f9afb76f8",
+              "284625ab-36bd-801b-92ef-c2c5b3d203cc",
+              "286625ab-36bd-807d-8768-e79f936a29c4",
+              "287625ab-36bd-80eb-a5d9-c62114e23c70",
+              "287625ab-36bd-80ea-9b13-ceca5c2da8ef",
+              "28b625ab-36bd-80bc-8814-c5c3cd3aed66",
+              "292625ab-36bd-8005-96f1-f6970981d7b2",
+              "29b625ab-36bd-80ac-9016-c33d87123964",
+              "296625ab-36bd-80f7-91a3-e078f17130f4",
+              "28e625ab-36bd-800e-99b1-d1019cbc347c",
+              "29a625ab-36bd-807a-9211-ea8b3af39b1e",
+              "29c625ab-36bd-8039-abfe-d8356d359faf",
+              "29c625ab-36bd-8038-ab7f-f6e8ad25d128",
+              "29a625ab-36bd-801a-9230-e54075a2832a",
+              "29c625ab-36bd-808f-b8ac-caa300b92363",
+              "29b625ab-36bd-80ff-ac0a-c345b3e04442",
+              "29c625ab-36bd-80f7-a64c-df3b02b2ffa1",
+              "29b625ab-36bd-803f-832b-ea6a9df6dff3",
+              "284625ab-36bd-8028-a263-d3bb3cf3831e",
+              "286625ab-36bd-80d7-87aa-da21fc17e9e7",
+              "286625ab-36bd-8037-962d-d1775503a97e",
+              "286625ab-36bd-8040-b5d8-ca9dd9d5847f",
+              "288625ab-36bd-80df-ba79-faa428d263fa",
+              "288625ab-36bd-804a-b261-cce4623d7f15",
+              "288625ab-36bd-8069-a59a-ebb8a952aeff",
+              "28d625ab-36bd-8021-b80a-f0d4238c73eb",
+              "28e625ab-36bd-8008-8de1-e416f6af4be2",
+              "28e625ab-36bd-802c-b67d-d3f825611172",
+              "292625ab-36bd-801c-a747-d3bf49516be4",
+              "29b625ab-36bd-80a5-b2e0-d129306a34c3",
+              "29a625ab-36bd-8007-8e8c-ed1554981e57",
+              "296625ab-36bd-8013-aa14-f23698b38470",
+              "28e625ab-36bd-8008-9f7c-db678a04853b",
+              "29c625ab-36bd-80a6-834f-ef3d8a1e33c2",
+              "29d625ab-36bd-8074-9895-d9cef4fc1469",
+              "29d625ab-36bd-80f6-93cc-e3a8df6aecaf",
+              "29a625ab-36bd-801e-a8f3-f76d8689adba",
+              "29a625ab-36bd-8092-b77f-ecc7eff55d8c",
+              "29a625ab-36bd-8041-89a4-cb0fc1c59f3b",
+              "29d625ab-36bd-8084-bb59-fd2bc65c8d58",
+              "29d625ab-36bd-8030-b3a8-ef7cd232d943",
+              "3e3625ab-36bd-8077-8824-c6bb222c5642",
+              "287625ab-36bd-8045-a79a-f6ef29ff8f24",
+              "285625ab-36bd-8000-9a16-f44a57416013",
+              "28d625ab-36bd-8024-ba48-fa1b8c51ed96",
+              "28c625ab-36bd-806e-a0bb-dbdc54b94211",
+              "292625ab-36bd-80d3-adb1-d4410e451396",
+              "28b625ab-36bd-8097-ac14-d577000dc314",
+              "29c625ab-36bd-8043-8366-c8cf1aa869d7",
+              "29c625ab-36bd-8098-bd35-fee74391e188",
+              "29d625ab-36bd-80ea-93dd-cc78030df73b",
+              "29d625ab-36bd-8050-9817-c75e75750163",
+              "29c625ab-36bd-800c-8a92-f26fdb192657",
+              "29d625ab-36bd-80e4-9021-d3d12d272b5c",
+              "299625ab-36bd-8044-a7ec-fea49cc08dd3",
+              "29a625ab-36bd-8094-8d9a-ee957fab279c",
+              "284625ab-36bd-806c-aa38-f537dea6e527",
+              "299625ab-36bd-8099-af23-daa39a8cc926",
+              "287625ab-36bd-8081-a025-d6b82238226c",
+              "288625ab-36bd-8009-8f7f-c0c3ddcd0f39",
+              "288625ab-36bd-8004-92cb-c35c2cff5d1b",
+              "28b625ab-36bd-807d-8c4d-d31a52344f65",
+              "28c625ab-36bd-80f0-bd7e-d3ed3027b8ff",
+              "29b625ab-36bd-80f1-807f-e5e8f9cdd494",
+              "29d625ab-36bd-8017-9032-ea02552a01a3",
+              "29b625ab-36bd-802a-a017-cb108aa28d1a",
+              "284625ab-36bd-8076-afd7-e0186ad9d040",
+              "288625ab-36bd-805f-9eab-c8b419af804d",
+              "29c625ab-36bd-80c2-ab93-d9b75fbffa2c",
+              "299625ab-36bd-8086-bf26-d0eead947402",
+              "281625ab-36bd-80a0-8566-f5ac84bb6a13",
+              "281625ab-36bd-80ee-819b-c2660ead9ece",
+              "281625ab-36bd-80de-84f0-fdc099df0e2f",
+              "281625ab-36bd-8086-9525-f38d103fc700",
+              "281625ab-36bd-80c9-9a6d-e1b9de57e057",
+              "296625ab-36bd-809c-b2fa-c37995114f55",
+              "288625ab-36bd-80f8-b1f4-f5ad27d63c4b",
+              "29a625ab-36bd-805a-b1c7-c64fbcc08422",
+              "299625ab-36bd-80cd-8759-c0c58db9363f",
+              "29d625ab-36bd-8057-9d56-d3b73041342e",
+              "29c625ab-36bd-80c7-b70e-fac04f523948",
+              "29d625ab-36bd-806d-a85d-ecf1fd48bfb4",
+              "29d625ab-36bd-804e-a576-cc8b2653ab18",
+              "3fb625ab-36bd-8026-902c-ebad24fd2984",
+              "296625ab-36bd-8078-b70f-eaea39c1c348",
+              "28b625ab-36bd-80cb-b5c7-fd028b226da5",
+              "28d625ab-36bd-807f-9e8e-fd300f64b8ba",
+              "29d625ab-36bd-80db-b7fb-d8281f7b3553",
+              "3ba625ab-36bd-800b-a442-c6d67b5e2240",
+              "3b9625ab-36bd-8010-a035-d1c4a577365f",
+              "299625ab-36bd-80fe-a597-d3e1ac1d5238",
+              "284625ab-36bd-808d-9a1a-ea29b1555023",
+              "299625ab-36bd-809d-af54-da5e7d530fa3",
+              "3e4625ab-36bd-80ef-9fcd-eeb56ae883b5",
+              "281625ab-36bd-8061-b98d-db506db37ce7",
+              "284625ab-36bd-80d9-bfd1-c878a47de4dd",
+              "284625ab-36bd-808b-8482-f6f4de476c81",
+              "29b625ab-36bd-80a6-a3f8-ea6659acb260",
+              "28e625ab-36bd-801a-b76b-c913b4b06963",
+              "28f625ab-36bd-808f-b931-ffe339bd6ec6",
+              "28e625ab-36bd-80f5-9c3e-f5c95fd2ffe3",
+              "28f625ab-36bd-80db-900f-dae81dc75b6c",
+              "28d625ab-36bd-8009-a167-c12e673704a7",
+              "284625ab-36bd-805b-8cb5-c64a342aa1c7",
+              "284625ab-36bd-80a7-97b0-d5e4e71472fa",
+              "284625ab-36bd-800e-90ea-d46ea87fcf84",
+              "29a625ab-36bd-8084-a2d3-dfaec8e82393",
+              "284625ab-36bd-80ff-b594-dc11da74ee5e",
+              "284625ab-36bd-80bf-a1fd-f6446431d7a1",
+              "284625ab-36bd-807c-b5ce-cac224663923",
+              "284625ab-36bd-8027-a15d-dda1a58c6602",
+              "284625ab-36bd-8056-a7de-dbc027e79cd0",
+              "284625ab-36bd-80f0-8dec-c4631a04ecbd",
+              "287625ab-36bd-8067-a299-f11e6e875d69",
+              "281625ab-36bd-80ff-a068-e292d03f375a",
+              "29b625ab-36bd-808f-95ac-db20fba5964b",
+              "284625ab-36bd-803a-ae68-ee1aa10477da",
+              "281625ab-36bd-802e-8d28-f8c50ed64e42",
+              "28b625ab-36bd-801c-9e4f-e1e253769c1d",
+              "284625ab-36bd-808e-8107-e7eb76eb246b",
+              "285625ab-36bd-80fe-8d38-f9a915e78ccf",
+              "285625ab-36bd-8048-9d18-d2012425badf",
+              "296625ab-36bd-80ce-957c-e84c5c78927b",
+              "29b625ab-36bd-8004-8d3e-f1dbe4bf120c",
+              "284625ab-36bd-80c8-aa38-f38f439f6f5e",
+              "285625ab-36bd-805b-bd3c-c793a200e78c",
+              "285625ab-36bd-8010-b3b9-f95ea326c467",
+              "285625ab-36bd-809a-92a8-dfc930ef9610",
+              "299625ab-36bd-80e1-bc2c-e9dfa51ce756",
+              "299625ab-36bd-806f-b029-faca732cc424",
+              "29a625ab-36bd-80c3-90d2-cbe4a411433a",
+              "285625ab-36bd-8049-a961-eb61d6e27ca7",
+              "28d625ab-36bd-8088-b298-d5e20b794cc6",
+              "296625ab-36bd-8085-83cd-d23d570409b6",
+              "286625ab-36bd-805d-8f3d-c323b8e3e93a",
+              "286625ab-36bd-80b5-9f8e-c230d544caf1",
+              "286625ab-36bd-80d3-9bff-dd53538b5a57",
+              "286625ab-36bd-8043-aa54-edd164933a5f",
+              "286625ab-36bd-8019-ad64-ed31f0ff4933",
+              "286625ab-36bd-801b-80f2-cd4bb7b549f6",
+              "286625ab-36bd-80a0-bb4b-d646a778dc05",
+              "29d625ab-36bd-803d-8c67-f363b6344709",
+              "287625ab-36bd-8080-9f19-f48d5e2a77ac",
+              "29b625ab-36bd-800e-b507-eaaad4c95340",
+              "29c625ab-36bd-80f8-be84-f92edd489093",
+              "401625ab-36bd-8068-8ac6-cacfcd6c1843",
+              "3fe625ab-36bd-80ba-8180-cfbb827476e8",
+              "3e3625ab-36bd-808e-97ad-c465047b5d73",
+              "401625ab-36bd-80aa-9cc0-f44946e314c9",
+              "29b625ab-36bd-8099-a1f4-d2d237054b65",
+              "287625ab-36bd-8027-a77b-e6e40f0f017f",
+              "29a625ab-36bd-80f7-b169-ee24ae219e8a",
+              "28b625ab-36bd-80d5-8b85-d20be6faa2d8",
+              "288625ab-36bd-800f-a5e1-f766c2e01c1b",
+              "29d625ab-36bd-80e3-9fd6-c1bdef8730b6",
+              "28e625ab-36bd-80d8-aba9-ce16dd5256bd",
+              "28b625ab-36bd-80c2-b939-edfae4fd3f19",
+              "28b625ab-36bd-80cd-a773-fb4533264e13",
+              "29b625ab-36bd-80f9-8191-fd32e8e7bf6e",
+              "29b625ab-36bd-8028-a503-dcdf2d34c093",
+              "28b625ab-36bd-804b-9e94-c645ad5d8583",
+              "28b625ab-36bd-8003-9cca-da885fdb453e",
+              "299625ab-36bd-8029-9a28-d86e0a9fc993",
+              "28b625ab-36bd-8076-9c5b-f5ed5ff5f26f",
+              "28b625ab-36bd-80cf-a353-f20fc1e1218b",
+              "296625ab-36bd-8083-ac70-cfb7bb85f5fa",
+              "296625ab-36bd-80d4-9164-e84e17881678",
+              "28c625ab-36bd-8038-a2c1-cd0e43d10ab3",
+              "29b625ab-36bd-80a2-b300-cd85966c1ce4",
+              "28c625ab-36bd-80fa-9349-dc1fa96d9572",
+              "28b625ab-36bd-8034-aca4-c56cc62daa32",
+              "28c625ab-36bd-806d-b807-f854f6718950",
+              "28c625ab-36bd-8092-85a7-ca36aed8c1ce",
+              "28c625ab-36bd-806f-afd2-ca869d0e7ad9",
+              "28b625ab-36bd-8009-ab52-e92f34c398a0",
+              "2a4625ab-36bd-8098-beaa-cceef483c77d",
+              "296625ab-36bd-8032-9490-eea6671a190d",
+              "29a625ab-36bd-80e9-96f0-d6baae5c2a69",
+              "29a625ab-36bd-8056-8525-e0bd9ffc661d",
+              "28d625ab-36bd-807c-9c7d-f5d7c900c86c",
+              "29b625ab-36bd-809e-8c8b-ff846688bf60",
+              "29b625ab-36bd-809f-93f2-e5c13c4049fa",
+              "29b625ab-36bd-8063-98a3-e089f39faa5b",
+              "29b625ab-36bd-80d1-855c-fe33a5aca77a",
+              "29b625ab-36bd-8090-9c9a-e0dbfb4a0645",
+              "29b625ab-36bd-80da-ac32-c8d020c9dbdc",
+              "28d625ab-36bd-801c-9b51-e8e83129c62d",
+              "296625ab-36bd-8095-8fc4-f90fd1c4fd1e",
+              "28c625ab-36bd-8004-921e-d5fbd2c74d4d",
+              "28e625ab-36bd-800b-8edc-c2d36f3c600b",
+              "28d625ab-36bd-805f-9610-e5d4dcf860ae",
+              "28e625ab-36bd-8079-9a5b-f9f866d74e29",
+              "28d625ab-36bd-8065-8ec1-c4a1b45f7dff",
+              "3fe625ab-36bd-80a7-ad90-ec855b43721c",
+              "28e625ab-36bd-80d5-bd37-eeffd3b09288",
+              "28e625ab-36bd-803f-a871-f676431ebc2c",
+              "28b625ab-36bd-806a-8177-eca038a05b43",
+              "28c625ab-36bd-80d9-9b91-cc46ed6e02d2",
+              "28e625ab-36bd-8087-bdb3-f10ccedcc9fe",
+              "28f625ab-36bd-80cc-8496-cd049af4220f",
+              "28f625ab-36bd-8079-a5e6-dbcd51e96906",
+              "28f625ab-36bd-8077-b6bf-dcb457ec319c",
+              "28f625ab-36bd-80a5-acf0-e5d675a019b6",
+              "296625ab-36bd-80ac-b4d5-f5e00385c10f",
+              "28f625ab-36bd-807d-a353-dd1f56b41877",
+              "292625ab-36bd-8009-b0d6-fb171dfee524",
+              "292625ab-36bd-80aa-bc17-c307dfc5a210",
+              "292625ab-36bd-8017-af9f-d3faf3e2ffd3",
+              "299625ab-36bd-80df-930f-d254135b4c2f",
+              "29d625ab-36bd-80ac-a2be-f06b245343d6",
+              "29d625ab-36bd-80ab-863c-d0b89ba81cba",
+              "28d625ab-36bd-8089-b22f-f21555b2a053",
+              "292625ab-36bd-80b4-a668-ee02d12b5777",
+              "292625ab-36bd-80ce-878e-c126dea5e546",
+              "29b625ab-36bd-8068-bc42-e9f0bf4e5f3d",
+              "29b625ab-36bd-80ac-b343-c4a63c9aaaa2",
+              "29b625ab-36bd-807e-8360-ebfe63d0fd2b",
+              "29d625ab-36bd-80fc-b92b-f394123316d8",
+              "29c625ab-36bd-8040-a0fd-ec90a7eb0a93",
+              "29c625ab-36bd-8025-80b6-f39e36a0a3fb",
+              "296625ab-36bd-806d-922c-de5f1e1ddc9c",
+              "296625ab-36bd-801c-babd-c58b28e2089a",
+              "296625ab-36bd-8050-890b-c45c996e0c8b",
+              "29b625ab-36bd-80af-a522-f0a4ba2306c5",
+              "299625ab-36bd-803f-87bb-dba6059f1933",
+              "29c625ab-36bd-80de-aea0-d65eab5cb584",
+              "296625ab-36bd-8002-ac21-cfdfaadc3607",
+              "296625ab-36bd-80ea-beeb-fe4562c50a65",
+              "299625ab-36bd-804e-9307-d937e99344df",
+              "299625ab-36bd-808c-8b89-dfda8af74b5e",
+              "299625ab-36bd-803f-897b-e848368e7d76",
+              "29c625ab-36bd-805a-b3af-ea818762479b",
+              "299625ab-36bd-8082-ab46-ffc001b7d1fe",
+              "299625ab-36bd-8058-8a0f-c9721647055e",
+              "29c625ab-36bd-80a9-ad21-ddf353cdbba1",
+              "299625ab-36bd-8047-a516-e0d46366053d",
+              "299625ab-36bd-8083-a300-ebc15a697ea9",
+              "29c625ab-36bd-80f2-8f3a-d4df8b951231",
+              "29c625ab-36bd-8024-8525-dd07abcb8ad1",
+              "29b625ab-36bd-8043-95d5-f6b7c547fe71",
+              "29a625ab-36bd-80f4-b92a-ee16f10425ef",
+              "29a625ab-36bd-80bc-a571-db97cff21806",
+              "29a625ab-36bd-809e-8bea-f85f0cd95737",
+              "3e6625ab-36bd-8089-90fc-cb64b4801a8c",
+              "29a625ab-36bd-8017-ba39-f0a43d6f3adf",
+              "29a625ab-36bd-801f-a512-d19a35d1d31f",
+              "29c625ab-36bd-805e-bfc8-f83fbfff937d",
+              "299625ab-36bd-8075-94e4-dfafea720358",
+              "299625ab-36bd-80f5-926f-e65054a99ead",
+              "29a625ab-36bd-8010-bc2e-f96fadea221d",
+              "29a625ab-36bd-8088-a9e3-c504d54ebda1",
+              "29a625ab-36bd-80e0-a18e-efbed3caa695",
+              "299625ab-36bd-8011-8741-d3f09b85583a",
+              "29a625ab-36bd-80ec-9774-c225ae891fde",
+              "28d625ab-36bd-8056-a459-e67c658d5d5b",
+              "29c625ab-36bd-80fd-89e2-dad182735253",
+              "299625ab-36bd-800a-b469-dbc67ec9729e",
+              "29c625ab-36bd-801a-b9ee-c40ba2567023",
+              "2cb625ab-36bd-80e9-a2f3-f5ddf3a864d6",
+              "299625ab-36bd-8086-934a-c072ee27af39",
+              "285625ab-36bd-8032-b991-f17b0073da38",
+              "29c625ab-36bd-8055-83d8-c0d64df69630",
+              "29b625ab-36bd-8084-995e-e3c3d21a0151",
+              "29c625ab-36bd-808e-993a-f8ccf50ec08b",
+              "296625ab-36bd-80b7-876f-ea66020b7359",
+              "29c625ab-36bd-807e-ac06-fb843e7c6030",
+              "299625ab-36bd-80dd-9c8b-c936a7e97471",
+              "28e625ab-36bd-8032-ace1-ce91e8a0c27c",
+              "3e3625ab-36bd-80b5-afe3-c168628be62d",
+              "29c625ab-36bd-80c4-af08-d3fbace4a111",
+              "29c625ab-36bd-80ab-ad9b-d5449d5c32a1",
+              "29c625ab-36bd-801f-9d51-d2c313296c23",
+              "29c625ab-36bd-80a4-876d-df2feb04f714",
+              "29c625ab-36bd-806b-af2c-d88667e936d0",
+              "29c625ab-36bd-80bf-9dae-dcd7e6246bcb",
+              "29c625ab-36bd-8056-b938-f9df303a9f05",
+              "29c625ab-36bd-8016-a7f8-ffd8551dc6a9",
+              "29c625ab-36bd-80a1-8caa-de449c7e6a95",
+              "29a625ab-36bd-80bf-9925-ec07e65e5239",
+              "40d625ab-36bd-8045-914c-c19951cd337d",
+              "29c625ab-36bd-80bc-b977-f89378fa47bf",
+              "29a625ab-36bd-80ae-a0e5-ec5270fbe23d",
+              "284625ab-36bd-8057-a631-d902544dd09a",
+              "29c625ab-36bd-808c-9963-ce296ffdac3c",
+              "29a625ab-36bd-802f-9fbe-d43d8cb1bb48",
+              "29a625ab-36bd-800d-a8a3-efb071cfc7f2",
+              "29c625ab-36bd-800d-899b-f30dac1b741c",
+              "29c625ab-36bd-8036-9fd2-ed84eed8aacf",
+              "29c625ab-36bd-805e-96f0-fceee0f048b8",
+              "29c625ab-36bd-80cf-9af4-eaf66c9bfb05",
+              "29c625ab-36bd-8035-99bf-cd107e41eee8",
+              "29c625ab-36bd-803a-bb3e-fbbde2566c1c",
+              "28e625ab-36bd-80d0-a6f9-fa2cdfc6beeb",
+              "28b625ab-36bd-80c9-af8a-fb7f3a0cccd3",
+              "299625ab-36bd-80d3-a899-c9947d8802ba",
+              "29c625ab-36bd-80a5-b7f7-eb438619ada6",
+              "29c625ab-36bd-803a-95ea-c3beebe4d4fc",
+              "29c625ab-36bd-80c2-9c8e-d5c02df2cac7",
+              "29c625ab-36bd-805c-808f-fd424ebd5ead",
+              "29d625ab-36bd-802f-b66c-c7f6b2b6905a",
+              "29c625ab-36bd-8020-9da2-cc8090044489",
+              "29c625ab-36bd-802d-aa3e-d6a249dc48e0",
+              "29c625ab-36bd-809c-b92f-ea40e21ef1cd",
+              "29d625ab-36bd-80a2-a8d1-f035c83ebca0",
+              "29c625ab-36bd-80a0-ab4f-f471e69593ca",
+              "29c625ab-36bd-8041-949e-d14d170ab4af",
+              "29d625ab-36bd-80ce-88b6-c7866931f8cc",
+              "29d625ab-36bd-8088-8932-c94072b49b4c",
+              "29d625ab-36bd-8021-9802-eb6d9a7f4ed8",
+              "29d625ab-36bd-80bc-97b2-f9e8883524ed",
+              "29d625ab-36bd-801b-a643-d76aa7b5a70b",
+              "29d625ab-36bd-801f-be4e-e6903a1139d1",
+              "29d625ab-36bd-80ae-9667-d636376da812",
+              "29d625ab-36bd-80ed-8532-e089e467be1a",
+              "281625ab-36bd-80fe-8783-f6dd891950fe",
+              "29d625ab-36bd-801a-97b5-d4cc0d0a437e",
+              "29d625ab-36bd-8018-892f-ef91b85e2354",
+              "28d625ab-36bd-80f8-9f85-cfd994e67899",
+              "29a625ab-36bd-8065-a033-c977f5ef9f47",
+              "29d625ab-36bd-804e-9d8a-c1d32ecf73a7",
+              "299625ab-36bd-805d-bd2c-fab696e73463",
+              "284625ab-36bd-8034-a043-feb95c112852",
+              "29a625ab-36bd-8014-9c0b-ff40bdfc9da9",
+              "287625ab-36bd-8043-a967-e31ba07c627e",
+              "29a625ab-36bd-805c-acf4-c6a7463ed9bf",
+              "29b625ab-36bd-80aa-a79a-f8e0a41c5ce2",
+              "29a625ab-36bd-809c-8594-c1a030cbcc2a",
+              "29a625ab-36bd-80ae-aba6-dafe9016b74e",
+              "299625ab-36bd-804c-a16f-c8bb815aeb86",
+              "29d625ab-36bd-80e4-b1f0-e0ec0fb7429e",
+              "299625ab-36bd-80ee-9473-d4251ea3f7cd",
+              "29b625ab-36bd-8053-a37b-e390ce35465d",
+              "29c625ab-36bd-80ae-9b90-f55f713c0fc7",
+              "29b625ab-36bd-808e-90d8-f87e08a9f3c4",
+              "29a625ab-36bd-8027-aef9-c0f7d44d4343",
+              "284625ab-36bd-80a5-85dc-cebb0999fb8b",
+              "29a625ab-36bd-8062-9e38-e0f888b2d4ed",
+              "299625ab-36bd-807b-9f39-c417b382db05",
+              "28f625ab-36bd-803c-a62e-f46c38b5718e",
+              "29b625ab-36bd-80c9-ab8f-f3cdf53ea582",
+              "29d625ab-36bd-8068-9c56-e62ac23c9584",
+              "29d625ab-36bd-8025-a8d7-f54eb54d9a7f",
+              "29b625ab-36bd-80f8-8d0c-cd68d98041b7",
+              "29b625ab-36bd-808f-b111-d936bd41a5e7",
+              "29b625ab-36bd-800b-be7a-fb889bd4389c",
+              "299625ab-36bd-8080-b23c-c3c92aa8384a",
+              "29b625ab-36bd-8050-b5fb-ec0a5a7e0779",
+              "29b625ab-36bd-80d5-b3f0-c3218cd4ac9a",
+              "29c625ab-36bd-8028-a973-c15d05d3bccc",
+              "29a625ab-36bd-806f-aab3-fe97093b924a",
+              "299625ab-36bd-8021-bc81-c0667ca4cf55",
+              "29d625ab-36bd-801e-a36c-d841ebc95df0",
+              "29d625ab-36bd-80fe-8036-d05819ec695e",
+              "29b625ab-36bd-80c3-b8b9-eaa1fd0176b3",
+              "29b625ab-36bd-8042-b9e4-dd704f3c7a14",
+              "28c625ab-36bd-8048-955d-c2d2ee2ad9d1",
+              "29b625ab-36bd-80d8-b6bd-e167e564b467",
+              "29d625ab-36bd-8008-8925-f7245769dd7a",
+              "29d625ab-36bd-8080-9926-cf178417f208",
+              "3e3625ab-36bd-803e-a768-eaa7c94126e1",
+              "29b625ab-36bd-80f8-9f51-d4635b79d46a",
+              "2aa625ab-36bd-80e1-b1fa-ffca4400e4cf",
+              "3e3625ab-36bd-8017-a23c-f48b746948bf",
+              "3e3625ab-36bd-80ac-bee3-c8c44ef6fcb0",
+              "3d0625ab-36bd-8069-8899-e5d0b0791d13",
+              "3b9625ab-36bd-8087-8881-e41a33c71fd2",
+              "2c5625ab-36bd-8078-9925-fc75b1a79225"
+            ],
+            "format": {
+              "page_icon": "attachment:fc5d6e51-f11b-43cb-9c1a-bfc6ac3e7f80:BaseDados.png",
+              "page_cover": "attachment:29fcfbb8-576b-4dfa-b5a7-0e7ba876a27a:Ativo_172Capa_BaseDeDados.svg",
+              "page_cover_position": 0.5,
+              "social_media_image_preview_url": "attachment:80abe4bf-a971-45b9-b167-e6d8b286a6f2:SocialMediaPreviewImage.png",
+              "page_floating_table_of_contents": {
+                "state": "minimal"
+              }
+            },
+            "created_time": 1762787633094,
+            "last_edited_time": 1793738318034,
+            "parent_id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "parent_table": "collection",
+            "alive": true,
+            "file_ids": [
+              "a4d6458b-daf1-44c1-82c5-603de1436091",
+              "f9003493-8b8d-4fd4-8a0a-04a1a578bb82",
+              "9e83e537-5efb-46e8-abc5-bd7bbf21736e",
+              "68a9cad9-89b8-4d95-b7fe-bb9a0e0c89d6",
+              "29fcfbb8-576b-4dfa-b5a7-0e7ba876a27a",
+              "80abe4bf-a971-45b9-b167-e6d8b286a6f2",
+              "fc5d6e51-f11b-43cb-9c1a-bfc6ac3e7f80"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "nav_parent_table": "collection",
+            "nav_parent_id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "crdt_data": {
+              "title": {
+                "r": "1jOProxcCmYD9clZ8KYGNg,\"start\",\"end\"",
+                "n": {
+                  "1jOProxcCmYD9clZ8KYGNg,\"start\",\"end\"": {
+                    "s": {
+                      "x": "1jOProxcCmYD9clZ8KYGNg",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "GkHzDlS9lCTG",
+                            7
+                          ],
+                          "o": "start",
+                          "l": 10,
+                          "c": "Base de Da"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "GkHzDlS9lCTG",
+                            19
+                          ],
+                          "o": [
+                            "GkHzDlS9lCTG",
+                            16
+                          ],
+                          "l": 3,
+                          "c": "dos"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "GkHzDlS9lCTG",
+                            17
+                          ],
+                          "o": [
+                            "GkHzDlS9lCTG",
+                            16
+                          ],
+                          "l": -2
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "3czg4eQc4dLw",
+                            1
+                          ],
+                          "o": "start",
+                          "l": -6
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "collection": {
+      "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "version": 23,
+            "schema": {
+              "IL@[": {
+                "name": "Criado em",
+                "type": "created_time"
+              },
+              "jec`": {
+                "name": "Tags",
+                "type": "multi_select"
+              },
+              "title": {
+                "name": "Nome",
+                "type": "title"
+              },
+              "a8e8a579-04b1-426a-adff-3742902d5410": {
+                "name": "Recurso",
+                "type": "multi_select",
+                "options": [
+                  {
+                    "id": "7f1c29c1-c49e-48c9-80f0-72aa8a18d33b",
+                    "color": "orange",
+                    "value": "Acesso autônomo"
+                  },
+                  {
+                    "id": "b26d70a1-a6d9-489a-92e2-086ff930fa08",
+                    "color": "gray",
+                    "value": "Acesso por QR Code (Leitor Físico)"
+                  },
+                  {
+                    "id": "a5615b26-472f-4e82-ba2a-bc7b9a058646",
+                    "color": "blue",
+                    "value": "Acionamentos"
+                  },
+                  {
+                    "id": "25d94f0a-6864-4461-bc96-d190ed56d1d1",
+                    "color": "red",
+                    "value": "Agendamento de Áreas Comuns"
+                  },
+                  {
+                    "id": "a2959e14-8c3e-483c-84f3-641c7ab2ab83",
+                    "color": "purple",
+                    "value": "Aplicativo"
+                  },
+                  {
+                    "id": "64a327cd-a2db-4df0-a288-92457c8dd2a5",
+                    "color": "pink",
+                    "value": "Auditoria"
+                  },
+                  {
+                    "id": "74d16148-c50e-4bd5-8a9e-81547d6f6c09",
+                    "color": "default",
+                    "value": "Autorização Prévia de Pessoas"
+                  },
+                  {
+                    "id": "51392931-a3d8-4932-81d2-91182c655ac3",
+                    "color": "yellow",
+                    "value": "Autotriagem"
+                  },
+                  {
+                    "id": "d7019eb3-074d-4650-a4e9-bdb693a71f04",
+                    "color": "purple",
+                    "value": "Backup de Credenciais"
+                  },
+                  {
+                    "id": "559add84-8c33-4830-be24-dfffc9322eea",
+                    "color": "brown",
+                    "value": "Bilhetes"
+                  },
+                  {
+                    "id": "2341c065-83d9-4477-bdbd-b199df191fad",
+                    "color": "purple",
+                    "value": "Boleto"
+                  },
+                  {
+                    "id": "d52b275d-894d-43a6-961d-f96461475a14",
+                    "color": "yellow",
+                    "value": "Cadastro de Face pelo App"
+                  },
+                  {
+                    "id": "c11e9b07-1896-400c-ba0f-a0145ad9791a",
+                    "color": "green",
+                    "value": "Cadastro LPR (Reconhecimento de placas)"
+                  },
+                  {
+                    "id": "7896c3dd-95f2-482d-a9ba-add91c9305dc",
+                    "color": "pink",
+                    "value": "Câmeras pelo App"
+                  },
+                  {
+                    "id": "e1170862-be38-42af-89c4-2070e9e62636",
+                    "color": "orange",
+                    "value": "Chamadas VoIP com Abertura de Portões"
+                  },
+                  {
+                    "id": "64cdee90-cf51-41b1-a043-fa283e07a678",
+                    "color": "blue",
+                    "value": "Chave Virtual"
+                  },
+                  {
+                    "id": "476b84a0-17f5-4543-af28-f89156c57bf1",
+                    "color": "green",
+                    "value": "Click Aprova"
+                  },
+                  {
+                    "id": "2a8e7545-72f2-4ad2-9754-1281f01603fd",
+                    "color": "yellow",
+                    "value": "Consulta segura de CPF"
+                  },
+                  {
+                    "id": "651ca462-2968-4049-bd9b-d6a5c9a85ddc",
+                    "color": "yellow",
+                    "value": "Contratos e Subcontratos (White Label)"
+                  },
+                  {
+                    "id": "df36d73c-5f3e-4b1e-9168-1794e9a6824e",
+                    "color": "orange",
+                    "value": "Controle de Entregas"
+                  },
+                  {
+                    "id": "038380d9-396a-4f78-8a4e-1237d9f92236",
+                    "color": "gray",
+                    "value": "Controle de Objetos"
+                  },
+                  {
+                    "id": "d67c8bd9-b25f-4b49-bb99-fa5d13807976",
+                    "color": "purple",
+                    "value": "Convite Facial"
+                  },
+                  {
+                    "id": "3987aab3-dc50-4044-b23d-2ea160160340",
+                    "color": "yellow",
+                    "value": "Documentos"
+                  },
+                  {
+                    "id": "38d68beb-a327-4737-bd6a-b05f55c99911",
+                    "color": "purple",
+                    "value": "Equipamentos"
+                  },
+                  {
+                    "id": "ffbd8805-a700-4ca6-a8f7-1f00db38b747",
+                    "color": "yellow",
+                    "value": "Face Temporária (Exclusão Automática)"
+                  },
+                  {
+                    "id": "e68636ac-08b2-4523-b436-981dc40a6c69",
+                    "color": "brown",
+                    "value": "Ferramentas externas"
+                  },
+                  {
+                    "id": "f33f4754-5ebc-4ef4-b9de-0f6e55d820ab",
+                    "color": "red",
+                    "value": "Gerador de Ocorrências"
+                  },
+                  {
+                    "id": "8649d2af-3ad4-4b05-9bf2-67e94a60abc5",
+                    "color": "gray",
+                    "value": "Gerenciamento Autônomo de Entregas"
+                  },
+                  {
+                    "id": "91f0326b-da86-4932-a9e6-66a419051056",
+                    "color": "brown",
+                    "value": "Gestão de credenciais"
+                  },
+                  {
+                    "id": "8a632ce5-b222-4d13-98a2-bdb91f195feb",
+                    "color": "yellow",
+                    "value": "Gestão de Pessoas e Veículos"
+                  },
+                  {
+                    "id": "158489bc-00ab-4559-b5d5-2dfe6be7002b",
+                    "color": "pink",
+                    "value": "Histórico de acessos"
+                  },
+                  {
+                    "id": "753064c6-ae69-4abc-a22b-02eba1f63884",
+                    "color": "default",
+                    "value": "Informações gerais"
+                  },
+                  {
+                    "id": "4b575ea7-ab3c-4012-a9d8-26c9f4ab7e1c",
+                    "color": "pink",
+                    "value": "Integrações"
+                  },
+                  {
+                    "id": "fccf1caa-989e-4a87-b9cd-6c55acfac241",
+                    "color": "default",
+                    "value": "Licenças Blocos e Unidades"
+                  },
+                  {
+                    "id": "f234cfbb-1928-4e5b-8133-434f0b927acb",
+                    "color": "yellow",
+                    "value": "Lista de Festas"
+                  },
+                  {
+                    "id": "da73c564-eeec-49c4-ad40-924648dd47fc",
+                    "color": "purple",
+                    "value": "Manutenções Preventivas"
+                  },
+                  {
+                    "id": "bf6eb154-23d4-4f62-b796-f44a7a338244",
+                    "color": "red",
+                    "value": "Moni"
+                  },
+                  {
+                    "id": "298cc155-e720-4162-8527-a22041a8f889",
+                    "color": "red",
+                    "value": "Mural de avisos"
+                  },
+                  {
+                    "id": "78bbeb50-2e50-423b-a0ff-7af354246df5",
+                    "color": "gray",
+                    "value": "Notificações de Acesso"
+                  },
+                  {
+                    "id": "05b8f439-6626-4ca3-94ee-f5761c6e40a1",
+                    "color": "brown",
+                    "value": "Pedidos e Manifestações"
+                  },
+                  {
+                    "id": "2a62ab61-f863-4b91-a2ad-94e927fe078f",
+                    "color": "red",
+                    "value": "Personalização da Identidade Visual (White Label)"
+                  },
+                  {
+                    "id": "f34101d7-a053-4b1e-829f-3a8c0ced0bf5",
+                    "color": "brown",
+                    "value": "Personalização de Campos"
+                  },
+                  {
+                    "id": "36b23dab-e275-4a8c-9105-3e3230d4cc0e",
+                    "color": "green",
+                    "value": "Política de Privacidade de Dados e LGPD"
+                  },
+                  {
+                    "id": "7e187f55-e389-45af-b1f6-f7a5eb1b9011",
+                    "color": "blue",
+                    "value": "QR Code (Scanner)"
+                  },
+                  {
+                    "id": "a78c5f3e-52fb-429e-be5b-37ad166d7235",
+                    "color": "yellow",
+                    "value": "QR Ticket (Impressão de QR Code)"
+                  },
+                  {
+                    "id": "b164add5-a289-4f21-a576-a7758fd2df78",
+                    "color": "blue",
+                    "value": "Rede e Internet"
+                  },
+                  {
+                    "id": "76bbabc4-93ab-404e-9056-dc76d779cfe5",
+                    "color": "default",
+                    "value": "Registro de Turno"
+                  },
+                  {
+                    "id": "c12a3dac-975f-49aa-9ca1-d04b5dc27a16",
+                    "color": "green",
+                    "value": "Relatórios"
+                  },
+                  {
+                    "id": "2bd20cc4-a5f4-44f9-bf5f-dbdd4684724f",
+                    "color": "yellow",
+                    "value": "Rotas de Acesso"
+                  },
+                  {
+                    "id": "f5dc7bff-e220-4aeb-8ed5-3f45d4df8eb8",
+                    "color": "default",
+                    "value": "Solicitação de Faces (Mediação)"
+                  },
+                  {
+                    "id": "e669e0b8-53c1-4b9c-aa14-7c320e78b530",
+                    "color": "green",
+                    "value": "Tela de Atendimento (Portaria/Recepção)"
+                  },
+                  {
+                    "id": "136441ee-b006-4c51-800d-e83f4e6a8554",
+                    "color": "red",
+                    "value": "Usuários e Permissões"
+                  }
+                ],
+                "auto_sort_options": "alphabetical"
+              }
+            },
+            "format": {
+              "layout_pointer": {
+                "id": "2a0625ab-36bd-8085-847d-006e66d21ba3",
+                "table": "layout",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              },
+              "page_section_visibility": {
+                "comments": "section_hide",
+                "backlinks": "section_hide",
+                "margin_comments": "inline"
+              },
+              "collection_page_properties": [
+                {
+                  "visible": true,
+                  "property": "IL@["
+                },
+                {
+                  "visible": true,
+                  "property": "jec`"
+                }
+              ]
+            },
+            "parent_id": "2a0625ab-36bd-8015-aeac-dac65eaec472",
+            "parent_table": "block",
+            "alive": true,
+            "migrated": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "created_time": 1762198280325,
+            "last_edited_time": 1762861122955,
+            "created_by_table": "notion_user",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "last_edited_by_table": "notion_user",
+            "last_edited_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905"
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "layout": {
+      "2a0625ab-36bd-8085-847d-006e66d21ba3": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-8085-847d-006e66d21ba3",
+            "version": 40,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "parent_table": "collection",
+            "parent_id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "created_by_table": "notion_user",
+            "created_time": 1762198332538,
+            "last_edited_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "last_edited_by_table": "notion_user",
+            "last_edited_time": 1762863032642,
+            "modules": {
+              "page_layout_schema": [
+                {
+                  "id": "cover",
+                  "type": "cover"
+                },
+                {
+                  "id": "]|Dc",
+                  "type": "titleWithIcon",
+                  "propertyLabels": "show"
+                },
+                {
+                  "id": "o@K?",
+                  "type": "properties"
+                },
+                {
+                  "id": "discussions",
+                  "type": "discussions"
+                },
+                {
+                  "id": "editor",
+                  "type": "editor"
+                }
+              ]
+            },
+            "blocks": [
+              "2a3625ab-36bd-802a-9c31-fd4abc8da647"
+            ],
+            "format": {
+              "page_full_width": true,
+              "property_icons_visibility": "show",
+              "previousViewsMainCollectionViewBlockPointer": {
+                "id": "2a3625ab-36bd-802a-9c31-fd4abc8da647",
+                "table": "block",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              }
+            }
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "collection_view": {
+      "2a0625ab-36bd-8016-8178-000cef6f2806": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-8016-8178-000cef6f2806",
+            "version": 210,
+            "type": "gallery",
+            "name": "Visualização em galeria",
+            "format": {
+              "card_layout": {
+                "mode": "list"
+              },
+              "gallery_cover": {
+                "type": "page_cover"
+              },
+              "show_page_icon": true,
+              "collection_pointer": {
+                "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+                "table": "collection",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              },
+              "gallery_cover_size": "large",
+              "collection_peek_mode": "full_page",
+              "gallery_cover_aspect": "cover",
+              "inline_collection_first_load_limit": {
+                "type": "load_limit",
+                "limit": 100
+              }
+            },
+            "parent_id": "2a0625ab-36bd-8015-aeac-dac65eaec472",
+            "parent_table": "block",
+            "alive": true,
+            "page_sort": [
+              "2a0625ab-36bd-805f-bb46-fe13e38ac700",
+              "2a0625ab-36bd-8043-92c4-d05d77c6ddcf",
+              "2a0625ab-36bd-809d-a2b3-c13bfce034e8",
+              "2a0625ab-36bd-8095-bb8d-cfcda0083866",
+              "2a2625ab-36bd-8088-a536-d2d3e9bd25de",
+              "2a1625ab-36bd-80c1-ac05-f7270c1f038b",
+              "2a0625ab-36bd-8029-a812-ec43a18bf896",
+              "2a0625ab-36bd-80ce-a39a-c611cab4c486",
+              "2a0625ab-36bd-80d9-a18d-cca6ba047b27",
+              "2a7625ab-36bd-805a-9973-cbd8b009c101",
+              "2a0625ab-36bd-801c-8151-ed29c65a0168",
+              "2a0625ab-36bd-80fb-9db1-fa3a494151ac",
+              "2a0625ab-36bd-80e1-ab98-f88e3df9a064",
+              "2a0625ab-36bd-80f4-a953-f3c2daf44479",
+              "2a0625ab-36bd-80a5-a53b-ed5083f8faeb",
+              "2a0625ab-36bd-8040-8128-f458643582aa",
+              "2a0625ab-36bd-806a-b58e-f1a7adf9596d",
+              "2a0625ab-36bd-8069-879b-d3655e4712b9",
+              "2a1625ab-36bd-8003-9724-f272e4d1e986",
+              "2a1625ab-36bd-80eb-b8aa-e669d42067b1",
+              "2a1625ab-36bd-8039-97ca-fc464b002ace",
+              "2a1625ab-36bd-80a3-813f-f8e1157d8118",
+              "2a2625ab-36bd-80f0-8659-d1862bb5cf2f",
+              "2a1625ab-36bd-80ac-94b7-c17cd056d7d0",
+              "2a1625ab-36bd-8098-9fda-e62f8716420c",
+              "2a1625ab-36bd-8036-a39a-c8d8c3360f0b",
+              "2a1625ab-36bd-802f-bfd9-c18b051648a8",
+              "2a1625ab-36bd-80b3-8c88-c074cc80cc66",
+              "2a1625ab-36bd-803c-89d2-d0c60437aa1d",
+              "2a1625ab-36bd-803d-b0c9-d7b8fcb18cc4",
+              "2a1625ab-36bd-8039-aeed-c41e76fd2b4f",
+              "2a2625ab-36bd-8026-bbb5-fec3f78ad433",
+              "2a1625ab-36bd-805f-b081-d26fd4740d40",
+              "2a1625ab-36bd-8053-9390-c819c993c559",
+              "2a1625ab-36bd-80af-a7de-c8c286b9103a",
+              "2a1625ab-36bd-8092-93ba-daaa6876cc58",
+              "2a1625ab-36bd-8043-8b34-f44428c02a8b",
+              "2a2625ab-36bd-803c-875d-d50a62bd989a",
+              "2a1625ab-36bd-80ce-aee0-c004fe4d6a57",
+              "2aa625ab-36bd-8076-a529-f3ac362faecb",
+              "2a1625ab-36bd-8034-b698-f4f425c12543",
+              "2a1625ab-36bd-8083-8e0c-e0c78280e7e3",
+              "2a1625ab-36bd-80e7-87e3-d914998397dd",
+              "2a1625ab-36bd-8029-811f-ff28b8c768d7",
+              "2a1625ab-36bd-802d-9d2f-e2dd6c885baf",
+              "2a1625ab-36bd-806c-ac5a-ee24d108f4e7",
+              "2a1625ab-36bd-80a1-9d1e-e181d47b80c1",
+              "2a1625ab-36bd-8041-a9b7-ea30b8da75eb",
+              "2a1625ab-36bd-8028-908e-c22e4243033d",
+              "2a1625ab-36bd-80db-a2b5-c8ad201666e0",
+              "2a1625ab-36bd-807b-979e-d5fe5360a5bf",
+              "2a2625ab-36bd-80ba-8689-eb47fa4f5e80",
+              "2a1625ab-36bd-801e-bba4-fe195e6ab51b",
+              "2a1625ab-36bd-80eb-9d2e-f7403e3b1582",
+              "2a2625ab-36bd-8095-b110-feb23fe42b04",
+              "2a1625ab-36bd-80d7-a25d-ff3308f528f6",
+              "2a1625ab-36bd-808b-af34-df0da9b7c6ab",
+              "2a1625ab-36bd-80c6-8bf4-c37c888b1f90",
+              "2a1625ab-36bd-803a-91af-cfea48d87288",
+              "2a1625ab-36bd-80bf-8616-d36d80a9b3a3",
+              "2a1625ab-36bd-8037-a981-c12d69aa2b37",
+              "2a0625ab-36bd-805f-aa39-e06e4be0a251",
+              "2c5625ab-36bd-8089-9b27-fd724c43bd26",
+              "2a7625ab-36bd-800b-9740-fe4f74bacd93"
+            ],
+            "query2": {
+              "sort": [
+                {
+                  "property": "title",
+                  "direction": "ascending"
+                }
+              ]
+            },
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "created_time": 1762198280337,
+            "last_edited_time": 1765393701148,
+            "created_by_table": "notion_user",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905"
+          },
+          "role": "reader"
+        }
+      },
+      "2a3625ab-36bd-80d2-a79d-000c7b679f52": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a3625ab-36bd-80d2-a79d-000c7b679f52",
+            "version": 3,
+            "type": "page",
+            "name": "Conteúdo",
+            "format": {
+              "collection_pointer": {
+                "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+                "table": "collection",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              },
+              "page_layout_pointer": {
+                "id": "2a0625ab-36bd-8085-847d-006e66d21ba3",
+                "table": "layout",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+                "views_main_tab_id": "view_tab_}:[c"
+              },
+              "hide_linked_collection_name": true
+            },
+            "parent_id": "2a3625ab-36bd-802a-9c31-fd4abc8da647",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "created_time": 1762434728098,
+            "last_edited_time": 1762434732719,
+            "created_by_table": "notion_user",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905"
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "team": {
+      "10e625ab-36bd-81d3-9210-0042ce410086": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "role": "none"
+        }
+      }
+    },
+    "automation": {
+      "2a2625ab-36bd-80b7-b76a-004df2fc26d7": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a2625ab-36bd-80b7-b76a-004df2fc26d7",
+            "version": 72,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "parent_table": "block",
+            "parent_id": "2a2625ab-36bd-8084-b76d-c9f8f028a1ed",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "created_by_table": "notion_user",
+            "created_time": 1762348036675,
+            "last_edited_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "last_edited_by_table": "notion_user",
+            "last_edited_time": 1762348051433,
+            "status": "active",
+            "trigger": {
+              "id": "4cfb5e49-01dc-4478-8f13-9b16165a7c6f",
+              "type": "button"
+            },
+            "alive": true,
+            "action_ids": [
+              "2a2625ab-36bd-804b-a656-005aec0b8e3d"
+            ],
+            "properties": {
+              "icon": "⬅️",
+              "name": "Voltar à página inicial"
+            },
+            "copied_from_pointer": {
+              "id": "automation",
+              "table": "automation"
+            },
+            "last_executed_time": 1764170313777
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "automation_action": {
+      "2a2625ab-36bd-804b-a656-005aec0b8e3d": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a2625ab-36bd-804b-a656-005aec0b8e3d",
+            "type": "open_page",
+            "version": 3,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "parent_table": "automation",
+            "parent_id": "2a2625ab-36bd-80b7-b76a-004df2fc26d7",
+            "alive": true,
+            "config": {
+              "target": {
+                "page": {
+                  "id": "281625ab-36bd-80c0-ad17-e5fb1498943e",
+                  "table": "block",
+                  "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+                },
+                "type": "page"
+              },
+              "open_in": "full_page"
+            }
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "custom_emoji": {
+      "2a8625ab-36bd-80d1-b0cd-007ac4a893b6": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a8625ab-36bd-80d1-b0cd-007ac4a893b6",
+            "version": 1,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "name": "condfy",
+            "url": "https://s3-us-west-2.amazonaws.com/public.notion-static.com/483adde4-f942-4dd9-99f7-616aa08a8623/89965c64.png",
+            "created_time": 1762863346579,
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "created_by_table": "notion_user",
+            "alive": true
+          },
+          "role": "reader"
+        }
+      }
+    }
+  }
+}

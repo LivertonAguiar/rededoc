@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #0B132B;
+    color: #E2E8F0;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0B132B;
+}
+::-webkit-scrollbar-thumb {
+  background: #1D3054;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2F8CF0;
+}
+
+/* Regras de Impressão para Relatório Técnico em PDF */
+@media print {
+  aside, nav, header button, .no-print {
+    display: none !important;
+  }
+  body, main {
+    background: #FFFFFF !important;
+    color: #0F172A !important;
+    font-size: 11pt !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .card, .report-section {
+    border: 1px solid #CBD5E1 !important;
+    background: #F8FAFC !important;
+    color: #0F172A !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  .report-text-muted {
+    color: #475569 !important;
+  }
+}

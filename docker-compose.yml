@@ -1,0 +1,26 @@
+services:
+  rededoc:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rededoc_app
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
+      - DATA_DIR=/app/data
+      - UPLOAD_DIR=/app/uploads
+      - VAULT_SECRET_KEY=rededoc-vault-master-encryption-key-condominio-2026
+      - JWT_SECRET=rededoc-jwt-secret-condominio-aurora-2026
+    volumes:
+      - rededoc_data:/app/data
+      - rededoc_uploads:/app/uploads
+
+volumes:
+  rededoc_data:
+    driver: local
+  rededoc_uploads:
+    driver: local
+

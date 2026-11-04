@@ -1,0 +1,1034 @@
+{
+  "cursor": {
+    "stack": []
+  },
+  "recordMap": {
+    "__version__": 3,
+    "block": {
+      "281625ab-36bd-80c0-ad17-e5fb1498943e": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "281625ab-36bd-80c0-ad17-e5fb1498943e",
+            "version": 209,
+            "type": "page",
+            "properties": {
+              "title": [
+                [
+                  "Central de Ajuda Condfy"
+                ]
+              ]
+            },
+            "content": [
+              "281625ab-36bd-8011-b365-f7deedb5208a",
+              "2a0625ab-36bd-8015-aeac-dac65eaec472",
+              "2a0625ab-36bd-8059-b10a-d3dc7c5eee20"
+            ],
+            "format": {
+              "site_id": "2a2625ab-36bd-8062-8e6a-007971ca966c",
+              "page_icon": "🚨",
+              "seo_title": "Central de Ajuda Condfy | Notion",
+              "page_cover": "attachment:c5c55439-a11f-4a9e-8f1e-352c86af740a:CapaFAQ.png",
+              "page_full_width": true,
+              "seo_description": "Seja bem vindo à Central de Ajuda Condfy. Esta página destina-se a apresentar informações importantes sobre funcionalidades e recursos do software Condfy em tópicos e referências.\nPara facilitar a busca por temas específicos ou por palavras, utilize a ferramenta de pesquisa no canto superior direito da página.\nCaso não encontre a informação que procura, entre em contato com nosso time de Suporte Técnico, clicando aqui.",
+              "page_cover_position": 0.5,
+              "social_media_image_preview_url": "attachment:46f0e54e-bdae-440c-90c0-7b481a3a9d7f:SocialMediaPreviewImage.png"
+            },
+            "permissions": [
+              {
+                "role": "reader",
+                "type": "public_permission",
+                "is_site": true,
+                "added_timestamp": 1762354113670,
+                "allow_duplicate": false
+              }
+            ],
+            "created_time": 1759504997060,
+            "last_edited_time": 1773918075205,
+            "parent_id": "10e625ab-36bd-81d3-9210-0042ce410086",
+            "parent_table": "team",
+            "alive": true,
+            "file_ids": [
+              "949cdbfd-2739-4d51-b2f5-b3212e208a59",
+              "76eb661b-4a82-43a9-99d7-08f77048cd3b",
+              "4edf63ca-d9eb-4fc2-b126-c56a713486eb",
+              "2f1e8717-2196-4862-84c2-5af6c995f2bc",
+              "b95ba177-1c8b-4cf7-b3ce-363e1e440711",
+              "e7a700de-2d87-4b6c-9619-4c6113848562",
+              "107318d7-46da-4b90-9f9e-abe3b5f02665",
+              "c5c55439-a11f-4a9e-8f1e-352c86af740a",
+              "1a688c93-9ccb-4d5f-8e1a-85153805490d",
+              "fe20fc24-0679-42d1-8e9f-e578442988fe",
+              "c383e310-085f-4f0c-bd68-5575a2da3635",
+              "46f0e54e-bdae-440c-90c0-7b481a3a9d7f"
+            ],
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "OM37swXRFKGCnpBrI6bDxg,\"start\",\"end\"",
+                "n": {
+                  "OM37swXRFKGCnpBrI6bDxg,\"start\",\"end\"": {
+                    "s": {
+                      "x": "OM37swXRFKGCnpBrI6bDxg",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 11,
+                          "c": "Central de "
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            15
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            11
+                          ],
+                          "l": 12,
+                          "c": "Ajuda Condfy"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            12
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            11
+                          ],
+                          "l": -3
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "281625ab-36bd-8011-b365-f7deedb5208a": {
+        "value": {
+          "value": {
+            "id": "281625ab-36bd-8011-b365-f7deedb5208a",
+            "version": 11,
+            "type": "sub_header",
+            "properties": {
+              "title": [
+                [
+                  "Seja bem-vindo à Central de Ajuda Condfy. Esta página destina-se a apresentar informações importantes sobre funcionalidades e recursos do software Condfy em tópicos e referências.\nPara facilitar a busca por temas específicos ou por palavras, utilize a ferramenta de pesquisa no canto superior direito da página.\nCaso não encontre a informação que procura, entre em contato com nosso time de Suporte Técnico, clicando "
+                ],
+                [
+                  "aqui",
+                  [
+                    [
+                      "a",
+                      "https://wa.me/551421093633?text=Ol%C3%A1!%20Preciso%20de%20ajuda."
+                    ],
+                    [
+                      "h",
+                      "blue"
+                    ]
+                  ]
+                ],
+                [
+                  "."
+                ]
+              ]
+            },
+            "created_time": 1759505012552,
+            "last_edited_time": 1769089652809,
+            "parent_id": "281625ab-36bd-80c0-ad17-e5fb1498943e",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "vW1Hc9PBqTBDIvjDhszBQw,\"start\",\"end\"",
+                "n": {
+                  "vW1Hc9PBqTBDIvjDhszBQw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "vW1Hc9PBqTBDIvjDhszBQw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            1
+                          ],
+                          "o": "start",
+                          "l": 8,
+                          "c": "Seja bem"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "CL_f8pG0xisN",
+                            425
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            8
+                          ],
+                          "l": 1,
+                          "c": "-"
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            9
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            8
+                          ],
+                          "l": -1
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            10
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            9
+                          ],
+                          "l": 408,
+                          "c": "vindo à Central de Ajuda Condfy. Esta página destina-se a apresentar informações importantes sobre funcionalidades e recursos do software Condfy em tópicos e referências.\nPara facilitar a busca por temas específicos ou por palavras, utilize a ferramenta de pesquisa no canto superior direito da página.\nCaso não encontre a informação que procura, entre em contato com nosso time de Suporte Técnico, clicando "
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            418
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            417
+                          ],
+                          "l": 4,
+                          "c": "aqui",
+                          "b": [
+                            {
+                              "t": "a",
+                              "x": "vW1Hc9PBqTBDIvjDhszBQw",
+                              "l": "",
+                              "i": [
+                                "B9YkW0sxkGJ_",
+                                423
+                              ],
+                              "s": {
+                                "i": [
+                                  "B9YkW0sxkGJ_",
+                                  418
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "B9YkW0sxkGJ_",
+                                  421
+                                ],
+                                "a": "a"
+                              },
+                              "a": [
+                                "a",
+                                "https://wa.me/551421093633?text=Ol%C3%A1!%20Preciso%20de%20ajuda."
+                              ]
+                            },
+                            {
+                              "t": "a",
+                              "x": "vW1Hc9PBqTBDIvjDhszBQw",
+                              "l": "",
+                              "i": [
+                                "B9YkW0sxkGJ_",
+                                424
+                              ],
+                              "s": {
+                                "i": [
+                                  "B9YkW0sxkGJ_",
+                                  418
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "B9YkW0sxkGJ_",
+                                  422
+                                ],
+                                "a": "b"
+                              },
+                              "a": [
+                                "h",
+                                "blue"
+                              ]
+                            }
+                          ],
+                          "a": [
+                            {
+                              "t": "a",
+                              "x": "vW1Hc9PBqTBDIvjDhszBQw",
+                              "l": "",
+                              "i": [
+                                "B9YkW0sxkGJ_",
+                                424
+                              ],
+                              "s": {
+                                "i": [
+                                  "B9YkW0sxkGJ_",
+                                  418
+                                ],
+                                "a": "b"
+                              },
+                              "e": {
+                                "i": [
+                                  "B9YkW0sxkGJ_",
+                                  422
+                                ],
+                                "a": "b"
+                              },
+                              "a": [
+                                "h",
+                                "blue"
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "t": "t",
+                          "i": [
+                            "B9YkW0sxkGJ_",
+                            422
+                          ],
+                          "o": [
+                            "B9YkW0sxkGJ_",
+                            421
+                          ],
+                          "l": 1,
+                          "c": ".",
+                          "b": []
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a0625ab-36bd-8015-aeac-dac65eaec472": {
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-8015-aeac-dac65eaec472",
+            "version": 112,
+            "type": "collection_view",
+            "view_ids": [
+              "2a0625ab-36bd-8016-8178-000cef6f2806"
+            ],
+            "collection_id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "format": {
+              "collection_pointer": {
+                "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+                "table": "collection",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              },
+              "collection_pointers": [
+                {
+                  "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+                  "table": "collection",
+                  "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+                }
+              ],
+              "hide_inline_collection_name": true
+            },
+            "created_time": 1762198280323,
+            "last_edited_time": 1765393701148,
+            "parent_id": "281625ab-36bd-80c0-ad17-e5fb1498943e",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "fyQ0AozlZTHUIP4tWPO2Lw,\"start\",\"end\"",
+                "n": {
+                  "fyQ0AozlZTHUIP4tWPO2Lw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "fyQ0AozlZTHUIP4tWPO2Lw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a0625ab-36bd-8059-b10a-d3dc7c5eee20": {
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-8059-b10a-d3dc7c5eee20",
+            "version": 3,
+            "type": "text",
+            "created_time": 1762199060126,
+            "last_edited_time": 1762199060128,
+            "parent_id": "281625ab-36bd-80c0-ad17-e5fb1498943e",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "gMqheybkDF1LdVXl1JtMRw,\"start\",\"end\"",
+                "n": {
+                  "gMqheybkDF1LdVXl1JtMRw,\"start\",\"end\"": {
+                    "s": {
+                      "x": "gMqheybkDF1LdVXl1JtMRw",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      },
+      "2a3625ab-36bd-802a-9c31-fd4abc8da647": {
+        "value": {
+          "value": {
+            "id": "2a3625ab-36bd-802a-9c31-fd4abc8da647",
+            "version": 5,
+            "type": "collection_view",
+            "view_ids": [
+              "2a3625ab-36bd-80d2-a79d-000c7b679f52"
+            ],
+            "created_time": 1762434728084,
+            "last_edited_time": 1762434732719,
+            "parent_id": "2a0625ab-36bd-8085-847d-006e66d21ba3",
+            "parent_table": "layout",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "crdt_format_version": 1,
+            "crdt_data": {
+              "title": {
+                "r": "IpoxYLIvt4SqIfVBs2J6mA,\"start\",\"end\"",
+                "n": {
+                  "IpoxYLIvt4SqIfVBs2J6mA,\"start\",\"end\"": {
+                    "s": {
+                      "x": "IpoxYLIvt4SqIfVBs2J6mA",
+                      "i": [
+                        {
+                          "t": "s"
+                        },
+                        {
+                          "t": "e"
+                        }
+                      ],
+                      "l": ""
+                    },
+                    "c": []
+                  }
+                }
+              }
+            }
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "team": {
+      "10e625ab-36bd-81d3-9210-0042ce410086": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "role": "none"
+        }
+      }
+    },
+    "collection_view": {
+      "2a0625ab-36bd-8016-8178-000cef6f2806": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-8016-8178-000cef6f2806",
+            "version": 210,
+            "type": "gallery",
+            "name": "Visualização em galeria",
+            "format": {
+              "card_layout": {
+                "mode": "list"
+              },
+              "gallery_cover": {
+                "type": "page_cover"
+              },
+              "show_page_icon": true,
+              "collection_pointer": {
+                "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+                "table": "collection",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              },
+              "gallery_cover_size": "large",
+              "collection_peek_mode": "full_page",
+              "gallery_cover_aspect": "cover",
+              "inline_collection_first_load_limit": {
+                "type": "load_limit",
+                "limit": 100
+              }
+            },
+            "parent_id": "2a0625ab-36bd-8015-aeac-dac65eaec472",
+            "parent_table": "block",
+            "alive": true,
+            "page_sort": [
+              "2a0625ab-36bd-805f-bb46-fe13e38ac700",
+              "2a0625ab-36bd-8043-92c4-d05d77c6ddcf",
+              "2a0625ab-36bd-809d-a2b3-c13bfce034e8",
+              "2a0625ab-36bd-8095-bb8d-cfcda0083866",
+              "2a2625ab-36bd-8088-a536-d2d3e9bd25de",
+              "2a1625ab-36bd-80c1-ac05-f7270c1f038b",
+              "2a0625ab-36bd-8029-a812-ec43a18bf896",
+              "2a0625ab-36bd-80ce-a39a-c611cab4c486",
+              "2a0625ab-36bd-80d9-a18d-cca6ba047b27",
+              "2a7625ab-36bd-805a-9973-cbd8b009c101",
+              "2a0625ab-36bd-801c-8151-ed29c65a0168",
+              "2a0625ab-36bd-80fb-9db1-fa3a494151ac",
+              "2a0625ab-36bd-80e1-ab98-f88e3df9a064",
+              "2a0625ab-36bd-80f4-a953-f3c2daf44479",
+              "2a0625ab-36bd-80a5-a53b-ed5083f8faeb",
+              "2a0625ab-36bd-8040-8128-f458643582aa",
+              "2a0625ab-36bd-806a-b58e-f1a7adf9596d",
+              "2a0625ab-36bd-8069-879b-d3655e4712b9",
+              "2a1625ab-36bd-8003-9724-f272e4d1e986",
+              "2a1625ab-36bd-80eb-b8aa-e669d42067b1",
+              "2a1625ab-36bd-8039-97ca-fc464b002ace",
+              "2a1625ab-36bd-80a3-813f-f8e1157d8118",
+              "2a2625ab-36bd-80f0-8659-d1862bb5cf2f",
+              "2a1625ab-36bd-80ac-94b7-c17cd056d7d0",
+              "2a1625ab-36bd-8098-9fda-e62f8716420c",
+              "2a1625ab-36bd-8036-a39a-c8d8c3360f0b",
+              "2a1625ab-36bd-802f-bfd9-c18b051648a8",
+              "2a1625ab-36bd-80b3-8c88-c074cc80cc66",
+              "2a1625ab-36bd-803c-89d2-d0c60437aa1d",
+              "2a1625ab-36bd-803d-b0c9-d7b8fcb18cc4",
+              "2a1625ab-36bd-8039-aeed-c41e76fd2b4f",
+              "2a2625ab-36bd-8026-bbb5-fec3f78ad433",
+              "2a1625ab-36bd-805f-b081-d26fd4740d40",
+              "2a1625ab-36bd-8053-9390-c819c993c559",
+              "2a1625ab-36bd-80af-a7de-c8c286b9103a",
+              "2a1625ab-36bd-8092-93ba-daaa6876cc58",
+              "2a1625ab-36bd-8043-8b34-f44428c02a8b",
+              "2a2625ab-36bd-803c-875d-d50a62bd989a",
+              "2a1625ab-36bd-80ce-aee0-c004fe4d6a57",
+              "2aa625ab-36bd-8076-a529-f3ac362faecb",
+              "2a1625ab-36bd-8034-b698-f4f425c12543",
+              "2a1625ab-36bd-8083-8e0c-e0c78280e7e3",
+              "2a1625ab-36bd-80e7-87e3-d914998397dd",
+              "2a1625ab-36bd-8029-811f-ff28b8c768d7",
+              "2a1625ab-36bd-802d-9d2f-e2dd6c885baf",
+              "2a1625ab-36bd-806c-ac5a-ee24d108f4e7",
+              "2a1625ab-36bd-80a1-9d1e-e181d47b80c1",
+              "2a1625ab-36bd-8041-a9b7-ea30b8da75eb",
+              "2a1625ab-36bd-8028-908e-c22e4243033d",
+              "2a1625ab-36bd-80db-a2b5-c8ad201666e0",
+              "2a1625ab-36bd-807b-979e-d5fe5360a5bf",
+              "2a2625ab-36bd-80ba-8689-eb47fa4f5e80",
+              "2a1625ab-36bd-801e-bba4-fe195e6ab51b",
+              "2a1625ab-36bd-80eb-9d2e-f7403e3b1582",
+              "2a2625ab-36bd-8095-b110-feb23fe42b04",
+              "2a1625ab-36bd-80d7-a25d-ff3308f528f6",
+              "2a1625ab-36bd-808b-af34-df0da9b7c6ab",
+              "2a1625ab-36bd-80c6-8bf4-c37c888b1f90",
+              "2a1625ab-36bd-803a-91af-cfea48d87288",
+              "2a1625ab-36bd-80bf-8616-d36d80a9b3a3",
+              "2a1625ab-36bd-8037-a981-c12d69aa2b37",
+              "2a0625ab-36bd-805f-aa39-e06e4be0a251",
+              "2c5625ab-36bd-8089-9b27-fd724c43bd26",
+              "2a7625ab-36bd-800b-9740-fe4f74bacd93"
+            ],
+            "query2": {
+              "sort": [
+                {
+                  "property": "title",
+                  "direction": "ascending"
+                }
+              ]
+            },
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "created_time": 1762198280337,
+            "last_edited_time": 1765393701148,
+            "created_by_table": "notion_user",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905"
+          },
+          "role": "reader"
+        }
+      },
+      "2a3625ab-36bd-80d2-a79d-000c7b679f52": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a3625ab-36bd-80d2-a79d-000c7b679f52",
+            "version": 3,
+            "type": "page",
+            "name": "Conteúdo",
+            "format": {
+              "collection_pointer": {
+                "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+                "table": "collection",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              },
+              "page_layout_pointer": {
+                "id": "2a0625ab-36bd-8085-847d-006e66d21ba3",
+                "table": "layout",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+                "views_main_tab_id": "view_tab_}:[c"
+              },
+              "hide_linked_collection_name": true
+            },
+            "parent_id": "2a3625ab-36bd-802a-9c31-fd4abc8da647",
+            "parent_table": "block",
+            "alive": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "created_time": 1762434728098,
+            "last_edited_time": 1762434732719,
+            "created_by_table": "notion_user",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905"
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "collection": {
+      "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "version": 23,
+            "schema": {
+              "IL@[": {
+                "name": "Criado em",
+                "type": "created_time"
+              },
+              "jec`": {
+                "name": "Tags",
+                "type": "multi_select"
+              },
+              "title": {
+                "name": "Nome",
+                "type": "title"
+              },
+              "a8e8a579-04b1-426a-adff-3742902d5410": {
+                "name": "Recurso",
+                "type": "multi_select",
+                "options": [
+                  {
+                    "id": "7f1c29c1-c49e-48c9-80f0-72aa8a18d33b",
+                    "color": "orange",
+                    "value": "Acesso autônomo"
+                  },
+                  {
+                    "id": "b26d70a1-a6d9-489a-92e2-086ff930fa08",
+                    "color": "gray",
+                    "value": "Acesso por QR Code (Leitor Físico)"
+                  },
+                  {
+                    "id": "a5615b26-472f-4e82-ba2a-bc7b9a058646",
+                    "color": "blue",
+                    "value": "Acionamentos"
+                  },
+                  {
+                    "id": "25d94f0a-6864-4461-bc96-d190ed56d1d1",
+                    "color": "red",
+                    "value": "Agendamento de Áreas Comuns"
+                  },
+                  {
+                    "id": "a2959e14-8c3e-483c-84f3-641c7ab2ab83",
+                    "color": "purple",
+                    "value": "Aplicativo"
+                  },
+                  {
+                    "id": "64a327cd-a2db-4df0-a288-92457c8dd2a5",
+                    "color": "pink",
+                    "value": "Auditoria"
+                  },
+                  {
+                    "id": "74d16148-c50e-4bd5-8a9e-81547d6f6c09",
+                    "color": "default",
+                    "value": "Autorização Prévia de Pessoas"
+                  },
+                  {
+                    "id": "51392931-a3d8-4932-81d2-91182c655ac3",
+                    "color": "yellow",
+                    "value": "Autotriagem"
+                  },
+                  {
+                    "id": "d7019eb3-074d-4650-a4e9-bdb693a71f04",
+                    "color": "purple",
+                    "value": "Backup de Credenciais"
+                  },
+                  {
+                    "id": "559add84-8c33-4830-be24-dfffc9322eea",
+                    "color": "brown",
+                    "value": "Bilhetes"
+                  },
+                  {
+                    "id": "2341c065-83d9-4477-bdbd-b199df191fad",
+                    "color": "purple",
+                    "value": "Boleto"
+                  },
+                  {
+                    "id": "d52b275d-894d-43a6-961d-f96461475a14",
+                    "color": "yellow",
+                    "value": "Cadastro de Face pelo App"
+                  },
+                  {
+                    "id": "c11e9b07-1896-400c-ba0f-a0145ad9791a",
+                    "color": "green",
+                    "value": "Cadastro LPR (Reconhecimento de placas)"
+                  },
+                  {
+                    "id": "7896c3dd-95f2-482d-a9ba-add91c9305dc",
+                    "color": "pink",
+                    "value": "Câmeras pelo App"
+                  },
+                  {
+                    "id": "e1170862-be38-42af-89c4-2070e9e62636",
+                    "color": "orange",
+                    "value": "Chamadas VoIP com Abertura de Portões"
+                  },
+                  {
+                    "id": "64cdee90-cf51-41b1-a043-fa283e07a678",
+                    "color": "blue",
+                    "value": "Chave Virtual"
+                  },
+                  {
+                    "id": "476b84a0-17f5-4543-af28-f89156c57bf1",
+                    "color": "green",
+                    "value": "Click Aprova"
+                  },
+                  {
+                    "id": "2a8e7545-72f2-4ad2-9754-1281f01603fd",
+                    "color": "yellow",
+                    "value": "Consulta segura de CPF"
+                  },
+                  {
+                    "id": "651ca462-2968-4049-bd9b-d6a5c9a85ddc",
+                    "color": "yellow",
+                    "value": "Contratos e Subcontratos (White Label)"
+                  },
+                  {
+                    "id": "df36d73c-5f3e-4b1e-9168-1794e9a6824e",
+                    "color": "orange",
+                    "value": "Controle de Entregas"
+                  },
+                  {
+                    "id": "038380d9-396a-4f78-8a4e-1237d9f92236",
+                    "color": "gray",
+                    "value": "Controle de Objetos"
+                  },
+                  {
+                    "id": "d67c8bd9-b25f-4b49-bb99-fa5d13807976",
+                    "color": "purple",
+                    "value": "Convite Facial"
+                  },
+                  {
+                    "id": "3987aab3-dc50-4044-b23d-2ea160160340",
+                    "color": "yellow",
+                    "value": "Documentos"
+                  },
+                  {
+                    "id": "38d68beb-a327-4737-bd6a-b05f55c99911",
+                    "color": "purple",
+                    "value": "Equipamentos"
+                  },
+                  {
+                    "id": "ffbd8805-a700-4ca6-a8f7-1f00db38b747",
+                    "color": "yellow",
+                    "value": "Face Temporária (Exclusão Automática)"
+                  },
+                  {
+                    "id": "e68636ac-08b2-4523-b436-981dc40a6c69",
+                    "color": "brown",
+                    "value": "Ferramentas externas"
+                  },
+                  {
+                    "id": "f33f4754-5ebc-4ef4-b9de-0f6e55d820ab",
+                    "color": "red",
+                    "value": "Gerador de Ocorrências"
+                  },
+                  {
+                    "id": "8649d2af-3ad4-4b05-9bf2-67e94a60abc5",
+                    "color": "gray",
+                    "value": "Gerenciamento Autônomo de Entregas"
+                  },
+                  {
+                    "id": "91f0326b-da86-4932-a9e6-66a419051056",
+                    "color": "brown",
+                    "value": "Gestão de credenciais"
+                  },
+                  {
+                    "id": "8a632ce5-b222-4d13-98a2-bdb91f195feb",
+                    "color": "yellow",
+                    "value": "Gestão de Pessoas e Veículos"
+                  },
+                  {
+                    "id": "158489bc-00ab-4559-b5d5-2dfe6be7002b",
+                    "color": "pink",
+                    "value": "Histórico de acessos"
+                  },
+                  {
+                    "id": "753064c6-ae69-4abc-a22b-02eba1f63884",
+                    "color": "default",
+                    "value": "Informações gerais"
+                  },
+                  {
+                    "id": "4b575ea7-ab3c-4012-a9d8-26c9f4ab7e1c",
+                    "color": "pink",
+                    "value": "Integrações"
+                  },
+                  {
+                    "id": "fccf1caa-989e-4a87-b9cd-6c55acfac241",
+                    "color": "default",
+                    "value": "Licenças Blocos e Unidades"
+                  },
+                  {
+                    "id": "f234cfbb-1928-4e5b-8133-434f0b927acb",
+                    "color": "yellow",
+                    "value": "Lista de Festas"
+                  },
+                  {
+                    "id": "da73c564-eeec-49c4-ad40-924648dd47fc",
+                    "color": "purple",
+                    "value": "Manutenções Preventivas"
+                  },
+                  {
+                    "id": "bf6eb154-23d4-4f62-b796-f44a7a338244",
+                    "color": "red",
+                    "value": "Moni"
+                  },
+                  {
+                    "id": "298cc155-e720-4162-8527-a22041a8f889",
+                    "color": "red",
+                    "value": "Mural de avisos"
+                  },
+                  {
+                    "id": "78bbeb50-2e50-423b-a0ff-7af354246df5",
+                    "color": "gray",
+                    "value": "Notificações de Acesso"
+                  },
+                  {
+                    "id": "05b8f439-6626-4ca3-94ee-f5761c6e40a1",
+                    "color": "brown",
+                    "value": "Pedidos e Manifestações"
+                  },
+                  {
+                    "id": "2a62ab61-f863-4b91-a2ad-94e927fe078f",
+                    "color": "red",
+                    "value": "Personalização da Identidade Visual (White Label)"
+                  },
+                  {
+                    "id": "f34101d7-a053-4b1e-829f-3a8c0ced0bf5",
+                    "color": "brown",
+                    "value": "Personalização de Campos"
+                  },
+                  {
+                    "id": "36b23dab-e275-4a8c-9105-3e3230d4cc0e",
+                    "color": "green",
+                    "value": "Política de Privacidade de Dados e LGPD"
+                  },
+                  {
+                    "id": "7e187f55-e389-45af-b1f6-f7a5eb1b9011",
+                    "color": "blue",
+                    "value": "QR Code (Scanner)"
+                  },
+                  {
+                    "id": "a78c5f3e-52fb-429e-be5b-37ad166d7235",
+                    "color": "yellow",
+                    "value": "QR Ticket (Impressão de QR Code)"
+                  },
+                  {
+                    "id": "b164add5-a289-4f21-a576-a7758fd2df78",
+                    "color": "blue",
+                    "value": "Rede e Internet"
+                  },
+                  {
+                    "id": "76bbabc4-93ab-404e-9056-dc76d779cfe5",
+                    "color": "default",
+                    "value": "Registro de Turno"
+                  },
+                  {
+                    "id": "c12a3dac-975f-49aa-9ca1-d04b5dc27a16",
+                    "color": "green",
+                    "value": "Relatórios"
+                  },
+                  {
+                    "id": "2bd20cc4-a5f4-44f9-bf5f-dbdd4684724f",
+                    "color": "yellow",
+                    "value": "Rotas de Acesso"
+                  },
+                  {
+                    "id": "f5dc7bff-e220-4aeb-8ed5-3f45d4df8eb8",
+                    "color": "default",
+                    "value": "Solicitação de Faces (Mediação)"
+                  },
+                  {
+                    "id": "e669e0b8-53c1-4b9c-aa14-7c320e78b530",
+                    "color": "green",
+                    "value": "Tela de Atendimento (Portaria/Recepção)"
+                  },
+                  {
+                    "id": "136441ee-b006-4c51-800d-e83f4e6a8554",
+                    "color": "red",
+                    "value": "Usuários e Permissões"
+                  }
+                ],
+                "auto_sort_options": "alphabetical"
+              }
+            },
+            "format": {
+              "layout_pointer": {
+                "id": "2a0625ab-36bd-8085-847d-006e66d21ba3",
+                "table": "layout",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              },
+              "page_section_visibility": {
+                "comments": "section_hide",
+                "backlinks": "section_hide",
+                "margin_comments": "inline"
+              },
+              "collection_page_properties": [
+                {
+                  "visible": true,
+                  "property": "IL@["
+                },
+                {
+                  "visible": true,
+                  "property": "jec`"
+                }
+              ]
+            },
+            "parent_id": "2a0625ab-36bd-8015-aeac-dac65eaec472",
+            "parent_table": "block",
+            "alive": true,
+            "migrated": true,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "created_time": 1762198280325,
+            "last_edited_time": 1762861122955,
+            "created_by_table": "notion_user",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "last_edited_by_table": "notion_user",
+            "last_edited_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905"
+          },
+          "role": "reader"
+        }
+      }
+    },
+    "layout": {
+      "2a0625ab-36bd-8085-847d-006e66d21ba3": {
+        "spaceId": "19241446-e0a2-4199-9488-238a315499e0",
+        "value": {
+          "value": {
+            "id": "2a0625ab-36bd-8085-847d-006e66d21ba3",
+            "version": 40,
+            "space_id": "19241446-e0a2-4199-9488-238a315499e0",
+            "parent_table": "collection",
+            "parent_id": "2a0625ab-36bd-80d5-ad5e-000b3ce5d9e4",
+            "created_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "created_by_table": "notion_user",
+            "created_time": 1762198332538,
+            "last_edited_by_id": "5e1b53d7-75cc-4664-beff-5a6aea51f905",
+            "last_edited_by_table": "notion_user",
+            "last_edited_time": 1762863032642,
+            "modules": {
+              "page_layout_schema": [
+                {
+                  "id": "cover",
+                  "type": "cover"
+                },
+                {
+                  "id": "]|Dc",
+                  "type": "titleWithIcon",
+                  "propertyLabels": "show"
+                },
+                {
+                  "id": "o@K?",
+                  "type": "properties"
+                },
+                {
+                  "id": "discussions",
+                  "type": "discussions"
+                },
+                {
+                  "id": "editor",
+                  "type": "editor"
+                }
+              ]
+            },
+            "blocks": [
+              "2a3625ab-36bd-802a-9c31-fd4abc8da647"
+            ],
+            "format": {
+              "page_full_width": true,
+              "property_icons_visibility": "show",
+              "previousViewsMainCollectionViewBlockPointer": {
+                "id": "2a3625ab-36bd-802a-9c31-fd4abc8da647",
+                "table": "block",
+                "spaceId": "19241446-e0a2-4199-9488-238a315499e0"
+              }
+            }
+          },
+          "role": "reader"
+        }
+      }
+    }
+  }
+}
