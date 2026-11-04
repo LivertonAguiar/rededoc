@@ -65,6 +65,15 @@ export const api = {
   getDashboardStats: (clientId?: string) =>
     fetchJson<DashboardStats>(`/dashboard/stats${clientId ? `?clientId=${clientId}` : ''}`),
 
+  checkWanStatus: (clientId?: string) =>
+    fetchJson<{
+      currentPublicIp: string | null;
+      registeredIp: string | null;
+      hasChanged: boolean;
+      status: 'ok' | 'mismatch' | 'unregistered' | 'offline';
+      message: string;
+    }>(`/dashboard/wan-check${clientId ? `?clientId=${clientId}` : ''}`),
+
   quickSearch: (q: string) =>
     fetchJson<{ clients: Client[]; equipments: Equipment[]; ports: PortForward[]; service_orders: ServiceOrder[] }>(`/dashboard/quick-search?q=${encodeURIComponent(q)}`),
 
@@ -94,6 +103,26 @@ export const api = {
   createEquipment: (data: Partial<Equipment>) => fetchJson<Equipment>('/equipments', { method: 'POST', body: JSON.stringify(data) }),
   updateEquipment: (id: string, data: Partial<Equipment>) => fetchJson<Equipment>(`/equipments/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   deleteEquipment: (id: string) => fetchJson<{ message: string }>(`/equipments/${id}`, { method: 'DELETE' }),
+  pingEquipment: (id: string) =>
+    fetchJson<{
+      equipment_id: string;
+      equipment_name: string;
+      ip: string;
+      online: boolean;
+      latencyMs: number | null;
+      method: string;
+      lastChecked: string;
+    }>(`/equipments/${id}/ping`, { method: 'POST' }),
+  pingAllEquipments: (clientId?: string) =>
+    fetchJson<Array<{
+      equipment_id: string;
+      equipment_name: string;
+      ip: string;
+      online: boolean;
+      latencyMs: number | null;
+      method: string;
+      lastChecked: string;
+    }>>('/equipments/ping-all', { method: 'POST', body: JSON.stringify({ clientId }) }),
 
   // Redirecionamento de Portas (NAT)
   getPortForwards: (clientId?: string, locationId?: string, equipmentId?: string) => {

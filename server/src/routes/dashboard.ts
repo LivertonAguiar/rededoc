@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { queryAll, queryOne } from '../db/database.js';
+import { checkClientWanStatus } from '../services/wanService.js';
 
 export const dashboardRouter = Router();
 
@@ -81,6 +82,22 @@ dashboardRouter.get('/stats', (req: Request, res: Response) => {
     recent_services: recentServices,
     clients_summary: clientsSummary
   });
+});
+
+dashboardRouter.get('/wan-check', async (req: Request, res: Response): Promise<any> => {
+  const { clientId } = req.query;
+  let registeredIp: string | null = null;
+
+  if (clientId) {
+    const routerEq = queryOne(
+      "SELECT public_wan_ip FROM equipments WHERE client_id = ? AND public_wan_ip IS NOT NULL AND public_wan_ip != '' LIMIT 1",
+      clientId
+    ) as any;
+    registeredIp = routerEq?.public_wan_ip || null;
+  }
+
+  const result = await checkClientWanStatus(registeredIp);
+  res.json(result);
 });
 
 dashboardRouter.get('/quick-search', (req: Request, res: Response): any => {

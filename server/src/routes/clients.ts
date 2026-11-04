@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'node:crypto';
 import { queryAll, queryOne, execute } from '../db/database.js';
+import { validateBody } from '../middleware/validate.js';
+import { clientSchema } from '../schemas/index.js';
 
 export const clientsRouter = Router();
 
@@ -29,7 +31,7 @@ clientsRouter.get('/:id', (req: Request, res: Response): any => {
   res.json({ ...client, locations });
 });
 
-clientsRouter.post('/', (req: Request, res: Response): any => {
+clientsRouter.post('/', validateBody(clientSchema), (req: Request, res: Response): any => {
   const { name, identification_name, document, phone, email, address, notes } = req.body;
   if (!name || !identification_name) {
     return res.status(400).json({ error: 'Nome e Nome de Identificação são obrigatórios.' });
@@ -45,7 +47,7 @@ clientsRouter.post('/', (req: Request, res: Response): any => {
   res.status(201).json(created);
 });
 
-clientsRouter.put('/:id', (req: Request, res: Response): any => {
+clientsRouter.put('/:id', validateBody(clientSchema), (req: Request, res: Response): any => {
   const { name, identification_name, document, phone, email, address, notes } = req.body;
   const { id } = req.params;
 

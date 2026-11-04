@@ -40,6 +40,9 @@ import { Client, Location, Equipment, PortForward, Attachment, ServiceOrder } fr
 import { api } from '../services/api';
 import { AddEquipmentModal } from './AddEquipmentModal';
 import { useDialog } from '../context/DialogContext';
+import { WanAlertBanner } from './dashboard/WanAlertBanner';
+import { DashboardKpis } from './dashboard/DashboardKpis';
+import { ConnectionSummaryCard } from './dashboard/ConnectionSummaryCard';
 
 interface DashboardViewProps {
   client: Client;
@@ -68,6 +71,23 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const [viewMode, setViewMode] = useState<'detailed' | 'simplified'>('detailed');
   const [revealedPasswords, setRevealedPasswords] = useState<Record<string, string>>({});
   const [loadingReveal, setLoadingReveal] = useState<Record<string, boolean>>({});
+
+  // Auditoria de alteração de IP WAN
+  const [wanAudit, setWanAudit] = useState<{
+    currentPublicIp: string | null;
+    registeredIp: string | null;
+    hasChanged: boolean;
+    status: 'ok' | 'mismatch' | 'unregistered' | 'offline';
+    message: string;
+  } | null>(null);
+
+  useEffect(() => {
+    if (client?.id) {
+      api.checkWanStatus(client.id)
+        .then(res => setWanAudit(res))
+        .catch(() => {});
+    }
+  }, [client?.id]);
 
   // Modais de Edição no Dashboard
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -624,104 +644,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         </div>
       </div>
 
-      {/* 2. KPIs / Cards Superiores */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
-        <div 
-          onClick={handleOpenNetworkModal}
-          className="bg-[#101C31] border border-[#1D3054] hover:border-blue-500/50 rounded-xl p-4 flex flex-col justify-between shadow-md cursor-pointer transition group"
-        >
-          <div className="flex items-center justify-between text-xs text-slate-400 font-medium">
-            <span className="group-hover:text-blue-300 transition-colors">IP WAN (público)</span>
-            {wanIp ? (
-              <span className="inline-flex items-center gap-1 text-[11px] text-emerald-400 font-semibold">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                Conectado
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1 text-[11px] text-slate-500 font-medium">
-                <span className="w-2 h-2 rounded-full bg-slate-600"></span>
-                Não configurado
-              </span>
-            )}
-          </div>
-          <div className="text-lg font-bold font-mono text-white mt-2 tracking-tight group-hover:text-blue-200 transition-colors">
-            {wanIp || '—'}
-          </div>
-          <div className="text-[11px] text-slate-400 mt-1 flex items-center justify-between">
-            <span>{wanIp ? 'IP Dedicado' : 'Sem IP Público'}</span>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleOpenNetworkModal();
-              }}
-              className="text-blue-400 hover:text-blue-300 font-semibold text-[11px]"
-            >
-              {wanIp ? 'Editar' : 'Configurar'}
-            </button>
-          </div>
-        </div>
+      {/* Banner de Auditoria de IP WAN */}
+      <WanAlertBanner
+        wanAudit={wanAudit}
+        onOpenNetworkModal={handleOpenNetworkModal}
+      />
 
-        <div className="bg-[#101C31] border border-[#1D3054] rounded-xl p-4 flex flex-col justify-between shadow-md">
-          <div className="text-xs text-slate-400 font-medium">Roteador / ONT</div>
-          <div className="text-base font-bold text-white mt-2 truncate">
-            {routerOnt ? `${routerOnt.manufacturer || ''} ${routerOnt.model || routerOnt.name}` : 'Nenhum cadastrado'}
-          </div>
-          <div className="text-[11px] font-mono text-emerald-400 mt-1 flex items-center justify-between">
-            <span>{routerOnt?.local_ip || '—'}</span>
-            {routerOnt ? (
-              <button
-                onClick={() => handleOpenEditEquipment(routerOnt)}
-                className="text-blue-400 hover:text-blue-300 font-sans font-semibold text-[11px]"
-              >
-                Editar
-              </button>
-            ) : (
-              <button
-                onClick={handleOpenAddEquipmentFromCatalog}
-                className="text-blue-400 hover:text-blue-300 font-sans font-semibold text-[11px]"
-              >
-                + Cadastrar
-              </button>
-            )}
-          </div>
-        </div>
-
-        <div className="bg-[#101C31] border border-[#1D3054] rounded-xl p-4 flex flex-col justify-between shadow-md">
-          <div className="text-xs text-slate-400 font-medium">Equipamentos Ativos</div>
-          <div className="text-2xl font-bold text-white mt-1">
-            {totalEquipments}
-          </div>
-          <div className="text-[11px] text-slate-400 mt-1">Dispositivos mapeados</div>
-        </div>
-
-        <div className="bg-[#101C31] border border-[#1D3054] rounded-xl p-4 flex flex-col justify-between shadow-md">
-          <div className="text-xs text-slate-400 font-medium">Regras de Portas</div>
-          <div className="text-base font-bold text-white mt-2 flex items-baseline gap-2">
-            <span>{totalPorts} ativas</span>
-            {totalPorts > 0 && (
-              <span className="text-xs font-semibold text-emerald-400">({activePorts} validadas)</span>
-            )}
-          </div>
-          <div className="text-[11px] text-slate-400 mt-1 font-medium">
-            {totalPorts === 0
-              ? 'Nenhum redirecionamento'
-              : failedPorts > 0
-              ? `• ${failedPorts} com falha / bloqueio`
-              : '• 100% operacionais'}
-          </div>
-        </div>
-
-        <div className="bg-[#101C31] border border-[#1D3054] rounded-xl p-4 flex flex-col justify-between shadow-md col-span-2 md:col-span-1">
-          <div className="text-xs text-slate-400 font-medium">Última alteração</div>
-          <div className="text-sm font-bold font-mono text-white mt-2">
-            {client.updated_at ? new Date(client.updated_at).toLocaleDateString('pt-BR') : 'Hoje'}
-          </div>
-          <div className="text-[11px] text-slate-400 mt-1 truncate">
-            {hasEquipments ? 'Infraestrutura atualizada' : 'Cadastro inicial'}
-          </div>
-        </div>
-      </div>
+      {/* 2. KPIs / Cards Superiores Modulares */}
+      <DashboardKpis
+        wanIp={wanIp}
+        routerOnt={routerOnt}
+        totalEquipments={totalEquipments}
+        totalPorts={totalPorts}
+        activePorts={activePorts}
+        failedPorts={failedPorts}
+        hasEquipments={hasEquipments}
+        client={client}
+        onOpenNetworkModal={handleOpenNetworkModal}
+        onOpenEditEquipment={handleOpenEditEquipment}
+        onOpenAddEquipmentFromCatalog={handleOpenAddEquipmentFromCatalog}
+      />
 
       {/* 3. Seção Central: Topologia + Conexão/Obs/Anexos */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -895,55 +837,12 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
         {/* COLUNA DA DIREITA: Informações da Conexão / Obs / Anexos com Botões de Edição */}
         <div className="space-y-4">
-          {/* Card: Informações da Conexão */}
-          <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl p-5 shadow-xl">
-            <div className="flex items-center justify-between pb-3 border-b border-[#1D3054] mb-3">
-              <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                <Globe className="w-4 h-4 text-blue-400" />
-                Informações da Conexão
-              </h3>
-              <button
-                onClick={handleOpenNetworkModal}
-                className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#172744] hover:bg-[#20365D] text-blue-400 hover:text-blue-300 text-xs font-semibold transition-colors"
-                title="Editar parâmetros de sub-rede e DNS"
-              >
-                <Edit className="w-3 h-3" /> {routerOnt ? 'Editar' : 'Configurar'}
-              </button>
-            </div>
-
-            <div className="space-y-2.5 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">IP WAN (público)</span>
-                <span className="font-mono font-bold text-white">{wanIp || '—'}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">IP do roteador</span>
-                <span className="font-mono text-emerald-400 font-semibold">{routerOnt?.local_ip || '—'}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Rede local</span>
-                <span className="font-mono text-slate-200">
-                  {routerOnt?.local_ip ? `${routerOnt.local_ip.split('.').slice(0, 3).join('.')}.0 / ${routerOnt.subnet_mask || '255.255.255.0'}` : '—'}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Gateway</span>
-                <span className="font-mono text-slate-200">{routerOnt?.gateway || '—'}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">DNS primário</span>
-                <span className="font-mono text-slate-200">{routerOnt?.primary_dns || '—'}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">DNS secundário</span>
-                <span className="font-mono text-slate-200">{routerOnt?.secondary_dns || '—'}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-slate-400">Faixa DHCP</span>
-                <span className="font-mono text-slate-200">{routerOnt?.dhcp_range || '—'}</span>
-              </div>
-            </div>
-          </div>
+          {/* Card: Informações da Conexão Modular */}
+          <ConnectionSummaryCard
+            routerOnt={routerOnt}
+            wanIp={wanIp}
+            onOpenNetworkModal={handleOpenNetworkModal}
+          />
 
           {/* Card: Observações Técnicas com Edição */}
           <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl p-5 shadow-xl">

@@ -17,7 +17,10 @@ import {
   CheckCircle2,
   Sparkles,
   Info,
-  Tag
+  Tag,
+  Activity,
+  Loader2,
+  Wifi
 } from 'lucide-react';
 import { Equipment, Client, Location } from '../types';
 import { api } from '../services/api';
@@ -44,6 +47,51 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [editingEq, setEditingEq] = useState<Equipment | null>(null);
   const [selectedEquipmentForLabel, setSelectedEquipmentForLabel] = useState<Equipment | null>(null);
+  const [pingStates, setPingStates] = useState<Record<string, { online: boolean; latencyMs: number | null; loading?: boolean }>>({});
+  const [isPingingAll, setIsPingingAll] = useState(false);
+
+  const handlePingSingle = async (eq: Equipment) => {
+    if (!eq.local_ip) {
+      showToast('Equipamento não possui IP cadastrado.', 'error');
+      return;
+    }
+    setPingStates(prev => ({ ...prev, [eq.id]: { online: false, latencyMs: null, loading: true } }));
+    try {
+      const res = await api.pingEquipment(eq.id);
+      setPingStates(prev => ({
+        ...prev,
+        [eq.id]: { online: res.online, latencyMs: res.latencyMs, loading: false }
+      }));
+      if (res.online) {
+        showToast(`${eq.name} está ONLINE (${res.latencyMs}ms)`, 'success');
+      } else {
+        showToast(`${eq.name} não respondeu ao teste de rede (Offline)`, 'error');
+      }
+    } catch {
+      setPingStates(prev => ({ ...prev, [eq.id]: { online: false, latencyMs: null, loading: false } }));
+      showToast('Falha ao executar teste de ping.', 'error');
+    }
+  };
+
+  const handlePingAll = async () => {
+    setIsPingingAll(true);
+    showToast('Iniciando varredura de conectividade dos equipamentos...', 'info');
+    try {
+      const results = await api.pingAllEquipments(client.id);
+      const newStates: Record<string, { online: boolean; latencyMs: number | null; loading?: boolean }> = {};
+      let onlineCount = 0;
+      results.forEach(r => {
+        newStates[r.equipment_id] = { online: r.online, latencyMs: r.latencyMs, loading: false };
+        if (r.online) onlineCount++;
+      });
+      setPingStates(prev => ({ ...prev, ...newStates }));
+      showToast(`Varredura concluída: ${onlineCount} de ${results.length} equipamentos online.`, 'success');
+    } catch (err: any) {
+      showToast('Erro ao realizar varredura de ping: ' + err.message, 'error');
+    } finally {
+      setIsPingingAll(false);
+    }
+  };
 
   const handleOpenNew = () => {
     setEditingEq(null);
@@ -97,13 +145,29 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
           </p>
         </div>
 
-        <button
-          onClick={handleOpenNew}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/20 transition-all"
-        >
-          <Sparkles className="w-4 h-4 text-amber-300" />
-          <span>+ Adicionar do Catálogo</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={handlePingAll}
+            disabled={isPingingAll || equipments.length === 0}
+            className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-slate-200 bg-[#182845] hover:bg-[#20365D] border border-[#2A4374] disabled:opacity-50 transition shadow-sm"
+            title="Realizar teste de ping em tempo real em todos os equipamentos deste cliente"
+          >
+            {isPingingAll ? (
+              <Loader2 className="w-4 h-4 text-emerald-400 animate-spin" />
+            ) : (
+              <Activity className="w-4 h-4 text-emerald-400" />
+            )}
+            <span>{isPingingAll ? 'Testando Conexões...' : 'Testar Conectividade (Ping)'}</span>
+          </button>
+
+          <button
+            onClick={handleOpenNew}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/20 transition-all"
+          >
+            <Sparkles className="w-4 h-4 text-amber-300" />
+            <span>+ Adicionar do Catálogo</span>
+          </button>
+        </div>
       </div>
 
       {/* Barra de Filtros e Busca */}
@@ -198,7 +262,25 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
                 </div>
                 <div>
                   <span className="text-slate-400 block text-[11px]">IP Local</span>
-                  <span className="font-mono font-bold text-emerald-400 block">{eq.local_ip || 'N/A'}</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-mono font-bold text-emerald-400 block">{eq.local_ip || 'N/A'}</span>
+                    {pingStates[eq.id]?.loading && (
+                      <Loader2 className="w-3 h-3 text-amber-400 animate-spin" />
+                    )}
+                    {pingStates[eq.id] && !pingStates[eq.id]?.loading && (
+                      pingStates[eq.id].online ? (
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/15 border border-emerald-500/30 text-[10px] text-emerald-400 font-mono font-bold" title="Online na rede">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                          {pingStates[eq.id].latencyMs}ms
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-rose-500/15 border border-rose-500/30 text-[10px] text-rose-400 font-mono font-bold" title="Inacessível / Sem resposta de rede">
+                          <span className="w-1.5 h-1.5 rounded-full bg-rose-400"></span>
+                          Off
+                        </span>
+                      )
+                    )}
+                  </div>
                 </div>
                 <div>
                   <span className="text-slate-400 block text-[11px]">MAC Address</span>
@@ -253,6 +335,18 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
               </div>
 
               <div className="flex items-center gap-2">
+                <button
+                  onClick={() => handlePingSingle(eq)}
+                  disabled={pingStates[eq.id]?.loading}
+                  className="p-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 disabled:opacity-50 transition"
+                  title="Testar conectividade / Ping deste equipamento"
+                >
+                  {pingStates[eq.id]?.loading ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Activity className="w-3.5 h-3.5" />
+                  )}
+                </button>
                 <button
                   onClick={() => setSelectedEquipmentForLabel(eq)}
                   className="p-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400"
