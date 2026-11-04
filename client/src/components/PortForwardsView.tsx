@@ -10,7 +10,12 @@ import {
   ArrowRight,
   ShieldAlert,
   Server,
-  Globe
+  Globe,
+  Activity,
+  Play,
+  Loader2,
+  Zap,
+  X
 } from 'lucide-react';
 import { PortForward, Equipment, Client } from '../types';
 import { api } from '../services/api';
@@ -34,11 +39,24 @@ export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [editingRule, setEditingRule] = useState<PortForward | null>(null);
 
+  // Estados do Testador de Portas TCP Real
+  const [testingRuleId, setTestingRuleId] = useState<string | null>(null);
+  const [isTestingAll, setIsTestingAll] = useState(false);
+  const [ruleResults, setRuleResults] = useState<Record<string, { latency_ms: number; open: boolean; message: string }>>({});
+
+  // Modal de Teste Avulso
+  const [showQuickTestModal, setShowQuickTestModal] = useState(false);
+  const [quickTestHost, setQuickTestHost] = useState('');
+  const [quickTestPort, setQuickTestPort] = useState('');
+  const [quickTestLoading, setQuickTestLoading] = useState(false);
+  const [quickTestResult, setQuickTestResult] = useState<{ open: boolean; latency_ms: number; message: string } | null>(null);
+
   // Fecha modais com tecla Escape
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setShowModal(false);
+        setShowQuickTestModal(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -165,6 +183,67 @@ export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
     }
   };
 
+  // Teste de porta individual
+  const handleTestPort = async (rule: PortForward) => {
+    setTestingRuleId(rule.id);
+    try {
+      const res = await api.testPortForward(rule.id);
+      setRuleResults(prev => ({
+        ...prev,
+        [rule.id]: { latency_ms: res.latency_ms, open: res.open, message: res.message }
+      }));
+      if (res.open) {
+        showToast(`Porta WAN ${rule.external_port} (${rule.service_name}) está ABERTA! (${res.latency_ms}ms)`, 'success');
+      } else {
+        showToast(`Porta WAN ${rule.external_port} (${rule.service_name}) FALHOU: ${res.message}`, 'error');
+      }
+      onRefresh();
+    } catch (err: any) {
+      showToast('Erro ao testar porta: ' + err.message, 'error');
+    } finally {
+      setTestingRuleId(null);
+    }
+  };
+
+  // Teste em lote de todas as regras
+  const handleTestAllPorts = async () => {
+    if (portForwards.length === 0) return;
+    setIsTestingAll(true);
+    try {
+      showToast('Iniciando varredura TCP em todas as portas...', 'info');
+      const res = await api.testAllPorts(client.id);
+      const newResults: Record<string, { latency_ms: number; open: boolean; message: string }> = {};
+      let openCount = 0;
+      res.results.forEach(r => {
+        newResults[r.id] = { latency_ms: r.latency_ms, open: r.open, message: r.message };
+        if (r.open) openCount++;
+      });
+      setRuleResults(prev => ({ ...prev, ...newResults }));
+      showToast(`Varredura concluída: ${openCount}/${res.tested} portas respondendo!`, openCount === res.tested ? 'success' : 'info');
+      onRefresh();
+    } catch (err: any) {
+      showToast('Erro na varredura: ' + err.message, 'error');
+    } finally {
+      setIsTestingAll(false);
+    }
+  };
+
+  // Executa teste direto avulso
+  const handleRunQuickTest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!quickTestHost || !quickTestPort) return;
+    setQuickTestLoading(true);
+    setQuickTestResult(null);
+    try {
+      const res = await api.testDirectPort(quickTestHost.trim(), Number(quickTestPort));
+      setQuickTestResult(res);
+    } catch (err: any) {
+      showToast('Erro no teste rápido: ' + err.message, 'error');
+    } finally {
+      setQuickTestLoading(false);
+    }
+  };
+
   const filteredRules = portForwards.filter(rule => {
     if (filterStatus === 'all') return true;
     return rule.status === filterStatus;
@@ -180,17 +259,57 @@ export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
             Redirecionamento de Portas (NAT)
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Mapeamento de conexões externas para dispositivos locais com validação de conflito
+            Mapeamento de conexões externas para dispositivos locais com teste ativo de socket TCP
           </p>
         </div>
 
-        <button
-          onClick={handleOpenNew}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/20 transition-all"
-        >
-          <Plus className="w-4 h-4" />
-          <span>Nova Regra de Porta</span>
-        </button>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <button
+            onClick={() => {
+              const defaultWan = equipments.find(e => e.category === 'router_ont')?.public_wan_ip || '';
+              setQuickTestHost(defaultWan);
+              setQuickTestPort('');
+              setQuickTestResult(null);
+              setShowQuickTestModal(true);
+            }}
+            className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-amber-300 bg-[#162744] hover:bg-[#1E345D] border border-amber-500/30 transition-all shadow-sm"
+            title="Testar qualquer IP e Porta sem cadastrar regra"
+          >
+            <Zap className="w-4 h-4 text-amber-400" />
+            <span>Teste Avulso</span>
+          </button>
+
+          <button
+            onClick={handleTestAllPorts}
+            disabled={isTestingAll || portForwards.length === 0}
+            className={`flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-white transition-all shadow-sm ${
+              isTestingAll || portForwards.length === 0
+                ? 'bg-slate-700/50 text-slate-400 cursor-not-allowed border border-slate-700'
+                : 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/20'
+            }`}
+            title="Executa handshake TCP em todas as portas cadastradas"
+          >
+            {isTestingAll ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin text-white" />
+                <span>Testando Todas...</span>
+              </>
+            ) : (
+              <>
+                <Activity className="w-4 h-4 text-emerald-200" />
+                <span>Testar Todas</span>
+              </>
+            )}
+          </button>
+
+          <button
+            onClick={handleOpenNew}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/20 transition-all"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Nova Regra de Porta</span>
+          </button>
+        </div>
       </div>
 
       {/* Filtros de Status */}
@@ -304,11 +423,38 @@ export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
                         <option value="nao_testada" className="bg-[#0F1B2D] text-amber-300">Não testada</option>
                         <option value="com_falha" className="bg-[#0F1B2D] text-rose-300">Com falha</option>
                       </select>
+
+                      {ruleResults[rule.id] && (
+                        <span
+                          className={`inline-flex items-center gap-1 text-[10px] font-mono font-bold px-1.5 py-0.5 rounded border ${
+                            ruleResults[rule.id].open
+                              ? 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30'
+                              : 'text-rose-400 bg-rose-500/10 border-rose-500/30'
+                          }`}
+                          title={ruleResults[rule.id].message}
+                        >
+                          {ruleResults[rule.id].open ? `● ${ruleResults[rule.id].latency_ms}ms` : '● Falha'}
+                        </span>
+                      )}
                     </div>
                   </td>
 
                   <td className="py-3 px-4 text-right">
                     <div className="flex items-center justify-end gap-1.5">
+                      <button
+                        onClick={() => handleTestPort(rule)}
+                        disabled={testingRuleId === rule.id}
+                        className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#182845] hover:bg-[#20365D] text-amber-300 hover:text-amber-200 text-xs font-semibold transition shadow-sm border border-amber-500/20 disabled:opacity-50"
+                        title="Executar teste de socket TCP nesta porta agora"
+                      >
+                        {testingRuleId === rule.id ? (
+                          <Loader2 className="w-3.5 h-3.5 animate-spin text-amber-400" />
+                        ) : (
+                          <Play className="w-3.5 h-3.5 text-amber-400 fill-amber-400/30" />
+                        )}
+                        <span>{testingRuleId === rule.id ? 'Testando...' : 'Testar'}</span>
+                      </button>
+
                       <button
                         onClick={() => handleOpenEdit(rule)}
                         className="p-1.5 rounded-lg bg-[#182845] hover:bg-[#20365D] text-slate-300 hover:text-white"
@@ -497,6 +643,114 @@ export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
                   className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/20"
                 >
                   {isSubmitting ? 'Salvando...' : editingRule ? 'Atualizar Regra' : 'Criar Regra'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Teste Rápido de Porta Avulso */}
+      {showQuickTestModal && (
+        <div
+          onClick={(e) => { if (e.target === e.currentTarget) setShowQuickTestModal(false); }}
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn"
+        >
+          <div className="bg-[#101C31] border border-[#24375A] rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-[#1D3054]">
+              <h2 className="text-base font-bold text-white flex items-center gap-2">
+                <Zap className="w-5 h-5 text-amber-400" />
+                Teste Rápido de Conexão TCP
+              </h2>
+              <button
+                onClick={() => setShowQuickTestModal(false)}
+                className="text-slate-400 hover:text-white p-1 rounded-lg"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleRunQuickTest} className="space-y-4 text-xs">
+              <div>
+                <label className="text-slate-300 font-semibold block mb-1">Host / IP WAN ou Domínio *</label>
+                <input
+                  type="text"
+                  required
+                  value={quickTestHost}
+                  onChange={(e) => setQuickTestHost(e.target.value)}
+                  placeholder="Ex: 203.0.113.45 ou ddns.exemplo.com"
+                  className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="text-slate-300 font-semibold block mb-1">Porta TCP *</label>
+                <input
+                  type="number"
+                  required
+                  min="1"
+                  max="65535"
+                  value={quickTestPort}
+                  onChange={(e) => setQuickTestPort(e.target.value)}
+                  placeholder="Ex: 8080, 5060, 37777, 80"
+                  className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-amber-300 font-mono font-bold focus:outline-none focus:border-amber-500"
+                />
+              </div>
+
+              {quickTestResult && (
+                <div
+                  className={`p-3.5 rounded-xl border text-xs space-y-1.5 ${
+                    quickTestResult.open
+                      ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-200'
+                      : 'bg-rose-500/15 border-rose-500/40 text-rose-200'
+                  }`}
+                >
+                  <div className="flex items-center justify-between font-bold">
+                    <span className="flex items-center gap-1.5">
+                      {quickTestResult.open ? (
+                        <>
+                          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                          <span>Porta Aberta e Respondendo!</span>
+                        </>
+                      ) : (
+                        <>
+                          <XCircle className="w-4 h-4 text-rose-400" />
+                          <span>Porta Inacessível / Fechada</span>
+                        </>
+                      )}
+                    </span>
+                    <span className="font-mono text-[11px] opacity-90">{quickTestResult.latency_ms}ms</span>
+                  </div>
+                  <p className="text-[11px] leading-relaxed opacity-85">
+                    {quickTestResult.message}
+                  </p>
+                </div>
+              )}
+
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#1D3054]">
+                <button
+                  type="button"
+                  onClick={() => setShowQuickTestModal(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-[#172744] hover:bg-[#20365D]"
+                >
+                  Fechar
+                </button>
+                <button
+                  type="submit"
+                  disabled={quickTestLoading}
+                  className="flex items-center gap-2 px-5 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/20 disabled:opacity-50"
+                >
+                  {quickTestLoading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      <span>Verificando...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-4 h-4" />
+                      <span>Executar Teste</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>

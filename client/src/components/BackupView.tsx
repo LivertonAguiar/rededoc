@@ -25,6 +25,10 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
     window.location.href = api.exportBackupUrl();
   };
 
+  const handleDownloadZipBackup = () => {
+    window.location.href = api.exportBackupZipUrl();
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -98,17 +102,28 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
             </div>
             <h2 className="text-base font-bold text-white">Exportar Backup Completo</h2>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Gera um arquivo JSON contendo todos os clientes, equipamentos, topologias, regras de NAT, atendimentos técnicos e o cofre de credenciais preservando a integridade da criptografia AES-256-GCM.
+              Gera uma cópia integral da infraestrutura. O formato <strong className="text-white">ZIP</strong> inclui o banco de dados binário SQLite (<code className="text-emerald-400 font-mono">rededoc.sqlite</code>), todos os arquivos e fotos de equipamentos (<code className="text-blue-400 font-mono">uploads/</code>), e o manifesto JSON com criptografia AES-256-GCM preservada.
             </p>
           </div>
 
-          <button
-            onClick={handleDownloadBackup}
-            className="w-full py-3 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2"
-          >
-            <Download className="w-4 h-4" />
-            <span>Baixar Arquivo de Backup (.json)</span>
-          </button>
+          <div className="flex flex-col sm:flex-row gap-2.5">
+            <button
+              onClick={handleDownloadZipBackup}
+              className="flex-1 py-3 px-4 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/20 transition-all flex items-center justify-center gap-2"
+              title="Baixar pacote completo com banco SQLite e pasta de uploads"
+            >
+              <Download className="w-4 h-4" />
+              <span>Baixar Pacote Completo (.ZIP)</span>
+            </button>
+            <button
+              onClick={handleDownloadBackup}
+              className="py-3 px-3 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-[#172744] hover:bg-[#20365D] border border-[#24375A] transition-all flex items-center justify-center gap-1.5"
+              title="Baixar apenas registros em JSON"
+            >
+              <Download className="w-3.5 h-3.5 text-slate-400" />
+              <span>Apenas JSON</span>
+            </button>
+          </div>
         </div>
 
         {/* Restaurar Backup */}

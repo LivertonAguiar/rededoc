@@ -1,7 +1,82 @@
 import { Router, Request, Response } from 'express';
 import crypto from 'node:crypto';
+import net from 'node:net';
 import { queryAll, queryOne, execute } from '../db/database.js';
 import { AuthRequest } from '../middleware/auth.js';
+
+export interface PortTestResult {
+  open: boolean;
+  latency_ms: number;
+  message: string;
+  error_code?: string;
+}
+
+/**
+ * Realiza teste ativo de porta TCP via handshake de socket com medição de latência
+ */
+export function checkTcpPort(host: string, port: number, timeoutMs = 3500): Promise<PortTestResult> {
+  return new Promise((resolve) => {
+    const startTime = Date.now();
+    const socket = new net.Socket();
+
+    let resolved = false;
+    const finish = (result: PortTestResult) => {
+      if (resolved) return;
+      resolved = true;
+      socket.destroy();
+      resolve(result);
+    };
+
+    socket.setTimeout(timeoutMs);
+
+    socket.on('connect', () => {
+      const latency_ms = Date.now() - startTime;
+      finish({
+        open: true,
+        latency_ms,
+        message: `Porta ${port} aberta e respondendo no host ${host} (${latency_ms}ms)`
+      });
+    });
+
+    socket.on('timeout', () => {
+      const latency_ms = Date.now() - startTime;
+      finish({
+        open: false,
+        latency_ms,
+        error_code: 'ETIMEDOUT',
+        message: `Tempo limite esgotado (${timeoutMs}ms). Possível bloqueio de firewall, CGNAT ou host inacessível.`
+      });
+    });
+
+    socket.on('error', (err: any) => {
+      const latency_ms = Date.now() - startTime;
+      const code = err.code || 'UNKNOWN';
+      let message = `Falha na conexão (${code})`;
+      if (code === 'ECONNREFUSED') {
+        message = `Conexão recusada pela porta ${port} no host ${host}. Serviço offline ou regra de NAT ausente no roteador.`;
+      } else if (code === 'ENETUNREACH' || code === 'EHOSTUNREACH') {
+        message = `Host ou rede inalcançável (${host}). Verifique a rota da WAN.`;
+      }
+      finish({
+        open: false,
+        latency_ms,
+        error_code: code,
+        message
+      });
+    });
+
+    try {
+      socket.connect(port, host);
+    } catch (err: any) {
+      finish({
+        open: false,
+        latency_ms: 0,
+        error_code: 'EXCEPTION',
+        message: err.message || 'Erro ao inicializar conexão de socket'
+      });
+    }
+  });
+}
 
 export const portForwardsRouter = Router();
 
@@ -194,4 +269,74 @@ portForwardsRouter.delete('/:id', (req: AuthRequest, res: Response): any => {
   );
 
   res.json({ message: 'Regra de porta excluída com sucesso.' });
+});
+
+// Endpoint: Testar conectividade de uma regra específica
+portForwardsRouter.post('/:id/test', async (req: AuthRequest, res: Response): Promise<any> => {
+  const { id } = req.params;
+  const rule = queryOne('SELECT * FROM port_forwards WHERE id = ?', id);
+  if (!rule) {
+    return res.status(404).json({ error: 'Regra de porta não encontrada.' });
+  }
+
+  const result = await checkTcpPort(rule.source_wan_ip, Number(rule.external_port));
+  const newStatus = result.open ? 'funcionando' : 'com_falha';
+
+  execute('UPDATE port_forwards SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?', newStatus, id);
+
+  execute(`
+    INSERT INTO audit_history (id, client_id, location_id, equipment_id, user_name, action, entity_type, entity_name, field_name, old_value, new_value)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `,
+    'aud_' + crypto.randomUUID().slice(0, 8), rule.client_id, rule.location_id, rule.equipment_id,
+    req.user?.name || 'Técnico', 'PORT_TEST', 'port_forward', rule.service_name, 'Teste Real de Porta TCP',
+    rule.status, `${newStatus} (${result.latency_ms}ms)`
+  );
+
+  const updated = queryOne('SELECT * FROM port_forwards WHERE id = ?', id);
+  res.json({
+    ...result,
+    status: newStatus,
+    rule: updated
+  });
+});
+
+// Endpoint: Testar todas as regras de portas de um cliente em lote
+portForwardsRouter.post('/test-all', async (req: AuthRequest, res: Response): Promise<any> => {
+  const { clientId } = req.body;
+  let query = 'SELECT * FROM port_forwards WHERE 1=1';
+  const params: any[] = [];
+  if (clientId) {
+    query += ' AND client_id = ?';
+    params.push(clientId);
+  }
+  const rules = queryAll(query, ...params);
+  const results = [];
+
+  for (const rule of rules) {
+    const resTest = await checkTcpPort(rule.source_wan_ip, Number(rule.external_port), 2500);
+    const newStatus = resTest.open ? 'funcionando' : 'com_falha';
+    execute('UPDATE port_forwards SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?', newStatus, rule.id);
+    results.push({
+      id: rule.id,
+      service_name: rule.service_name,
+      external_port: rule.external_port,
+      open: resTest.open,
+      latency_ms: resTest.latency_ms,
+      status: newStatus,
+      message: resTest.message
+    });
+  }
+
+  res.json({ tested: results.length, results });
+});
+
+// Endpoint: Teste direto avulso de host/porta (sem regra cadastrada)
+portForwardsRouter.post('/test-direct', async (req: Request, res: Response): Promise<any> => {
+  const { host, port } = req.body;
+  if (!host || !port) {
+    return res.status(400).json({ error: 'Host e Porta são obrigatórios para o teste.' });
+  }
+  const result = await checkTcpPort(String(host), Number(port));
+  res.json(result);
 });

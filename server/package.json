@@ -10,6 +10,8 @@
     "seed": "tsx src/db/seed.ts"
   },
   "dependencies": {
+    "@types/archiver": "^8.0.0",
+    "archiver": "^7.0.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",

@@ -32,7 +32,9 @@ import {
   Calendar,
   Wrench,
   DollarSign,
-  History
+  History,
+  Play,
+  Loader2
 } from 'lucide-react';
 import { Client, Location, Equipment, PortForward, Attachment, ServiceOrder } from '../types';
 import { api } from '../services/api';
@@ -153,6 +155,26 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   const activePorts = portForwards.filter(p => p.status === 'funcionando').length;
   const failedPorts = portForwards.filter(p => p.status === 'com_falha').length;
   const totalPorts = portForwards.length;
+
+  // Estado do teste rápido de portas no Dashboard
+  const [testingPortId, setTestingPortId] = useState<string | null>(null);
+
+  const handleTestDashboardPort = async (p: PortForward) => {
+    setTestingPortId(p.id);
+    try {
+      const res = await api.testPortForward(p.id);
+      if (res.open) {
+        showToast(`Porta WAN ${p.external_port} (${p.service_name}) aberta! (${res.latency_ms}ms)`, 'success');
+      } else {
+        showToast(`Porta WAN ${p.external_port} (${p.service_name}) falhou: ${res.message}`, 'error');
+      }
+      onRefresh();
+    } catch (err: any) {
+      showToast('Erro ao testar porta: ' + err.message, 'error');
+    } finally {
+      setTestingPortId(null);
+    }
+  };
 
   // Estado do formulário de Parâmetros de Rede
   const [networkForm, setNetworkForm] = useState({
@@ -1353,7 +1375,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                           {ports.map(p => (
                             <div
                               key={p.id}
-                              className="flex items-center justify-between p-1.5 rounded-lg bg-[#0C1525] border border-[#1A2C49] text-[11px] font-mono"
+                              className="flex items-center justify-between p-1.5 rounded-lg bg-[#0C1525] border border-[#1A2C49] text-[11px] font-mono group"
                             >
                               <div className="flex items-center gap-1.5">
                                 <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold border border-amber-500/30">
@@ -1363,10 +1385,28 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                                 <span className="text-blue-300">{p.internal_port}</span>
                                 <span className="text-[10px] text-slate-400">({p.protocol})</span>
                               </div>
-                              <span className={`w-2 h-2 rounded-full ${
-                                p.status === 'funcionando' ? 'bg-emerald-500' :
-                                p.status === 'com_falha' ? 'bg-rose-500 animate-pulse' : 'bg-amber-500'
-                              }`} title={p.status}></span>
+                              <div className="flex items-center gap-1.5">
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleTestDashboardPort(p);
+                                  }}
+                                  disabled={testingPortId === p.id}
+                                  title="Testar porta TCP agora"
+                                  className="p-1 rounded bg-[#172744] hover:bg-[#20365D] text-amber-300 hover:text-amber-200 transition opacity-80 hover:opacity-100 disabled:opacity-40"
+                                >
+                                  {testingPortId === p.id ? (
+                                    <Loader2 className="w-3 h-3 animate-spin text-amber-400" />
+                                  ) : (
+                                    <Play className="w-3 h-3 text-amber-400 fill-amber-400/20" />
+                                  )}
+                                </button>
+                                <span className={`w-2 h-2 rounded-full ${
+                                  p.status === 'funcionando' ? 'bg-emerald-500' :
+                                  p.status === 'com_falha' ? 'bg-rose-500 animate-pulse' : 'bg-amber-500'
+                                }`} title={`Status: ${p.status}`}></span>
+                              </div>
                             </div>
                           ))}
                         </div>

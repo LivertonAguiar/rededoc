@@ -1,8 +1,97 @@
 import { Router, Request, Response } from 'express';
+import path from 'node:path';
+import fs from 'node:fs';
+import { ZipArchive } from 'archiver';
 import { db } from '../db/database.js';
 
 export const backupRouter = Router();
 
+// Endpoint: Exportação completa consolidada em ZIP (JSON + SQLite + Uploads)
+backupRouter.get('/export-zip', async (req: Request, res: Response) => {
+  try {
+    // Força o SQLite a gravar alterações do WAL no arquivo principal antes do empacotamento
+    try {
+      db.exec('PRAGMA wal_checkpoint(TRUNCATE);');
+    } catch (e) {
+      console.warn('Aviso no checkpoint WAL:', e);
+    }
+
+    const filename = `rededoc-full-backup-${new Date().toISOString().slice(0, 10)}.zip`;
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/zip');
+
+    const archive = new ZipArchive({
+      zlib: { level: 9 }
+    });
+
+    archive.on('error', (err: any) => {
+      console.error('Erro na geração do ZIP:', err);
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Falha ao compactar backup: ' + (err?.message || 'Erro desconhecido') });
+      }
+    });
+
+    archive.pipe(res);
+
+    // 1. Gera manifesto com resumo
+    const clientsCount = (db.prepare('SELECT COUNT(*) as c FROM clients').get() as any)?.c || 0;
+    const equipmentsCount = (db.prepare('SELECT COUNT(*) as c FROM equipments').get() as any)?.c || 0;
+    const credentialsCount = (db.prepare('SELECT COUNT(*) as c FROM credentials').get() as any)?.c || 0;
+    const portsCount = (db.prepare('SELECT COUNT(*) as c FROM port_forwards').get() as any)?.c || 0;
+
+    const manifest = {
+      system: 'RedeDoc',
+      version: '1.0.0',
+      exported_at: new Date().toISOString(),
+      summary: {
+        total_clients: clientsCount,
+        total_equipments: equipmentsCount,
+        total_credentials: credentialsCount,
+        total_ports: portsCount
+      }
+    };
+    archive.append(JSON.stringify(manifest, null, 2), { name: 'manifest.json' });
+
+    // 2. Anexa o JSON completo de dados
+    const fullJsonData = {
+      ...manifest,
+      users: db.prepare('SELECT id, name, email, role, created_at FROM users').all(),
+      clients: db.prepare('SELECT * FROM clients').all(),
+      locations: db.prepare('SELECT * FROM locations').all(),
+      equipments: db.prepare('SELECT * FROM equipments').all(),
+      port_forwards: db.prepare('SELECT * FROM port_forwards').all(),
+      credentials: db.prepare('SELECT * FROM credentials').all(),
+      credential_audit_logs: db.prepare('SELECT * FROM credential_audit_logs').all(),
+      service_orders: db.prepare('SELECT * FROM service_orders').all(),
+      network_topology: db.prepare('SELECT * FROM network_topology').all(),
+      audit_history: db.prepare('SELECT * FROM audit_history').all(),
+      attachments: db.prepare('SELECT * FROM attachments').all()
+    };
+    archive.append(JSON.stringify(fullJsonData, null, 2), { name: 'data_export.json' });
+
+    // 3. Anexa o arquivo binário rededoc.sqlite se existir
+    const resolvedDataDir = process.env.DATA_DIR || path.resolve(process.cwd(), 'data');
+    const sqlitePath = path.join(resolvedDataDir, 'rededoc.sqlite');
+    if (fs.existsSync(sqlitePath)) {
+      archive.file(sqlitePath, { name: 'database/rededoc.sqlite' });
+    }
+
+    // 4. Anexa a pasta uploads (fotos de equipamentos e arquivos de configuração)
+    const resolvedUploadDir = process.env.UPLOAD_DIR || path.resolve(process.cwd(), 'uploads');
+    if (fs.existsSync(resolvedUploadDir)) {
+      archive.directory(resolvedUploadDir, 'uploads');
+    }
+
+    await archive.finalize();
+  } catch (err: any) {
+    console.error('Erro geral no export-zip:', err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: 'Erro ao gerar backup completo: ' + err.message });
+    }
+  }
+});
+
+// Endpoint: Exportação legada em formato JSON simples
 backupRouter.get('/export', (req: Request, res: Response) => {
   const data = {
     exported_at: new Date().toISOString(),

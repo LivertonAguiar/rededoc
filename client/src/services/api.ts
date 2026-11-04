@@ -72,6 +72,12 @@ export const api = {
     fetchJson<PortForward>(`/port-forwards/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
   updatePortStatus: (id: string, status: 'funcionando' | 'nao_testada' | 'com_falha') =>
     fetchJson<PortForward>(`/port-forwards/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }),
+  testPortForward: (id: string) =>
+    fetchJson<{ open: boolean; latency_ms: number; message: string; error_code?: string; status: string; rule: PortForward }>(`/port-forwards/${id}/test`, { method: 'POST' }),
+  testAllPorts: (clientId?: string) =>
+    fetchJson<{ tested: number; results: Array<{ id: string; service_name: string; external_port: number; open: boolean; latency_ms: number; status: string; message: string }> }>('/port-forwards/test-all', { method: 'POST', body: JSON.stringify({ clientId }) }),
+  testDirectPort: (host: string, port: number) =>
+    fetchJson<{ open: boolean; latency_ms: number; message: string; error_code?: string }>('/port-forwards/test-direct', { method: 'POST', body: JSON.stringify({ host, port }) }),
   deletePortForward: (id: string) =>
     fetchJson<{ message: string }>(`/port-forwards/${id}`, { method: 'DELETE' }),
 
@@ -158,6 +164,7 @@ export const api = {
 
   // Backup & Restore
   exportBackupUrl: () => `${API_BASE}/backup/export`,
+  exportBackupZipUrl: () => `${API_BASE}/backup/export-zip`,
   importBackup: (backupJson: any) =>
     fetchJson<{ message: string }>('/backup/import', { method: 'POST', body: JSON.stringify(backupJson) }),
 
