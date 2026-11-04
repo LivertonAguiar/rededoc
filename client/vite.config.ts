@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
+      devOptions: {
+        enabled: false
+      },
       includeAssets: ['logo.svg'],
       manifest: {
         name: 'RedeDoc — Gestão de Infraestrutura de Redes',

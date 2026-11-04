@@ -21,11 +21,15 @@ export function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(api.getCurrentUser());
   const [authChecking, setAuthChecking] = useState<boolean>(true);
 
-  const [activeTab, setActiveTab] = useState<string>('overview');
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    return window.location.hash.replace('#', '') || localStorage.getItem('rededoc_activeTab') || 'overview';
+  });
   const [historyStack, setHistoryStack] = useState<string[]>([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
   const [clients, setClients] = useState<Client[]>([]);
-  const [selectedClientId, setSelectedClientId] = useState<string>('');
+  const [selectedClientId, setSelectedClientId] = useState<string>(() => {
+    return localStorage.getItem('rededoc_selectedClientId') || '';
+  });
   const [selectedLocationId, setSelectedLocationId] = useState<string>('');
 
   const [equipments, setEquipments] = useState<Equipment[]>([]);
@@ -74,6 +78,7 @@ export function App() {
       window.history.pushState({ tab: newTab }, '', '#' + newTab);
     }
     setActiveTab(newTab);
+    localStorage.setItem('rededoc_activeTab', newTab);
     setIsMobileMenuOpen(false);
   };
 
@@ -82,9 +87,11 @@ export function App() {
       const prev = historyStack[historyStack.length - 1];
       setHistoryStack(prevStack => prevStack.slice(0, -1));
       setActiveTab(prev);
+      localStorage.setItem('rededoc_activeTab', prev);
       window.history.replaceState({ tab: prev }, '', '#' + prev);
     } else if (activeTab !== 'overview') {
       setActiveTab('overview');
+      localStorage.setItem('rededoc_activeTab', 'overview');
       window.history.replaceState({ tab: 'overview' }, '', '#overview');
     } else {
       window.history.back();
@@ -94,12 +101,9 @@ export function App() {
   useEffect(() => {
     // Sincroniza com o botão Voltar nativo do navegador
     const handlePopState = (e: PopStateEvent) => {
-      if (e.state && e.state.tab) {
-        setActiveTab(e.state.tab);
-      } else {
-        const hash = window.location.hash.replace('#', '');
-        setActiveTab(hash || 'overview');
-      }
+      const nextTab = (e.state && e.state.tab) || window.location.hash.replace('#', '') || localStorage.getItem('rededoc_activeTab') || 'overview';
+      setActiveTab(nextTab);
+      localStorage.setItem('rededoc_activeTab', nextTab);
     };
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
@@ -110,12 +114,18 @@ export function App() {
     try {
       const data = await api.getClients();
       setClients(data);
-      if (data.length > 0 && !selectedClientId) {
-        // Seleciona Condomínio Aurora se existir ou o primeiro
-        const aurora = data.find(c => c.name.toLowerCase().includes('aurora')) || data[0];
-        setSelectedClientId(aurora.id);
-        if (aurora.locations && aurora.locations.length > 0) {
-          setSelectedLocationId(aurora.locations[0].id);
+      if (data.length > 0) {
+        const savedClientId = localStorage.getItem('rededoc_selectedClientId');
+        const targetClient = data.find(c => c.id === savedClientId) ||
+          data.find(c => c.name.toLowerCase().includes('aurora')) ||
+          data[0];
+
+        if (targetClient) {
+          setSelectedClientId(targetClient.id);
+          localStorage.setItem('rededoc_selectedClientId', targetClient.id);
+          if (targetClient.locations && targetClient.locations.length > 0) {
+            setSelectedLocationId(targetClient.locations[0].id);
+          }
         }
       }
     } catch (err) {
@@ -156,6 +166,7 @@ export function App() {
 
   const handleSelectClient = (clientId: string) => {
     setSelectedClientId(clientId);
+    localStorage.setItem('rededoc_selectedClientId', clientId);
     const cli = clients.find(c => c.id === clientId);
     if (cli?.locations && cli.locations.length > 0) {
       setSelectedLocationId(cli.locations[0].id);

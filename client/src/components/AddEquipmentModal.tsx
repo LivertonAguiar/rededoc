@@ -173,7 +173,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
         setSelectedCatalogItem(null);
       }
     }
-  }, [isOpen, equipmentToEdit, locationId]);
+  }, [isOpen, equipmentToEdit?.id]);
 
   const loadCatalog = async () => {
     setLoadingCatalog(true);
@@ -511,6 +511,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           </div>
 
           <button
+            type="button"
             onClick={onClose}
             className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#1A2C49] transition"
           >

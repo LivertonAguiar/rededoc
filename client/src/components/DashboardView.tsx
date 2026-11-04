@@ -1216,7 +1216,11 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <Globe className="w-5 h-5 text-blue-400" />
                 {wanIp ? 'Editar Parâmetros de Conexão e Sub-rede' : 'Configurar IP WAN e Parâmetros de Rede'}
               </h2>
-              <button onClick={() => setShowNetworkModal(false)} className="text-slate-400 hover:text-white">
+              <button
+                type="button"
+                onClick={() => setShowNetworkModal(false)}
+                className="text-slate-400 hover:text-white"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -1231,7 +1235,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     autoFocus
                     value={networkForm.public_wan_ip}
                     onChange={(e) => setNetworkForm(p => ({ ...p, public_wan_ip: e.target.value }))}
-                    placeholder="203.0.113.45"
+                    placeholder="Ex: 45.234.150.226"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono font-bold focus:outline-none focus:border-blue-500"
                   />
                 </div>
@@ -1288,7 +1292,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     type="text"
                     value={networkForm.primary_dns}
                     onChange={(e) => setNetworkForm(p => ({ ...p, primary_dns: e.target.value }))}
-                    placeholder="8.8.8.8"
+                    placeholder="Ex: 1.1.1.1 ou IP de DNS"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                   />
                 </div>
@@ -1299,7 +1303,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     type="text"
                     value={networkForm.secondary_dns}
                     onChange={(e) => setNetworkForm(p => ({ ...p, secondary_dns: e.target.value }))}
-                    placeholder="8.8.4.4"
+                    placeholder="Ex: 1.0.0.1 ou secundário"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                   />
                 </div>
