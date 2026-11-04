@@ -21,11 +21,13 @@ import {
   Image as ImageIcon,
   Upload,
   Trash2,
-  RefreshCw
+  RefreshCw,
+  Scan
 } from 'lucide-react';
 import { Equipment, Location, EquipmentCatalogItem } from '../types';
 import { api } from '../services/api';
 import { ImageSearchModal } from './ImageSearchModal';
+import { BarcodeScannerModal } from './BarcodeScannerModal';
 import { useDialog } from '../context/DialogContext';
 
 interface AddEquipmentModalProps {
@@ -56,6 +58,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [saveToCatalog, setSaveToCatalog] = useState<boolean>(true); // Salvar novo modelo no catálogo para uso futuro
+  const [scannerTarget, setScannerTarget] = useState<'mac' | 'serial' | null>(null);
 
   // Modal dedicado de Criação de Novo Modelo no Catálogo
   const [isNewModelModalOpen, setIsNewModelModalOpen] = useState<boolean>(false);
@@ -698,33 +701,75 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
                 {/* MAC Address */}
                 <div>
-                  <label className="text-slate-300 font-semibold block mb-1">
-                    Endereço MAC <span className="text-amber-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ex: 00:1A:2B:3C:4D:5E"
-                    value={formData.mac_address}
-                    onChange={(e) => setFormData(p => ({ ...p, mac_address: e.target.value.toUpperCase() }))}
-                    className="w-full bg-[#101C31] border border-[#24375A] focus:border-amber-400 rounded-lg px-3 py-2 text-amber-300 font-mono font-semibold focus:outline-none"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-semibold block">
+                      Endereço MAC <span className="text-amber-400">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setScannerTarget('mac')}
+                      className="text-[11px] text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 transition"
+                      title="Escanear etiqueta de MAC com a câmera"
+                    >
+                      <Scan className="w-3.5 h-3.5" />
+                      <span>Escanear Câmera</span>
+                    </button>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ex: 00:1A:2B:3C:4D:5E"
+                      value={formData.mac_address}
+                      onChange={(e) => setFormData(p => ({ ...p, mac_address: e.target.value.toUpperCase() }))}
+                      className="w-full bg-[#101C31] border border-[#24375A] focus:border-amber-400 rounded-lg px-3 py-2 text-amber-300 font-mono font-semibold focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setScannerTarget('mac')}
+                      className="px-3 py-2 rounded-lg bg-[#182845] hover:bg-[#20365D] border border-amber-500/30 text-amber-300 shrink-0 transition"
+                      title="Abrir leitor de código de barras / QR Code para MAC"
+                    >
+                      <Scan className="w-4 h-4" />
+                    </button>
+                  </div>
                   <span className="text-[10px] text-slate-500 mt-0.5 block">Para reserva de IP e rastreio</span>
                 </div>
 
                 {/* Número de Série */}
                 <div>
-                  <label className="text-slate-300 font-semibold block mb-1">
-                    Número de Série (Serial) <span className="text-amber-400">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Ex: SN-2026-X8890"
-                    value={formData.serial_number}
-                    onChange={(e) => setFormData(p => ({ ...p, serial_number: e.target.value }))}
-                    className="w-full bg-[#101C31] border border-[#24375A] focus:border-amber-400 rounded-lg px-3 py-2 text-slate-200 font-mono focus:outline-none"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-semibold block">
+                      Número de Série (Serial) <span className="text-amber-400">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setScannerTarget('serial')}
+                      className="text-[11px] text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1 transition"
+                      title="Escanear etiqueta de Serial com a câmera"
+                    >
+                      <Scan className="w-3.5 h-3.5" />
+                      <span>Escanear Câmera</span>
+                    </button>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      required
+                      placeholder="Ex: SN-2026-X8890"
+                      value={formData.serial_number}
+                      onChange={(e) => setFormData(p => ({ ...p, serial_number: e.target.value }))}
+                      className="w-full bg-[#101C31] border border-[#24375A] focus:border-amber-400 rounded-lg px-3 py-2 text-slate-200 font-mono focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setScannerTarget('serial')}
+                      className="px-3 py-2 rounded-lg bg-[#182845] hover:bg-[#20365D] border border-blue-500/30 text-blue-300 shrink-0 transition"
+                      title="Abrir leitor de código de barras / QR Code para Serial"
+                    >
+                      <Scan className="w-4 h-4" />
+                    </button>
+                  </div>
                   <span className="text-[10px] text-slate-500 mt-0.5 block">Etiqueta do fabricante</span>
                 </div>
 
@@ -1391,6 +1436,24 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
         onSelectImage={(localUrl) => {
           setNewModelForm(prev => ({ ...prev, photo_url: localUrl }));
           setIsNewModelImageSearchOpen(false);
+        }}
+      />
+
+      {/* Modal: Leitor de Código de Barras / QR Code pela Câmera */}
+      <BarcodeScannerModal
+        isOpen={scannerTarget !== null}
+        onClose={() => setScannerTarget(null)}
+        targetField={scannerTarget || 'any'}
+        title={scannerTarget === 'mac' ? 'Escanear MAC Address da Etiqueta' : 'Escanear Número de Série (S/N)'}
+        onScan={(value) => {
+          if (scannerTarget === 'mac') {
+            setFormData(prev => ({ ...prev, mac_address: value }));
+            showToast(`MAC Address escaneado: ${value}`, 'success');
+          } else if (scannerTarget === 'serial') {
+            setFormData(prev => ({ ...prev, serial_number: value }));
+            showToast(`Número de Série escaneado: ${value}`, 'success');
+          }
+          setScannerTarget(null);
         }}
       />
     </div>

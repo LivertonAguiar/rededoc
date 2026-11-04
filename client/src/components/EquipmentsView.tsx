@@ -16,11 +16,13 @@ import {
   Search,
   CheckCircle2,
   Sparkles,
-  Info
+  Info,
+  Tag
 } from 'lucide-react';
 import { Equipment, Client, Location } from '../types';
 import { api } from '../services/api';
 import { AddEquipmentModal } from './AddEquipmentModal';
+import { EquipmentLabelModal } from './EquipmentLabelModal';
 import { useDialog } from '../context/DialogContext';
 
 interface EquipmentsViewProps {
@@ -41,6 +43,7 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showModal, setShowModal] = useState(false);
   const [editingEq, setEditingEq] = useState<Equipment | null>(null);
+  const [selectedEquipmentForLabel, setSelectedEquipmentForLabel] = useState<Equipment | null>(null);
 
   const handleOpenNew = () => {
     setEditingEq(null);
@@ -251,6 +254,13 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
 
               <div className="flex items-center gap-2">
                 <button
+                  onClick={() => setSelectedEquipmentForLabel(eq)}
+                  className="p-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400"
+                  title="Imprimir Etiqueta com QR Code"
+                >
+                  <Tag className="w-3.5 h-3.5" />
+                </button>
+                <button
                   onClick={() => handleOpenEdit(eq)}
                   className="p-1.5 rounded-lg bg-[#182845] hover:bg-[#20365D] text-slate-300 hover:text-white"
                   title="Editar"
@@ -285,6 +295,14 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
           onRefresh();
         }}
         equipmentToEdit={editingEq}
+      />
+
+      {/* Modal de Impressão de Etiqueta com QR Code */}
+      <EquipmentLabelModal
+        isOpen={!!selectedEquipmentForLabel}
+        onClose={() => setSelectedEquipmentForLabel(null)}
+        equipment={selectedEquipmentForLabel}
+        client={client}
       />
     </div>
   );
