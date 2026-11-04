@@ -246,6 +246,16 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   // Função para abrir modal de edição de parâmetros de rede
   const handleOpenNetworkModal = () => {
+    const draftKey = `rededoc_draft_network_${client.id}`;
+    const savedDraft = sessionStorage.getItem(draftKey);
+    if (savedDraft) {
+      try {
+        setNetworkForm(JSON.parse(savedDraft));
+        setShowNetworkModal(true);
+        return;
+      } catch {}
+    }
+
     setNetworkForm({
       public_wan_ip: routerOnt?.public_wan_ip || '',
       local_ip: routerOnt?.local_ip || '192.168.1.1',
@@ -260,8 +270,17 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     setShowNetworkModal(true);
   };
 
+  const updateNetworkField = (field: string, value: string) => {
+    setNetworkForm(prev => {
+      const updated = { ...prev, [field]: value };
+      sessionStorage.setItem(`rededoc_draft_network_${client.id}`, JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   const handleSaveNetworkParams = async (e: React.FormEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     try {
       if (routerOnt) {
         await api.updateEquipment(routerOnt.id, {
@@ -311,6 +330,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           is_mac_reserved: 0
         });
       }
+      sessionStorage.removeItem(`rededoc_draft_network_${client.id}`);
       setShowNetworkModal(false);
       showToast('Parâmetros de rede salvos com sucesso!', 'success');
       onRefresh();
@@ -1234,7 +1254,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     required
                     autoFocus
                     value={networkForm.public_wan_ip}
-                    onChange={(e) => setNetworkForm(p => ({ ...p, public_wan_ip: e.target.value }))}
+                    onChange={(e) => updateNetworkField('public_wan_ip', e.target.value)}
                     placeholder="Ex: 45.234.150.226"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono font-bold focus:outline-none focus:border-blue-500"
                   />
@@ -1246,7 +1266,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     type="text"
                     required
                     value={networkForm.local_ip}
-                    onChange={(e) => setNetworkForm(p => ({ ...p, local_ip: e.target.value }))}
+                    onChange={(e) => updateNetworkField('local_ip', e.target.value)}
                     placeholder="192.168.1.1"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-emerald-400 font-mono font-bold focus:outline-none focus:border-emerald-500"
                   />
@@ -1258,7 +1278,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                     type="text"
                     required
                     value={networkForm.subnet_mask}
-                    onChange={(e) => setNetworkForm(p => ({ ...p, subnet_mask: e.target.value }))}
+                    onChange={(e) => updateNetworkField('subnet_mask', e.target.value)}
                     placeholder="255.255.255.0"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                   />
@@ -1269,7 +1289,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <input
                     type="text"
                     value={networkForm.gateway}
-                    onChange={(e) => setNetworkForm(p => ({ ...p, gateway: e.target.value }))}
+                    onChange={(e) => updateNetworkField('gateway', e.target.value)}
                     placeholder="192.168.1.1"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                   />
@@ -1280,7 +1300,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <input
                     type="text"
                     value={networkForm.dhcp_range}
-                    onChange={(e) => setNetworkForm(p => ({ ...p, dhcp_range: e.target.value }))}
+                    onChange={(e) => updateNetworkField('dhcp_range', e.target.value)}
                     placeholder="192.168.1.100-199"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                   />
@@ -1291,7 +1311,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <input
                     type="text"
                     value={networkForm.primary_dns}
-                    onChange={(e) => setNetworkForm(p => ({ ...p, primary_dns: e.target.value }))}
+                    onChange={(e) => updateNetworkField('primary_dns', e.target.value)}
                     placeholder="Ex: 1.1.1.1 ou IP de DNS"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                   />
@@ -1302,7 +1322,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   <input
                     type="text"
                     value={networkForm.secondary_dns}
-                    onChange={(e) => setNetworkForm(p => ({ ...p, secondary_dns: e.target.value }))}
+                    onChange={(e) => updateNetworkField('secondary_dns', e.target.value)}
                     placeholder="Ex: 1.0.0.1 ou secundário"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                   />
@@ -1312,7 +1332,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#1D3054]">
                 <button
                   type="button"
-                  onClick={() => setShowNetworkModal(false)}
+                  onClick={() => {
+                    sessionStorage.removeItem(`rededoc_draft_network_${client.id}`);
+                    setShowNetworkModal(false);
+                  }}
                   className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-[#172744] hover:bg-[#20365D]"
                 >
                   Cancelar

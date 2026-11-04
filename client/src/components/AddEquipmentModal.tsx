@@ -143,6 +143,17 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
         });
         setSelectedCatalogItem(null);
       } else {
+        // Tenta recuperar rascunho anterior de novo cadastro
+        const draftKey = `rededoc_draft_eq_${clientId}`;
+        const savedDraft = sessionStorage.getItem(draftKey);
+        if (savedDraft) {
+          try {
+            setFormData(JSON.parse(savedDraft));
+            setSelectedCatalogItem(null);
+            return;
+          } catch {}
+        }
+
         // Reset para novo cadastro
         setFormData({
           name: '',
@@ -174,6 +185,16 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
       }
     }
   }, [isOpen, equipmentToEdit?.id]);
+
+  const updateFormData = (field: string, value: any) => {
+    setFormData(prev => {
+      const updated = { ...prev, [field]: value };
+      if (!equipmentToEdit) {
+        sessionStorage.setItem(`rededoc_draft_eq_${clientId}`, JSON.stringify(updated));
+      }
+      return updated;
+    });
+  };
 
   const loadCatalog = async () => {
     setLoadingCatalog(true);
@@ -464,6 +485,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
         }
       }
 
+      sessionStorage.removeItem(`rededoc_draft_eq_${clientId}`);
       onSuccess();
       onClose();
     } catch (err: any) {
@@ -1057,10 +1079,56 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                 <input
                   type="text"
                   value={formData.gateway}
-                  onChange={(e) => setFormData(p => ({ ...p, gateway: e.target.value }))}
+                  onChange={(e) => updateFormData('gateway', e.target.value)}
                   className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none"
                 />
               </div>
+
+              {/* Parâmetros WAN e DNS para Roteadores / ONTs */}
+              {formData.category === 'router_ont' && (
+                <>
+                  <div>
+                    <label className="text-slate-300 font-semibold block mb-1">IP WAN (Público Dedicado)</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: 45.234.150.226"
+                      value={formData.public_wan_ip}
+                      onChange={(e) => updateFormData('public_wan_ip', e.target.value)}
+                      className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-1.5 text-white font-mono font-bold focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-slate-300 font-semibold block mb-1">Máscara de Sub-rede</label>
+                    <input
+                      type="text"
+                      placeholder="255.255.255.0"
+                      value={formData.subnet_mask}
+                      onChange={(e) => updateFormData('subnet_mask', e.target.value)}
+                      className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-slate-300 font-semibold block mb-1">DNS Primário</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: 1.1.1.1 ou IP de DNS"
+                      value={formData.primary_dns}
+                      onChange={(e) => updateFormData('primary_dns', e.target.value)}
+                      className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-slate-300 font-semibold block mb-1">DNS Secundário</label>
+                    <input
+                      type="text"
+                      placeholder="Ex: 1.0.0.1 ou secundário"
+                      value={formData.secondary_dns}
+                      onChange={(e) => updateFormData('secondary_dns', e.target.value)}
+                      className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+                </>
+              )}
 
               <div>
                 <label className="text-slate-300 font-semibold block mb-1">Reserva de IP por MAC?</label>
