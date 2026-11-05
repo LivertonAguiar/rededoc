@@ -246,15 +246,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   // Função para abrir modal de edição de parâmetros de rede
   const handleOpenNetworkModal = () => {
-    const draftKey = `rededoc_draft_network_${client.id}`;
-    const savedDraft = sessionStorage.getItem(draftKey);
-    if (savedDraft) {
-      try {
-        setNetworkForm(JSON.parse(savedDraft));
-        setShowNetworkModal(true);
-        return;
-      } catch {}
-    }
+    sessionStorage.removeItem(`rededoc_draft_network_${client.id}`);
+    sessionStorage.removeItem(`itfy_draft_network_${client.id}`);
 
     setNetworkForm({
       public_wan_ip: routerOnt?.public_wan_ip || '',

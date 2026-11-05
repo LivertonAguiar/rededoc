@@ -20,38 +20,23 @@ export const clientSchema = z.object({
  * Esquema de validação para Equipamentos de Rede
  */
 export const equipmentSchema = z.object({
-  client_id: z.string().min(1, 'O cliente vinculado é obrigatório.'),
-  location_id: z.string().min(1, 'O local vinculado é obrigatório.'),
-  name: z.string().min(2, 'O nome do equipamento é obrigatório.'),
-  category: z.enum([
-    'router_ont',
-    'facial_recognition',
-    'gate_module',
-    'dvr_nvr',
-    'ip_camera',
-    'switch',
-    'access_point',
-    'intercom',
-    'server',
-    'other'
-  ], { message: 'Categoria de equipamento não reconhecida.' }),
+  client_id: z.string().min(1, 'O cliente vinculado é obrigatório.').optional(),
+  location_id: z.string().min(1, 'O local vinculado é obrigatório.').optional(),
+  name: z.string().min(1, 'O nome do equipamento é obrigatório.').optional(),
+  category: z.string().min(1, 'A categoria do equipamento é obrigatória.').optional(),
   manufacturer: z.string().optional().nullable(),
   model: z.string().optional().nullable(),
   serial_number: z.string().optional().nullable(),
-  mac_address: z.string().refine(
-    (val) => !val || macRegex.test(val) || val.length === 12,
-    { message: 'Formato de Endereço MAC inválido. Utilize o formato 00:1A:2B:3C:4D:5E.' }
-  ).optional().nullable(),
+  mac_address: z.string().optional().nullable(),
   physical_location: z.string().optional().nullable(),
-  local_ip: z.string().refine(
-    (val) => !val || ipRegex.test(val),
-    { message: 'Endereço IPv4 local inválido.' }
-  ).optional().nullable(),
+  local_ip: z.string().optional().nullable(),
   subnet_mask: z.string().optional().nullable(),
-  gateway: z.string().refine(
-    (val) => !val || ipRegex.test(val),
-    { message: 'Endereço IPv4 de Gateway inválido.' }
-  ).optional().nullable(),
+  gateway: z.string().optional().nullable(),
+  primary_dns: z.string().optional().nullable(),
+  secondary_dns: z.string().optional().nullable(),
+  dhcp_range: z.string().optional().nullable(),
+  interface_name: z.string().optional().nullable(),
+  vlan: z.string().optional().nullable(),
   public_wan_ip: z.string().optional().nullable(),
   is_mac_reserved: z.union([z.boolean(), z.number()]).optional().nullable(),
   notes: z.string().optional().nullable(),
@@ -64,7 +49,7 @@ export const equipmentSchema = z.object({
   access_notes: z.string().optional().nullable(),
   additional_info: z.string().optional().nullable(),
   internal_notes: z.string().optional().nullable()
-});
+}).passthrough();
 
 /**
  * Esquema de validação para Regras de Redirecionamento de Portas (NAT)

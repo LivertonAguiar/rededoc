@@ -198,11 +198,31 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
       updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `,
-    name, category, manufacturer || null, model || null, serial_number || null,
-    mac_address || null, physical_location || null, photo_url || null, notes || null,
-    local_ip || null, subnet_mask || '255.255.255.0', gateway || null, primary_dns || null, secondary_dns || null, dhcp_range || null,
-    interface_name || null, vlan || null, is_mac_reserved ? 1 : 0, public_wan_ip || null,
-    access_url || null, management_port ? Number(management_port) : null, protocol || 'http', admin_username || null, config_path || null, access_notes || null,
+    name !== undefined ? name : existing.name,
+    category !== undefined ? category : existing.category,
+    manufacturer !== undefined ? manufacturer : existing.manufacturer,
+    model !== undefined ? model : existing.model,
+    serial_number !== undefined ? serial_number : existing.serial_number,
+    mac_address !== undefined ? mac_address : existing.mac_address,
+    physical_location !== undefined ? physical_location : existing.physical_location,
+    photo_url !== undefined ? photo_url : existing.photo_url,
+    notes !== undefined ? notes : existing.notes,
+    local_ip !== undefined ? (local_ip || null) : existing.local_ip,
+    subnet_mask !== undefined ? (subnet_mask || '255.255.255.0') : existing.subnet_mask,
+    gateway !== undefined ? (gateway || null) : existing.gateway,
+    primary_dns !== undefined ? (primary_dns || null) : existing.primary_dns,
+    secondary_dns !== undefined ? (secondary_dns || null) : existing.secondary_dns,
+    dhcp_range !== undefined ? (dhcp_range || null) : existing.dhcp_range,
+    interface_name !== undefined ? interface_name : existing.interface_name,
+    vlan !== undefined ? vlan : existing.vlan,
+    is_mac_reserved !== undefined ? (is_mac_reserved ? 1 : 0) : existing.is_mac_reserved,
+    public_wan_ip !== undefined ? (public_wan_ip || null) : existing.public_wan_ip,
+    access_url !== undefined ? access_url : existing.access_url,
+    management_port !== undefined ? (management_port ? Number(management_port) : null) : existing.management_port,
+    protocol !== undefined ? protocol : existing.protocol,
+    admin_username !== undefined ? admin_username : existing.admin_username,
+    config_path !== undefined ? config_path : existing.config_path,
+    access_notes !== undefined ? access_notes : existing.access_notes,
     internal_notes !== undefined ? internal_notes : (existing as any).internal_notes,
     additional_info !== undefined ? additional_info : (existing as any).additional_info,
     id
@@ -213,19 +233,31 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
     execute(`
       INSERT INTO audit_history (id, client_id, location_id, equipment_id, user_name, action, entity_type, entity_name, field_name, old_value, new_value)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_WAN', 'equipment', name, 'IP WAN (Público)', existing.public_wan_ip, public_wan_ip);
+    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_WAN', 'equipment', name || existing.name, 'IP WAN (Público)', existing.public_wan_ip, public_wan_ip);
   }
   if (local_ip && local_ip !== existing.local_ip) {
     execute(`
       INSERT INTO audit_history (id, client_id, location_id, equipment_id, user_name, action, entity_type, entity_name, field_name, old_value, new_value)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_IP', 'equipment', name, 'IP Local', existing.local_ip, local_ip);
+    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_IP', 'equipment', name || existing.name, 'IP Local', existing.local_ip, local_ip);
   }
   if (mac_address && mac_address !== existing.mac_address) {
     execute(`
       INSERT INTO audit_history (id, client_id, location_id, equipment_id, user_name, action, entity_type, entity_name, field_name, old_value, new_value)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_MAC', 'equipment', name, 'MAC Address', existing.mac_address, mac_address);
+    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_MAC', 'equipment', name || existing.name, 'MAC Address', existing.mac_address, mac_address);
+  }
+  if (primary_dns !== undefined && primary_dns !== existing.primary_dns) {
+    execute(`
+      INSERT INTO audit_history (id, client_id, location_id, equipment_id, user_name, action, entity_type, entity_name, field_name, old_value, new_value)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_DNS', 'equipment', name || existing.name, 'DNS Primário', existing.primary_dns || '(vazio)', primary_dns || '(vazio)');
+  }
+  if (secondary_dns !== undefined && secondary_dns !== existing.secondary_dns) {
+    execute(`
+      INSERT INTO audit_history (id, client_id, location_id, equipment_id, user_name, action, entity_type, entity_name, field_name, old_value, new_value)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `, 'aud_' + crypto.randomUUID().slice(0, 8), existing.client_id, existing.location_id, id, user, 'ALTERACAO_DNS', 'equipment', name || existing.name, 'DNS Secundário', existing.secondary_dns || '(vazio)', secondary_dns || '(vazio)');
   }
 
   const updated = queryOne('SELECT * FROM equipments WHERE id = ?', id);
