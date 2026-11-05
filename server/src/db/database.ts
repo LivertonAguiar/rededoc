@@ -11,7 +11,13 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-const dbPath = path.join(dataDir, 'rededoc.sqlite');
+// Suporte transparente ao banco existente ou novo arquivo itfy.sqlite
+const dbFileName = process.env.DB_NAME || (
+  fs.existsSync(path.join(dataDir, 'rededoc.sqlite')) && !fs.existsSync(path.join(dataDir, 'itfy.sqlite'))
+    ? 'rededoc.sqlite'
+    : 'itfy.sqlite'
+);
+const dbPath = path.join(dataDir, dbFileName);
 export const db = new DatabaseSync(dbPath);
 
 // Configuração de performance e integridade

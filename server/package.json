@@ -1,5 +1,5 @@
 {
-  "name": "rededoc-server",
+  "name": "itfy-server",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",

@@ -66,7 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <div>
               <div className="text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
-                RedeDoc
+                ITFY
                 <span className="text-[10px] uppercase font-semibold bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/30">Pro</span>
               </div>
               <div className="text-[11px] text-slate-400">Documentação de Redes</div>

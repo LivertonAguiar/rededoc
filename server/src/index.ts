@@ -49,7 +49,7 @@ app.use('/uploads', express.static(uploadsPath));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    system: 'RedeDoc API',
+    system: 'ITFY API',
     version: '1.0.0',
     timestamp: new Date().toISOString()
   });
@@ -82,7 +82,7 @@ if (fs.existsSync(clientDist)) {
 
 app.listen(PORT, () => {
   console.log(`=========================================`);
-  console.log(` RedeDoc Server executando na porta ${PORT}`);
+  console.log(` ITFY Server executando na porta ${PORT}`);
   console.log(` API Health: http://localhost:${PORT}/api/health`);
   console.log(`=========================================`);
 });

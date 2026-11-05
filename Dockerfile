@@ -1,10 +1,10 @@
 # Stage 1: Build do Frontend e Backend
-FROM node:24-alpine AS builder
+FROM node:22-bookworm-slim AS builder
 
 WORKDIR /app
 
 # Copia manifestos de pacotes
-COPY package.json ./
+COPY package.json package-lock.json* ./
 COPY server/package.json ./server/
 COPY client/package.json ./client/
 
@@ -20,7 +20,7 @@ RUN npm run build --workspace=server
 RUN npm run build --workspace=client
 
 # Stage 2: Runtime de Produção
-FROM node:24-alpine AS runner
+FROM node:22-bookworm-slim AS runner
 
 WORKDIR /app
 
@@ -30,11 +30,11 @@ ENV DATA_DIR=/app/data
 ENV UPLOAD_DIR=/app/uploads
 
 # Copia dependências e artefatos compilados
-COPY package.json ./
+COPY package.json package-lock.json* ./
 COPY server/package.json ./server/
 COPY client/package.json ./client/
 
-RUN npm install --omit=dev
+RUN npm install --omit=dev && npm cache clean --force
 
 COPY --from=builder /app/server/dist ./server/dist
 COPY --from=builder /app/client/dist ./client/dist

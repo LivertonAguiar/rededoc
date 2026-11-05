@@ -1,26 +1,49 @@
 services:
-  rededoc:
+  itfy-app:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: rededoc_app
+    container_name: itfy-app
     restart: unless-stopped
-    ports:
-      - "3001:3001"
+    init: true
+    cpus: "1.5"
+    mem_limit: 768m
+    pids_limit: 256
+    security_opt:
+      - no-new-privileges:true
+    env_file:
+      - .env
     environment:
-      - PORT=3001
       - NODE_ENV=production
+      - PORT=3001
       - DATA_DIR=/app/data
       - UPLOAD_DIR=/app/uploads
-      - VAULT_SECRET_KEY=rededoc-vault-master-encryption-key-condominio-2026
-      - JWT_SECRET=rededoc-jwt-secret-condominio-aurora-2026
     volumes:
-      - rededoc_data:/app/data
-      - rededoc_uploads:/app/uploads
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    networks:
+      - proxy
+    expose:
+      - "3001"
+    ports:
+      - "127.0.0.1:3001:3001"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3001/api/health').then(r => { if (!r.ok) process.exit(1) }).catch(() => process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
-volumes:
-  rededoc_data:
-    driver: local
-  rededoc_uploads:
-    driver: local
+networks:
+  proxy:
+    external: true
 

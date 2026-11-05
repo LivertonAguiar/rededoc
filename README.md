@@ -1,4 +1,4 @@
-# RedeDoc — Sistema de Documentação e Gerenciamento de Infraestrutura de Redes
+# ITFY — Sistema de Documentação e Gerenciamento de Infraestrutura de Redes
 
 Sistema web completo desenvolvido para técnicos de informática, instaladores e prestadores de serviços de infraestrutura em condomínios e clientes corporativos.
 
@@ -92,7 +92,7 @@ Para executar em contêineres Docker isolados com volumes persistentes para banc
 docker compose up -d --build
 ```
 
-A aplicação estará disponível em `http://localhost:3001`. Os dados são mantidos nos volumes `rededoc_data` e `rededoc_uploads`.
+A aplicação estará disponível em `http://localhost:3001` (ou em produção via `https://itfy.lpaguiar.com.br`). Os dados são mantidos nos volumes `./data` e `./uploads`.
 
 ---
 

@@ -67,8 +67,8 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
             <Globe className="w-7 h-7" />
           </div>
           <h1 className="text-2xl font-black text-white tracking-tight flex items-center justify-center gap-1.5">
-            <span>Rede</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Doc</span>
+            <span>IT</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">FY</span>
           </h1>
           <p className="text-xs text-slate-400">
             Sistema de Documentação e Gestão de Infraestrutura de Redes
@@ -146,7 +146,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
                 </>
               ) : (
                 <>
-                  <span>Entrar no RedeDoc</span>
+                  <span>Entrar no ITFY</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}

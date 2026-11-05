@@ -1,7 +1,7 @@
 {
-  "name": "rededoc",
+  "name": "itfy",
   "version": "1.0.0",
-  "description": "RedeDoc — Sistema de Documentação e Gerenciamento de Infraestrutura de Redes",
+  "description": "ITFY — Sistema de Documentação e Gerenciamento de Infraestrutura de Redes e TI",
   "private": true,
   "workspaces": [
     "server",
