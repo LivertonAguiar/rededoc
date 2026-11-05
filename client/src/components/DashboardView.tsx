@@ -352,22 +352,41 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     e.preventDefault();
     try {
       const orders = await api.getServiceOrders(client.id);
+      let locId = location?.id || client.locations?.[0]?.id;
+      if (!locId) {
+        const locs = await api.getLocations(client.id);
+        if (locs.length > 0) {
+          locId = locs[0].id;
+        } else {
+          const newLoc = await api.createLocation({
+            client_id: client.id,
+            name: 'Sede Principal',
+            address: client.address || 'Local Principal'
+          });
+          locId = newLoc.id;
+        }
+      }
+
+      const st = notesForm.service_type?.trim() || 'Atendimento Técnico';
+      const tn = notesForm.technical_notes?.trim() || '';
+      const pd = notesForm.problem_description?.trim() || tn || st;
+
       if (orders.length > 0) {
         await api.updateServiceOrder(orders[0].id, {
           ...orders[0],
-          technical_notes: notesForm.technical_notes,
-          service_type: notesForm.service_type,
-          problem_description: notesForm.problem_description
+          technical_notes: tn,
+          service_type: st,
+          problem_description: pd
         });
       } else {
         await api.createServiceOrder({
           client_id: client.id,
-          location_id: location?.id || client.locations?.[0]?.id || '',
+          location_id: locId,
           technician_name: 'Liverton Aguiar',
           date_time: new Date().toISOString().slice(0, 16).replace('T', ' '),
-          service_type: notesForm.service_type,
-          problem_description: notesForm.problem_description,
-          technical_notes: notesForm.technical_notes,
+          service_type: st,
+          problem_description: pd,
+          technical_notes: tn,
           status: 'concluido'
         });
       }

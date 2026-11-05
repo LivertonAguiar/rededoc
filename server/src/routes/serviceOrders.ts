@@ -61,9 +61,25 @@ serviceOrdersRouter.post('/', (req: AuthRequest, res: Response): any => {
     service_cost, time_spent_minutes, additional_info
   } = req.body;
 
-  if (!client_id || !location_id || !service_type || !problem_description) {
-    return res.status(400).json({ error: 'Cliente, Local, Tipo de Serviço e Descrição são obrigatórios.' });
+  if (!client_id) {
+    return res.status(400).json({ error: 'O cliente vinculado é obrigatório.' });
   }
+
+  // Garante um local válido para o atendimento
+  let locId = location_id;
+  if (!locId) {
+    const loc = queryOne('SELECT id FROM locations WHERE client_id = ? LIMIT 1', client_id) as any;
+    if (loc) {
+      locId = loc.id;
+    } else {
+      locId = 'loc_' + crypto.randomUUID().slice(0, 8);
+      execute('INSERT INTO locations (id, client_id, name) VALUES (?, ?, ?)', locId, client_id, 'Sede Principal');
+    }
+  }
+
+  const st = (service_type && String(service_type).trim()) || 'Atendimento Técnico';
+  const tn = technical_notes ? String(technical_notes).trim() : null;
+  const pd = (problem_description && String(problem_description).trim()) || tn || st;
 
   const id = 'so_' + crypto.randomUUID().slice(0, 8);
   const tech = technician_name || req.user?.name || 'Técnico';
@@ -77,10 +93,10 @@ serviceOrdersRouter.post('/', (req: AuthRequest, res: Response): any => {
       service_cost, time_spent_minutes, additional_info
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
-    id, client_id, location_id, req.user?.id || null, tech, dt,
-    service_type, problem_description, status || 'em_andamento',
+    id, client_id, locId, req.user?.id || null, tech, dt,
+    st, pd, status || 'concluido',
     equipments_involved ? (typeof equipments_involved === 'string' ? equipments_involved : JSON.stringify(equipments_involved)) : '[]',
-    changes_made || null, tests_performed || null, test_results || null, technical_notes || null,
+    changes_made || null, tests_performed || null, test_results || null, tn,
     service_cost !== undefined ? Number(service_cost) : 0,
     time_spent_minutes !== undefined ? Number(time_spent_minutes) : 0,
     additional_info || null
