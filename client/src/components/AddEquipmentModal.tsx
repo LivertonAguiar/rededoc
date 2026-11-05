@@ -22,7 +22,8 @@ import {
   Upload,
   Trash2,
   RefreshCw,
-  Scan
+  Scan,
+  Undo2
 } from 'lucide-react';
 import { Equipment, Location, EquipmentCatalogItem } from '../types';
 import { api } from '../services/api';
@@ -80,6 +81,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
   const [isImageSearchOpen, setIsImageSearchOpen] = useState<boolean>(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState<boolean>(false);
   const [isRemovingBg, setIsRemovingBg] = useState<boolean>(false);
+  const [originalPhotoUrl, setOriginalPhotoUrl] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Formulário do Equipamento
@@ -327,6 +329,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
         equipmentId: equipmentToEdit?.id,
         clientId
       });
+      setOriginalPhotoUrl(res.localUrl);
       setFormData(prev => ({ ...prev, photo_url: res.localUrl }));
     } catch (err: any) {
       setErrorMessage('Falha ao enviar arquivo de foto: ' + err.message);
@@ -337,6 +340,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
   };
 
   const handleSelectPhotoFromWeb = (localUrl: string) => {
+    setOriginalPhotoUrl(localUrl);
     setFormData(prev => ({ ...prev, photo_url: localUrl }));
   };
 
@@ -346,6 +350,9 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
 
   const handleRemoveBackground = async () => {
     if (!formData.photo_url) return;
+    if (!originalPhotoUrl) {
+      setOriginalPhotoUrl(formData.photo_url);
+    }
     setIsRemovingBg(true);
     setErrorMessage(null);
     try {
@@ -942,11 +949,23 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                         onClick={handleRemoveBackground}
                         disabled={isRemovingBg}
                         className="px-3 py-1.5 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/30 text-xs font-semibold flex items-center gap-1.5 transition shadow-sm"
-                        title="Remove o fundo branco com proteção inteligente (equipamentos brancos como roteadores e ONTs são 100% preservados)"
+                        title="Remove o fundo com algoritmo adaptativo (fundo claro, escuro ou estúdio, preservando antenas e plásticos brancos)"
                       >
                         <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-                        <span>{isRemovingBg ? 'Processando...' : '✨ Apagar Fundo (Seguro)'}</span>
+                        <span>{isRemovingBg ? 'Processando...' : '✨ Apagar Fundo'}</span>
                       </button>
+
+                      {originalPhotoUrl && originalPhotoUrl !== formData.photo_url && (
+                        <button
+                          type="button"
+                          onClick={() => setFormData(prev => ({ ...prev, photo_url: originalPhotoUrl }))}
+                          className="px-3 py-1.5 rounded-lg bg-slate-700/60 hover:bg-slate-700 text-slate-200 border border-slate-600 text-xs font-semibold flex items-center gap-1.5 transition shadow-sm"
+                          title="Restaura a fotografia original enviada antes da remoção de fundo"
+                        >
+                          <Undo2 className="w-3.5 h-3.5 text-slate-300" />
+                          <span>Restaurar Foto Original</span>
+                        </button>
+                      )}
 
                       <button
                         type="button"

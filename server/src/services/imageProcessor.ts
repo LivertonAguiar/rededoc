@@ -8,12 +8,22 @@ export interface ProcessImageOptions {
 }
 
 /**
- * Remove o fundo branco de forma segura e inteligente, protegendo equipamentos brancos (como roteadores,
- * ONTs e faciais) através de amostragem dos cantos, barreira de gradiente de borda e trava de segurança do núcleo.
+ * Distância euclidiana entre duas cores no espaço RGB.
  */
-export async function removeWhiteBackground(
+function colorDistance(r1: number, g1: number, b1: number, r2: number, g2: number, b2: number): number {
+  return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2);
+}
+
+/**
+ * Remove o fundo de forma inteligente e adaptativa:
+ * - Detecta a cor real do fundo (seja claro, branco de estúdio, cinza ou escuro/gradiente);
+ * - Preserva integralmente imagens que já possuem canal alfa / transparência natural;
+ * - Respeita o contorno do equipamento com barreira estrita de gradiente;
+ * - Preserva texturas, cores originais, antenas e detalhes de equipamentos brancos ou pretos.
+ */
+export async function removeAdaptiveBackground(
   inputBuffer: Buffer,
-  tolerance = 14
+  tolerance = 38
 ): Promise<Buffer> {
   const image = sharp(inputBuffer).ensureAlpha();
   const meta = await image.metadata();
@@ -21,119 +31,72 @@ export async function removeWhiteBackground(
   const height = meta.height || 0;
   if (!width || !height) return inputBuffer;
 
-  const { data, info } = await image.raw().toBuffer({ resolveWithObject: true });
+  const { data } = await image.raw().toBuffer({ resolveWithObject: true });
   const totalPixels = width * height;
 
-  // 1. Amostragem dos 4 cantos para verificar se o fundo é realmente branco / muito claro
-  const corners = [
-    0,                                      // Top-Left
-    (width - 1),                            // Top-Right
-    (height - 1) * width,                   // Bottom-Left
-    (height - 1) * width + (width - 1)      // Bottom-Right
-  ];
+  // 1. Verifica se a imagem já possui fundo transparente pré-existente
+  let transparentBorderCount = 0;
+  const borderTotal = (width * 2) + (height * 2);
 
-  let sumR = 0, sumG = 0, sumB = 0;
-  let validCornerCount = 0;
-
-  for (const c of corners) {
-    const r = data[c * 4];
-    const g = data[c * 4 + 1];
-    const b = data[c * 4 + 2];
-    const a = data[c * 4 + 3];
-
-    if (a < 50) {
-      validCornerCount++;
-      continue;
-    }
-
-    // O canto deve ser claro (branco ou quase branco >= 238)
-    if (r >= 238 && g >= 238 && b >= 238) {
-      sumR += r;
-      sumG += g;
-      sumB += b;
-      validCornerCount++;
-    }
+  for (let x = 0; x < width; x += 4) {
+    if (data[x * 4 + 3] < 50) transparentBorderCount++;
+    if (data[((height - 1) * width + x) * 4 + 3] < 50) transparentBorderCount++;
+  }
+  for (let y = 0; y < height; y += 4) {
+    if (data[(y * width) * 4 + 3] < 50) transparentBorderCount++;
+    if (data[(y * width + (width - 1)) * 4 + 3] < 50) transparentBorderCount++;
   }
 
-  // Se menos de 3 cantos forem claros, a imagem não tem fundo branco uniforme (ex: foto de ambiente ou fundo escuro)
-  // Preserva a imagem original para não destruir o objeto
-  if (validCornerCount < 3) {
-    console.log('[imageProcessor] Imagem não possui fundo branco uniforme nos cantos. Preservando original.');
+  // Se a borda já tem mais de 25% de transparência, a imagem já é um PNG transparente limpo
+  if (transparentBorderCount / (borderTotal / 4) > 0.25) {
     return await sharp(inputBuffer).trim({ threshold: 4 }).png().toBuffer();
   }
 
-  const bgR = validCornerCount > 0 ? Math.round(sumR / validCornerCount) : 255;
-  const bgG = validCornerCount > 0 ? Math.round(sumG / validCornerCount) : 255;
-  const bgB = validCornerCount > 0 ? Math.round(sumB / validCornerCount) : 255;
+  // 2. Amostragem inteligente das 4 bordas para capturar o perfil de cores do fundo
+  const borderSamples: [number, number, number][] = [];
+  const sampleStep = Math.max(4, Math.floor(Math.min(width, height) / 40));
 
-  const maxTolerance = Math.min(tolerance, 16); // Tolerância estrita para não confundir plástico de roteador com fundo
-  const gradientBarrier = 8; // Degrau de cor para parar o preenchimento na silhueta do equipamento
-
-  const isBgColor = (idx: number) => {
-    const r = data[idx];
-    const g = data[idx + 1];
-    const b = data[idx + 2];
-    const a = data[idx + 3];
-
-    if (a < 50) return true; // Já transparente
-
-    const dR = Math.abs(r - bgR);
-    const dG = Math.abs(g - bgG);
-    const dB = Math.abs(b - bgB);
-
-    return (
-      dR <= maxTolerance &&
-      dG <= maxTolerance &&
-      dB <= maxTolerance &&
-      Math.abs(r - g) < 15 &&
-      Math.abs(r - b) < 15
-    );
-  };
+  for (let x = 0; x < width; x += sampleStep) {
+    const topIdx = x * 4;
+    const botIdx = ((height - 1) * width + x) * 4;
+    borderSamples.push([data[topIdx], data[topIdx + 1], data[topIdx + 2]]);
+    borderSamples.push([data[botIdx], data[botIdx + 1], data[botIdx + 2]]);
+  }
+  for (let y = 0; y < height; y += sampleStep) {
+    const leftIdx = (y * width) * 4;
+    const rightIdx = (y * width + (width - 1)) * 4;
+    borderSamples.push([data[leftIdx], data[leftIdx + 1], data[leftIdx + 2]]);
+    borderSamples.push([data[rightIdx], data[rightIdx + 1], data[rightIdx + 2]]);
+  }
 
   const visited = new Uint8Array(totalPixels);
   const queue: number[] = [];
 
-  // Enfileira as 4 bordas externas
+  // Enfileira todos os pixels externos da borda que combinam com o fundo da margem
   for (let x = 0; x < width; x++) {
-    const topIdx = x;
-    const botIdx = (height - 1) * width + x;
-    if (isBgColor(topIdx * 4)) { visited[topIdx] = 1; queue.push(topIdx); }
-    if (isBgColor(botIdx * 4)) { visited[botIdx] = 1; queue.push(botIdx); }
+    const top = x;
+    const bot = (height - 1) * width + x;
+    visited[top] = 1; queue.push(top);
+    visited[bot] = 1; queue.push(bot);
   }
   for (let y = 0; y < height; y++) {
-    const leftIdx = y * width;
-    const rightIdx = y * width + (width - 1);
-    if (!visited[leftIdx] && isBgColor(leftIdx * 4)) { visited[leftIdx] = 1; queue.push(leftIdx); }
-    if (!visited[rightIdx] && isBgColor(rightIdx * 4)) { visited[rightIdx] = 1; queue.push(rightIdx); }
+    const left = y * width;
+    const right = y * width + (width - 1);
+    if (!visited[left]) { visited[left] = 1; queue.push(left); }
+    if (!visited[right]) { visited[right] = 1; queue.push(right); }
   }
 
-  if (queue.length === 0) {
-    return await sharp(inputBuffer).trim({ threshold: 4 }).png().toBuffer();
-  }
+  // 3. Flood Fill guiado por gradiente e similaridade de borda
+  const gradientLimit = 18; // Barreira estrita de borda do equipamento
+  const maxColorDist = Math.max(25, Math.min(tolerance, 50));
 
-  // Medição de segurança do núcleo central (onde o equipamento roteador fica situado)
-  const coreXMin = Math.floor(width * 0.25);
-  const coreXMax = Math.floor(width * 0.75);
-  const coreYMin = Math.floor(height * 0.25);
-  const coreYMax = Math.floor(height * 0.75);
-  const coreTotal = Math.max(1, (coreXMax - coreXMin) * (coreYMax - coreYMin));
-  let coreErased = 0;
-
-  // BFS Flood Fill com barreira de gradiente
   let head = 0;
   while (head < queue.length) {
     const curr = queue[head++];
     const cx = curr % width;
     const cy = Math.floor(curr / width);
-
-    if (cx >= coreXMin && cx < coreXMax && cy >= coreYMin && cy < coreYMax) {
-      coreErased++;
-    }
-
-    const currIdx = curr * 4;
-    const cR = data[currIdx];
-    const cG = data[currIdx + 1];
-    const cB = data[currIdx + 2];
+    const cIdx = curr * 4;
+    const cr = data[cIdx], cg = data[cIdx + 1], cb = data[cIdx + 2];
 
     const neighbors = [
       cy > 0 ? curr - width : -1,
@@ -145,10 +108,22 @@ export async function removeWhiteBackground(
     for (const n of neighbors) {
       if (n !== -1 && visited[n] === 0) {
         const nIdx = n * 4;
-        if (isBgColor(nIdx)) {
-          // Barreira de gradiente: não atravessa a borda plástica do roteador
-          const grad = Math.abs(data[nIdx] - cR) + Math.abs(data[nIdx + 1] - cG) + Math.abs(data[nIdx + 2] - cB);
-          if (grad <= gradientBarrier) {
+        const nr = data[nIdx], ng = data[nIdx + 1], nb = data[nIdx + 2];
+        const localGrad = Math.abs(nr - cr) + Math.abs(ng - cg) + Math.abs(nb - cb);
+
+        // Não atravessa borda com gradiente acentuado
+        if (localGrad <= gradientLimit) {
+          // Verifica proximidade com as amostras de cor do fundo da borda
+          let minDist = 999;
+          for (let s = 0; s < borderSamples.length; s += 6) {
+            const d = colorDistance(nr, ng, nb, borderSamples[s][0], borderSamples[s][1], borderSamples[s][2]);
+            if (d < minDist) {
+              minDist = d;
+              if (minDist <= 12) break; // Proximidade quase exata com o fundo
+            }
+          }
+
+          if (minDist <= maxColorDist) {
             visited[n] = 1;
             queue.push(n);
           }
@@ -157,22 +132,22 @@ export async function removeWhiteBackground(
     }
   }
 
-  // Trava de segurança: se mais de 65% do centro da imagem foi atingido, o roteador/objeto é branco!
-  // Preserva a imagem original com recorte de bordas para não apagar o roteador.
-  const coreRatio = coreErased / coreTotal;
-  if (coreRatio > 0.65) {
-    console.log(`[imageProcessor] Objeto branco detectado no centro (${(coreRatio * 100).toFixed(1)}% do núcleo). Preservando equipamento.`);
-    return await sharp(inputBuffer).trim({ threshold: 4 }).png().toBuffer();
-  }
-
-  // Aplica transparência total nos pixels de fundo
+  // 4. Aplica transparência total nos pixels do fundo identificado
+  let erasedPixels = 0;
   for (let i = 0; i < totalPixels; i++) {
     if (visited[i] === 1) {
       data[i * 4 + 3] = 0;
+      erasedPixels++;
     }
   }
 
-  // Suavização sutil nas bordas
+  // Se mais de 92% da imagem foi apagada, houve vazamento no objeto; preserva original
+  if (erasedPixels / totalPixels > 0.92) {
+    console.warn('[imageProcessor] Proteção ativada: evitou apagar o equipamento. Preservando original.');
+    return await sharp(inputBuffer).trim({ threshold: 4 }).png().toBuffer();
+  }
+
+  // 5. Suavização sutil nas bordas do recorte (antialiasing)
   for (let y = 1; y < height - 1; y++) {
     for (let x = 1; x < width - 1; x++) {
       const idx = y * width + x;
@@ -184,12 +159,7 @@ export async function removeWhiteBackground(
           visited[idx + width] === 1;
 
         if (hasTransparentNeighbor) {
-          const r = data[idx * 4];
-          const g = data[idx * 4 + 1];
-          const b = data[idx * 4 + 2];
-          if (r > 235 && g > 235 && b > 235) {
-            data[idx * 4 + 3] = 210;
-          }
+          data[idx * 4 + 3] = 210;
         }
       }
     }
@@ -204,34 +174,39 @@ export async function removeWhiteBackground(
 }
 
 /**
- * Processa a imagem para exibição perfeita no sistema:
- * - Remove fundo branco quando solicitado;
- * - Corta bordas vazias (trim);
- * - Ajusta dimensões máximas mantendo a proporção original estrita sem achatar ou cortar;
- * - Exporta em PNG com transparência.
+ * Remove o fundo branco (compatibilidade retroativa com fallback inteligente).
+ */
+export async function removeWhiteBackground(
+  inputBuffer: Buffer,
+  tolerance = 28
+): Promise<Buffer> {
+  return await removeAdaptiveBackground(inputBuffer, tolerance);
+}
+
+/**
+ * Processa e otimiza a imagem mantendo a proporção estrita e proporção original.
  */
 export async function processAndOptimizeImage(
   inputBuffer: Buffer,
   options: ProcessImageOptions = {}
 ): Promise<Buffer> {
   const {
-    removeBackground = true,
+    removeBackground = false,
     maxWidth = 900,
     maxHeight = 900,
-    tolerance = 28
+    tolerance = 38
   } = options;
 
   let buffer = inputBuffer;
 
   if (removeBackground) {
     try {
-      buffer = await removeWhiteBackground(buffer, tolerance);
+      buffer = await removeAdaptiveBackground(buffer, tolerance);
     } catch (err) {
       console.warn('Aviso: Falha ao remover fundo, mantendo imagem original:', err);
     }
   }
 
-  // Redimensiona proporcionalmente mantendo proporção (fit: inside)
   return await sharp(buffer)
     .resize({
       width: maxWidth,
@@ -239,7 +214,6 @@ export async function processAndOptimizeImage(
       fit: 'inside',
       withoutEnlargement: true
     })
-    .png({ quality: 90, compressionLevel: 8 })
+    .png({ quality: 92, compressionLevel: 7 })
     .toBuffer();
 }
-
