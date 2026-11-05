@@ -13,6 +13,8 @@ import { AuditHistoryView } from './components/AuditHistoryView';
 import { ReportsView } from './components/ReportsView';
 import { BackupView } from './components/BackupView';
 import { LoginView } from './components/LoginView';
+import { MobileBottomNav } from './components/MobileBottomNav';
+import { PwaInstallPrompt } from './components/PwaInstallPrompt';
 import { Client, Equipment, PortForward, Attachment, User } from './types';
 import { api } from './services/api';
 import { DialogProvider } from './context/DialogContext';
@@ -195,7 +197,12 @@ export function App() {
   }
 
   if (!currentUser) {
-    return <LoginView onLoginSuccess={handleLoginSuccess} />;
+    return (
+      <>
+        <LoginView onLoginSuccess={handleLoginSuccess} />
+        <PwaInstallPrompt />
+      </>
+    );
   }
 
   return (
@@ -213,7 +220,7 @@ export function App() {
         />
 
         {/* Conteúdo Principal */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 pb-16 lg:pb-0">
           <Header
             activeTab={activeTab}
             onOpenOverview={() => navigateToTab('overview')}
@@ -334,6 +341,17 @@ export function App() {
             )}
           </main>
         </div>
+
+        {/* Barra de Navegação Inferior para Celular */}
+        <MobileBottomNav
+          activeTab={activeTab}
+          onSelectTab={(tab) => navigateToTab(tab)}
+          onOpenMobileMenu={() => setIsMobileMenuOpen(true)}
+          hasSelectedClient={Boolean(selectedClient)}
+        />
+
+        {/* Prompt PWA para Instalação no Celular */}
+        <PwaInstallPrompt />
       </div>
     </DialogProvider>
   );
