@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   LayoutDashboard,
+  Building2,
   Network,
-  Server,
   KeyRound,
   Menu
 } from 'lucide-react';
@@ -28,15 +28,15 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       requiresClient: false
     },
     {
+      id: 'clients',
+      label: 'Clientes',
+      icon: Building2,
+      requiresClient: false
+    },
+    {
       id: 'client-network',
       label: 'Rede',
       icon: Network,
-      requiresClient: true
-    },
-    {
-      id: 'equipments',
-      label: 'Equip.',
-      icon: Server,
       requiresClient: true
     },
     {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   LayoutDashboard,
   Building2,
@@ -13,7 +13,10 @@ import {
   ShieldCheck,
   Radio,
   X,
-  LogOut
+  LogOut,
+  ChevronDown,
+  ChevronRight,
+  ChevronRightSquare
 } from 'lucide-react';
 import { User } from '../types';
 
@@ -36,30 +39,30 @@ export const Sidebar: React.FC<SidebarProps> = ({
   currentUser,
   onLogout
 }) => {
-  const menuItems = [
-    { id: 'overview', label: 'Visão Geral', icon: LayoutDashboard },
-    { id: 'client-network', label: 'Painel da Rede', icon: Radio, badge: selectedClientName },
-    { id: 'clients', label: 'Clientes e Locais', icon: Building2 },
-    { id: 'equipments', label: 'Equipamentos', icon: Server },
-    { id: 'topology', label: 'Topologia da Rede', icon: Network },
-    { id: 'port-forwards', label: 'Redirecionamentos', icon: Share2 },
-    { id: 'credentials', label: 'Cofre de Credenciais', icon: KeyRound },
-    { id: 'service-orders', label: 'Atendimentos', icon: Wrench },
-    { id: 'audit-history', label: 'Histórico Técnico', icon: History },
-    { id: 'reports', label: 'Relatórios e PDF', icon: FileText },
-    { id: 'backup', label: 'Configurações e Backup', icon: Database },
-  ];
+  const [isInfraOpen, setIsInfraOpen] = useState(true);
+  const [isOpsOpen, setIsOpsOpen] = useState(true);
 
   const handleSelectTab = (tabId: string) => {
     setActiveTab(tabId);
     if (onCloseMobile) onCloseMobile();
   };
 
+  const isClientTab = [
+    'client-network',
+    'equipments',
+    'topology',
+    'port-forwards',
+    'credentials',
+    'service-orders',
+    'audit-history',
+    'reports'
+  ].includes(activeTab);
+
   const sidebarContent = (
     <div className="flex flex-col justify-between h-full text-slate-300 select-none">
       {/* Cabeçalho do App / Logo */}
-      <div className="p-5">
-        <div className="flex items-center justify-between pb-5 border-b border-[#1D3054]">
+      <div className="p-4 sm:p-5 flex-1 overflow-y-auto scrollbar-thin">
+        <div className="flex items-center justify-between pb-4 border-b border-[#1D3054]">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-bold">
               <Network className="w-5 h-5" />
@@ -84,53 +87,249 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
         </div>
 
-        {/* Menu de Navegação */}
-        <nav className="mt-5 space-y-1">
-          {menuItems.map(item => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
+        {/* GRUPO 1: GESTÃO GLOBAL */}
+        <div className="mt-5 space-y-1">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 pb-1">
+            Sistema Geral
+          </div>
+
+          <button
+            onClick={() => handleSelectTab('overview')}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+              activeTab === 'overview'
+                ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-blue-500 font-semibold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+            }`}
+          >
+            <LayoutDashboard className={`w-4 h-4 shrink-0 ${activeTab === 'overview' ? 'text-amber-400' : 'text-slate-400'}`} />
+            <span className="truncate">Visão Geral</span>
+          </button>
+
+          <button
+            onClick={() => handleSelectTab('clients')}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+              activeTab === 'clients'
+                ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-blue-500 font-semibold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+            }`}
+          >
+            <Building2 className={`w-4 h-4 shrink-0 ${activeTab === 'clients' ? 'text-blue-400' : 'text-slate-400'}`} />
+            <span className="truncate">Clientes e Locais</span>
+          </button>
+        </div>
+
+        {/* GRUPO 2: CONTEXTO DO CLIENTE ATIVO */}
+        <div className="mt-6 space-y-1">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 pb-1 flex items-center justify-between">
+            <span>Cliente Ativo</span>
+            {selectedClientName && (
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            )}
+          </div>
+
+          {selectedClientName ? (
+            <>
+              {/* Card Resumo do Cliente Selecionado */}
+              <div
+                onClick={() => handleSelectTab('client-network')}
+                className={`p-2.5 rounded-xl border mb-2 cursor-pointer transition-all ${
+                  isClientTab
+                    ? 'bg-[#14233D] border-blue-500/40 shadow-sm'
+                    : 'bg-[#101C31] border-[#1D3054] hover:border-slate-600'
+                }`}
+                title="Clique para abrir o painel deste cliente"
+              >
+                <div className="flex items-center gap-2">
+                  <Building2 className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+                  <span className="text-xs font-bold text-white truncate">{selectedClientName}</span>
+                </div>
+                <div className="text-[10px] text-blue-300 mt-0.5 flex items-center justify-between">
+                  <span>Perfil selecionado</span>
+                  <span className="text-[9px] bg-blue-500/20 px-1 py-0.2 rounded border border-blue-500/30">Abrir</span>
+                </div>
+              </div>
+
+              {/* Itens do Cliente */}
               <button
-                key={item.id}
-                onClick={() => handleSelectTab(item.id)}
-                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-blue-500'
+                onClick={() => handleSelectTab('client-network')}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                  activeTab === 'client-network'
+                    ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-blue-500 font-semibold'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
                 }`}
               >
-                <Icon className={`w-4 h-4 shrink-0 ${isActive ? 'text-blue-400' : 'text-slate-400'}`} />
-                <span className="truncate">{item.label}</span>
-                {item.id === 'client-network' && selectedClientName && (
-                  <span className="ml-auto text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-300 max-w-[80px] truncate border border-blue-500/30">
-                    {selectedClientName.split(' ')[0]}
-                  </span>
-                )}
+                <Radio className={`w-4 h-4 shrink-0 ${activeTab === 'client-network' ? 'text-blue-400' : 'text-slate-400'}`} />
+                <span className="truncate">Painel da Rede</span>
               </button>
-            );
-          })}
-        </nav>
-      </div>
 
-      {/* Rodapé / Informações de Segurança e Status */}
-      <div className="p-4 border-t border-[#1D3054] bg-[#0A1424]/60 space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
-            </span>
-            <span className="text-xs font-semibold text-emerald-400">Sistema Online</span>
-          </div>
-          <span className="text-[10px] text-slate-400 font-mono">v1.0.0</span>
+              {/* Sub-seção: Infraestrutura */}
+              <div className="pt-1">
+                <button
+                  onClick={() => setIsInfraOpen(!isInfraOpen)}
+                  className="w-full flex items-center justify-between px-3 py-1.5 text-[11px] font-semibold text-slate-400 hover:text-slate-200 transition"
+                >
+                  <span className="flex items-center gap-2">
+                    <Server className="w-3.5 h-3.5 text-blue-400" />
+                    <span>Infraestrutura</span>
+                  </span>
+                  {isInfraOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+                </button>
+
+                {isInfraOpen && (
+                  <div className="pl-4 space-y-0.5 border-l border-[#1D3054] ml-3.5 my-1">
+                    <button
+                      onClick={() => handleSelectTab('equipments')}
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs transition ${
+                        activeTab === 'equipments'
+                          ? 'bg-[#1D3250] text-white font-semibold'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                      }`}
+                    >
+                      <Server className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Equipamentos</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleSelectTab('topology')}
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs transition ${
+                        activeTab === 'topology'
+                          ? 'bg-[#1D3250] text-white font-semibold'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                      }`}
+                    >
+                      <Network className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Topologia da Rede</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleSelectTab('port-forwards')}
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs transition ${
+                        activeTab === 'port-forwards'
+                          ? 'bg-[#1D3250] text-white font-semibold'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                      }`}
+                    >
+                      <Share2 className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Portas (NAT)</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Cofre de Senhas */}
+              <button
+                onClick={() => handleSelectTab('credentials')}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                  activeTab === 'credentials'
+                    ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-blue-500 font-semibold'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                }`}
+              >
+                <KeyRound className={`w-4 h-4 shrink-0 ${activeTab === 'credentials' ? 'text-amber-400' : 'text-slate-400'}`} />
+                <span className="truncate">Cofre de Credenciais</span>
+              </button>
+
+              {/* Sub-seção: Operações & Histórico */}
+              <div className="pt-1">
+                <button
+                  onClick={() => setIsOpsOpen(!isOpsOpen)}
+                  className="w-full flex items-center justify-between px-3 py-1.5 text-[11px] font-semibold text-slate-400 hover:text-slate-200 transition"
+                >
+                  <span className="flex items-center gap-2">
+                    <Wrench className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Operações & O.S.</span>
+                  </span>
+                  {isOpsOpen ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+                </button>
+
+                {isOpsOpen && (
+                  <div className="pl-4 space-y-0.5 border-l border-[#1D3054] ml-3.5 my-1">
+                    <button
+                      onClick={() => handleSelectTab('service-orders')}
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs transition ${
+                        activeTab === 'service-orders'
+                          ? 'bg-[#1D3250] text-white font-semibold'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                      }`}
+                    >
+                      <Wrench className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Atendimentos</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleSelectTab('audit-history')}
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs transition ${
+                        activeTab === 'audit-history'
+                          ? 'bg-[#1D3250] text-white font-semibold'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                      }`}
+                    >
+                      <History className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Histórico Técnico</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Relatórios */}
+              <button
+                onClick={() => handleSelectTab('reports')}
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                  activeTab === 'reports'
+                    ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-blue-500 font-semibold'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                }`}
+              >
+                <FileText className={`w-4 h-4 shrink-0 ${activeTab === 'reports' ? 'text-blue-400' : 'text-slate-400'}`} />
+                <span className="truncate">Relatórios e PDF</span>
+              </button>
+            </>
+          ) : (
+            <div className="p-3 rounded-xl bg-[#101C31] border border-[#1D3054] text-center space-y-2">
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Nenhum cliente selecionado no momento.
+              </p>
+              <button
+                onClick={() => handleSelectTab('clients')}
+                className="w-full py-1.5 px-3 rounded-lg bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 text-xs font-semibold border border-blue-500/30 transition"
+              >
+                Escolher Condomínio
+              </button>
+            </div>
+          )}
         </div>
 
-        <div className="text-[11px] leading-relaxed text-slate-400 flex items-start gap-2 bg-[#101C31] p-2.5 rounded-lg border border-[#1A2C49]">
-          <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
-          <div>
-            <div className="font-semibold text-slate-200">Cofre AES-256-GCM</div>
-            <div className="text-[10px] text-slate-400">Senhas criptografadas e com auditoria de revelação.</div>
+        {/* GRUPO 3: SISTEMA E ADMINISTRAÇÃO */}
+        <div className="mt-6 space-y-1">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 pb-1">
+            Sistema
           </div>
+
+          <button
+            onClick={() => handleSelectTab('backup')}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+              activeTab === 'backup'
+                ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-blue-500 font-semibold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+            }`}
+          >
+            <Database className={`w-4 h-4 shrink-0 ${activeTab === 'backup' ? 'text-purple-400' : 'text-slate-400'}`} />
+            <span className="truncate">Configurações e Backup</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Rodapé / Informações de Segurança e Usuário */}
+      <div className="p-4 border-t border-[#1D3054] bg-[#0A1424]/80 space-y-3 shrink-0">
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+            </span>
+            <span className="text-[11px] font-semibold text-emerald-400">Sistema Online</span>
+          </div>
+          <span className="text-[10px] text-slate-500 font-mono">v1.0.0</span>
         </div>
 
         <div className="pt-1 flex items-center justify-between text-xs text-slate-400">
@@ -138,13 +337,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div className="w-7 h-7 rounded-full bg-blue-600/30 text-blue-400 font-bold flex items-center justify-center text-xs border border-blue-500/30 shrink-0">
               {currentUser?.name
                 ? currentUser.name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase()
-                : 'RD'}
+                : 'IT'}
             </div>
             <div className="truncate max-w-[130px]">
               <div className="text-slate-200 font-medium truncate text-xs">
                 {currentUser?.name || 'Técnico Autenticado'}
               </div>
-              <div className="text-[10px] text-slate-400 capitalize">
+              <div className="text-[10px] text-slate-500 capitalize">
                 {currentUser?.role === 'admin' ? 'Administrador' : currentUser?.role === 'tecnico' ? 'Técnico de Campo' : 'Visualizador'}
               </div>
             </div>

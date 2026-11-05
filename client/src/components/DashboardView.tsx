@@ -593,69 +593,33 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* 1. Header do Condomínio / Atendimento */}
-      <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl p-6 shadow-xl relative overflow-hidden">
-        <div className="flex flex-wrap items-start justify-between gap-4 relative z-10">
-          <div>
-            <div className="flex items-center gap-2 text-xs font-medium text-slate-400 mb-1">
-              <span>Clientes</span>
-              <span>/</span>
-              <span className="text-blue-400">{client.name}</span>
-            </div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-              <span>{client.name}</span>
-            </h1>
-            <p className="text-sm text-slate-400 mt-1 flex flex-wrap items-center gap-2">
-              <span>Documentação da infraestrutura de rede</span>
-              <span>•</span>
-              <span className="text-slate-300 flex items-center gap-1 font-medium">
-                <MapPin className="w-3.5 h-3.5 text-blue-400 shrink-0" />
-                {client.address || location?.address || 'Endereço não cadastrado'}
-              </span>
-            </p>
+      {/* 1. Barra de Status da Documentação e Modo de Visualização */}
+      <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl p-4 sm:p-5 shadow-xl flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          {hasEquipments ? (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Infraestrutura Documentada
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30">
+              <AlertTriangle className="w-3.5 h-3.5" />
+              Cliente Novo • Documentação em Branco
+            </span>
+          )}
+          <span className="text-xs text-slate-400">
+            {client.notes || `${totalEquipments} equipamento(s) e ${totalPorts} regra(s) ativas.`}
+          </span>
+        </div>
 
-            <div className="flex flex-wrap items-center gap-3 mt-4">
-              {hasEquipments ? (
-                <>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Infraestrutura Documentada
-                  </span>
-                  <span className="text-xs text-slate-400">
-                    {client.notes || `${totalEquipments} equipamento(s) e ${totalPorts} regra(s) ativas.`}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30">
-                    <AlertTriangle className="w-3.5 h-3.5" />
-                    Cliente Novo • Documentação em Branco
-                  </span>
-                  <span className="text-xs text-slate-400">
-                    Nenhum equipamento cadastrado. Adicione o roteador/ONT principal ou itens do catálogo.
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <button
-              onClick={() => setViewMode(v => v === 'detailed' ? 'simplified' : 'detailed')}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-200 bg-[#172744] hover:bg-[#1E335A] border border-[#263D68] transition-all flex items-center gap-2 shadow-sm"
-            >
-              <Layers className="w-4 h-4 text-blue-400" />
-              <span>{viewMode === 'detailed' ? 'Modo Simplificado' : 'Modo Técnico Detalhado'}</span>
-            </button>
-
-            <button
-              onClick={onOpenReport}
-              className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/25 transition-all flex items-center gap-2"
-            >
-              <FileDown className="w-4 h-4" />
-              <span>Gerar PDF do cliente</span>
-            </button>
-          </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setViewMode(v => v === 'detailed' ? 'simplified' : 'detailed')}
+            className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-200 bg-[#172744] hover:bg-[#1E335A] border border-[#263D68] transition-all flex items-center gap-2 shadow-sm"
+          >
+            <Layers className="w-4 h-4 text-blue-400" />
+            <span>{viewMode === 'detailed' ? 'Modo Simplificado' : 'Modo Técnico Detalhado'}</span>
+          </button>
         </div>
       </div>
 

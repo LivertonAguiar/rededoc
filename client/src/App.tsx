@@ -15,6 +15,7 @@ import { BackupView } from './components/BackupView';
 import { LoginView } from './components/LoginView';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
+import { ClientProfileHeader } from './components/ClientProfileHeader';
 import { Client, Equipment, PortForward, Attachment, User } from './types';
 import { api } from './services/api';
 import { DialogProvider } from './context/DialogContext';
@@ -258,6 +259,27 @@ export function App() {
               </div>
             ) : selectedClient ? (
               <>
+                {[
+                  'client-network',
+                  'dashboard',
+                  'equipments',
+                  'topology',
+                  'port-forwards',
+                  'credentials',
+                  'service-orders',
+                  'audit-history',
+                  'reports'
+                ].includes(activeTab) && (
+                  <ClientProfileHeader
+                    client={selectedClient}
+                    activeTab={activeTab === 'dashboard' ? 'client-network' : activeTab}
+                    onSelectTab={(tab) => navigateToTab(tab)}
+                    equipments={equipments}
+                    portForwards={portForwards}
+                    onOpenReport={() => navigateToTab('reports')}
+                  />
+                )}
+
                 {(activeTab === 'client-network' || activeTab === 'dashboard') && (
                   <DashboardView
                     client={selectedClient}
