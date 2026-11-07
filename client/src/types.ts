@@ -419,3 +419,50 @@ export interface NotificationLog {
   message: string;
   created_at: string;
 }
+
+export interface DomainDnsSnapshot {
+  a_records?: string[];
+  mx_records?: Array<{ exchange: string; priority: number }>;
+  ns_records?: string[];
+  txt_records?: string[];
+  spf?: string | null;
+  dmarc?: string | null;
+  caa?: Array<{ critical: number; issue?: string }>;
+  ddns_status?: {
+    is_ddns: boolean;
+    resolved_ip?: string;
+    expected_wan_ip?: string;
+    mismatch: boolean;
+  };
+  ssl?: {
+    valid_from?: string;
+    valid_to?: string;
+    issuer?: string;
+    subject?: string;
+    days_remaining?: number;
+    valid?: boolean;
+  };
+  rdap?: {
+    expires_at?: string;
+    registrar?: string;
+  };
+}
+
+export interface Domain {
+  id: string;
+  client_id: string;
+  client_name?: string;
+  name: string;
+  registrar?: string | null;
+  expires_at?: string | null;
+  nameservers?: string | null;
+  notes?: string | null;
+  auto_check: number;
+  last_checked_at?: string | null;
+  ssl_expires_at?: string | null;
+  ssl_issuer?: string | null;
+  dns_snapshot?: DomainDnsSnapshot | null;
+  score: number;
+  created_at?: string;
+  updated_at?: string;
+}

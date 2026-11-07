@@ -13,6 +13,7 @@ import { AuditHistoryView } from './components/AuditHistoryView';
 import { ReportsView } from './components/ReportsView';
 import { BackupView } from './components/BackupView';
 import { KnowledgeBaseView } from './components/KnowledgeBaseView';
+import { DomainsView } from './components/DomainsView';
 import { LoginView } from './components/LoginView';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
@@ -278,6 +279,29 @@ export function App() {
                 targetArticleId={targetEntityId}
                 onNavigateToTab={navigateToTab}
               />
+            ) : activeTab === 'domains' ? (
+              <DomainsView
+                client={selectedClient}
+                clients={clients}
+                targetDomainId={targetEntityId}
+                onNavigateToTab={navigateToTab}
+              />
+            ) : activeTab === 'clients' ? (
+              <ClientsView
+                clients={clients}
+                onRefresh={loadClients}
+                onSelectClient={(cId) => {
+                  handleSelectClient(cId);
+                  navigateToTab('client-network');
+                }}
+              />
+            ) : activeTab === 'backup' ? (
+              <BackupView
+                onRefresh={() => {
+                  loadClients();
+                  loadClientData();
+                }}
+              />
             ) : loading && !selectedClient ? (
               <div className="text-center py-20 text-slate-400 text-sm">
                 Carregando infraestrutura de rede...
@@ -291,6 +315,7 @@ export function App() {
                   'topology',
                   'port-forwards',
                   'credentials',
+                  'domains',
                   'service-orders',
                   'audit-history',
                   'reports'

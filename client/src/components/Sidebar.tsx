@@ -17,7 +17,8 @@ import {
   ChevronDown,
   ChevronRight,
   ChevronRightSquare,
-  BookOpen
+  BookOpen,
+  Globe
 } from 'lucide-react';
 import { User } from '../types';
 
@@ -57,7 +58,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     'service-orders',
     'audit-history',
     'reports',
-    'procedures'
+    'procedures',
+    'domains'
   ].includes(activeTab);
 
   const sidebarContent = (
@@ -129,6 +131,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <BookOpen className={`w-4 h-4 shrink-0 ${activeTab === 'procedures' ? 'text-cyan-400' : 'text-slate-400'}`} />
             <span className="truncate">Procedimentos (KB)</span>
+          </button>
+
+          <button
+            onClick={() => handleSelectTab('domains')}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+              activeTab === 'domains'
+                ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-indigo-500 font-semibold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+            }`}
+          >
+            <Globe className={`w-4 h-4 shrink-0 ${activeTab === 'domains' ? 'text-indigo-400' : 'text-slate-400'}`} />
+            <span className="truncate">Domínios e SSL</span>
           </button>
         </div>
 

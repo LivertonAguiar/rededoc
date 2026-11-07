@@ -8,7 +8,8 @@ import {
   Wrench,
   FileText,
   Building2,
-  History
+  History,
+  Globe
 } from 'lucide-react';
 import { Client, Equipment, PortForward } from '../types';
 
@@ -56,6 +57,11 @@ export const ClientProfileHeader: React.FC<ClientProfileHeaderProps> = ({
       id: 'credentials',
       label: 'Cofre de Senhas',
       icon: KeyRound
+    },
+    {
+      id: 'domains',
+      label: 'Domínios & DNS',
+      icon: Globe
     },
     {
       id: 'service-orders',

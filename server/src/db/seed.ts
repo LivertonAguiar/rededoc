@@ -547,6 +547,45 @@ export async function runSeed() {
     'Liverton Aguiar'
   );
 
+  console.log('Criando domínio demonstrativo da Fase 7 (domains)...');
+  const domAuroraId = 'dom_aurora_01';
+  db.prepare(`
+    INSERT INTO domains (
+      id, client_id, name, registrar, auto_check,
+      ssl_expires_at, ssl_issuer, expires_at, score, notes, dns_snapshot
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    domAuroraId,
+    clientId,
+    'aurora-condominio.ddns.net',
+    'No-IP Managed DNS',
+    1,
+    new Date(Date.now() + 65 * 86400000).toISOString().slice(0, 10), // SSL em 65 dias
+    "Let's Encrypt Authority X3",
+    new Date(Date.now() + 180 * 86400000).toISOString().slice(0, 10), // Expira em 180 dias
+    85,
+    'Hostname dinâmico para acesso externo às câmeras do CFTV e portaria',
+    JSON.stringify({
+      a_records: ['200.180.45.10'],
+      ns_records: ['nf1.no-ip.com', 'nf2.no-ip.com'],
+      txt_records: ['v=spf1 include:_spf.google.com ~all'],
+      spf: 'v=spf1 include:_spf.google.com ~all',
+      dmarc: 'v=DMARC1; p=none; rua=mailto:dmarc@aurora.com.br',
+      ssl: {
+        valid_to: new Date(Date.now() + 65 * 86400000).toISOString().slice(0, 10),
+        issuer: "Let's Encrypt Authority X3",
+        days_remaining: 65,
+        valid: true
+      },
+      ddns_status: {
+        is_ddns: true,
+        resolved_ip: '200.180.45.10',
+        expected_wan_ip: '200.180.45.10',
+        mismatch: false
+      }
+    })
+  );
+
   console.log('Seed concluído com sucesso!');
 }
 

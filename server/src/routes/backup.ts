@@ -144,7 +144,8 @@ backupRouter.get('/export', (req: Request, res: Response) => {
     articles: db.prepare('SELECT * FROM articles').all(),
     article_versions: db.prepare('SELECT * FROM article_versions').all(),
     notification_settings: db.prepare('SELECT * FROM notification_settings').all(),
-    notification_log: db.prepare('SELECT * FROM notification_log').all()
+    notification_log: db.prepare('SELECT * FROM notification_log').all(),
+    domains: db.prepare('SELECT * FROM domains').all()
   };
 
   const filename = `rededoc-backup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -172,6 +173,7 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       DELETE FROM articles;
       DELETE FROM notification_log;
       DELETE FROM notification_settings;
+      DELETE FROM domains;
       DELETE FROM equipments;
       DELETE FROM service_orders;
       DELETE FROM network_topology;
@@ -340,6 +342,23 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       `);
       for (const nl of data.notification_log) {
         insNotifLog.run(nl.id, nl.entity_type, nl.entity_id, nl.channel, nl.status, nl.sent_at, nl.message, nl.created_at || new Date().toISOString());
+      }
+    }
+
+    if (data.domains) {
+      const insDomain = db.prepare(`
+        INSERT INTO domains (
+          id, client_id, name, registrar, expires_at, nameservers, notes,
+          auto_check, last_checked_at, ssl_expires_at, ssl_issuer, dns_snapshot, score, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const d of data.domains) {
+        insDomain.run(
+          d.id, d.client_id, d.name, d.registrar || null, d.expires_at || null, d.nameservers || null, d.notes || null,
+          d.auto_check ?? 1, d.last_checked_at || null, d.ssl_expires_at || null, d.ssl_issuer || null,
+          typeof d.dns_snapshot === 'object' ? JSON.stringify(d.dns_snapshot) : d.dns_snapshot || null,
+          d.score || 0, d.created_at || new Date().toISOString(), d.updated_at || new Date().toISOString()
+        );
       }
     }
 

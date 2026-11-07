@@ -3,7 +3,7 @@ import {
   CredentialAuditLog, ServiceOrder, TopologyData, Attachment,
   AuditHistory, DashboardStats, TechnicalReportData, EquipmentCatalogItem,
   RelatedItem, EntityLink, AvailableLinkTarget, Article, ArticleVersion,
-  ExpirationItem, NotificationSetting, NotificationLog
+  ExpirationItem, NotificationSetting, NotificationLog, Domain
 } from '../types';
 
 const API_BASE = '/api';
@@ -276,6 +276,21 @@ export const api = {
       method: 'POST'
     }),
   getNotificationLogs: () => fetchJson<NotificationLog[]>('/notifications/logs'),
+
+  // Domínios, SSL e DNS (Fase 7)
+  getDomains: (clientId?: string) => {
+    const qs = clientId ? `?clientId=${clientId}` : '';
+    return fetchJson<Domain[]>(`/domains${qs}`);
+  },
+  getDomain: (id: string) => fetchJson<Domain>(`/domains/${id}`),
+  createDomain: (data: Partial<Domain>) =>
+    fetchJson<Domain>('/domains', { method: 'POST', body: JSON.stringify(data) }),
+  updateDomain: (id: string, data: Partial<Domain>) =>
+    fetchJson<Domain>(`/domains/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteDomain: (id: string) =>
+    fetchJson<{ message: string }>(`/domains/${id}`, { method: 'DELETE' }),
+  checkDomain: (id: string) =>
+    fetchJson<Domain>(`/domains/${id}/check`, { method: 'POST' }),
 
   // Histórico de Alterações / Auditoria
   getAuditHistory: (clientId?: string, equipmentId?: string, limit?: number) => {

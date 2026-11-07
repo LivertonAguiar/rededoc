@@ -161,10 +161,81 @@ const credentialRotationSource: ExpirationSource = {
   }
 };
 
+// Fonte 3: Domínios e Certificados SSL (Fase 7)
+const domainExpirationSource: ExpirationSource = {
+  name: 'domain_ssl_and_registration',
+  fetch(filter: ExpirationFilter): ExpirationItem[] {
+    let sql = `
+      SELECT d.id, d.name, d.ssl_expires_at, d.expires_at, d.client_id, c.name as client_name
+      FROM domains d
+      JOIN clients c ON c.id = d.client_id
+      WHERE (d.ssl_expires_at IS NOT NULL AND TRIM(d.ssl_expires_at) != '')
+         OR (d.expires_at IS NOT NULL AND TRIM(d.expires_at) != '')
+    `;
+    const params: any[] = [];
+    if (filter.clientId) {
+      sql += ' AND d.client_id = ?';
+      params.push(filter.clientId);
+    }
+
+    try {
+      const rows = queryAll<any>(sql, ...params);
+      const results: ExpirationItem[] = [];
+
+      for (const row of rows) {
+        // 1. SSL
+        if (row.ssl_expires_at && row.ssl_expires_at.trim() !== '') {
+          const { status, diffDays } = calculateStatus(row.ssl_expires_at);
+          if (filter.withinDays === undefined || diffDays <= filter.withinDays) {
+            results.push({
+              id: `exp_ssl_${row.id}`,
+              kind: 'ssl',
+              entityType: 'domain',
+              entityId: row.id,
+              title: row.name,
+              subtitle: 'Certificado SSL',
+              clientId: row.client_id,
+              clientName: row.client_name,
+              dueAt: row.ssl_expires_at.slice(0, 10),
+              daysRemaining: diffDays,
+              status
+            });
+          }
+        }
+
+        // 2. Registro do Domínio
+        if (row.expires_at && row.expires_at.trim() !== '') {
+          const { status, diffDays } = calculateStatus(row.expires_at);
+          if (filter.withinDays === undefined || diffDays <= filter.withinDays) {
+            results.push({
+              id: `exp_dom_${row.id}`,
+              kind: 'domain',
+              entityType: 'domain',
+              entityId: row.id,
+              title: row.name,
+              subtitle: 'Registro do Domínio',
+              clientId: row.client_id,
+              clientName: row.client_name,
+              dueAt: row.expires_at.slice(0, 10),
+              daysRemaining: diffDays,
+              status
+            });
+          }
+        }
+      }
+
+      return results;
+    } catch {
+      return [];
+    }
+  }
+};
+
 // Lista extensível de fontes
 const registeredSources: ExpirationSource[] = [
   equipmentWarrantySource,
-  credentialRotationSource
+  credentialRotationSource,
+  domainExpirationSource
 ];
 
 /**

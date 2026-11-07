@@ -350,7 +350,29 @@ export function initDatabase() {
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
+    -- Tabela de Domínios, Certificados SSL e DNS (Fase 7)
+    CREATE TABLE IF NOT EXISTS domains (
+      id TEXT PRIMARY KEY,
+      client_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      registrar TEXT,
+      expires_at TEXT,
+      nameservers TEXT,
+      notes TEXT,
+      auto_check INTEGER NOT NULL DEFAULT 1,
+      last_checked_at TEXT,
+      ssl_expires_at TEXT,
+      ssl_issuer TEXT,
+      dns_snapshot TEXT, -- JSON com registros A, MX, NS, TXT, CAA, SPF, DMARC e status DDNS
+      score INTEGER DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+    );
+
     -- Índices para buscas rápidas
+    CREATE INDEX IF NOT EXISTS idx_domains_client ON domains(client_id);
+    CREATE INDEX IF NOT EXISTS idx_domains_name ON domains(name);
     CREATE INDEX IF NOT EXISTS idx_notification_log_daily ON notification_log(entity_type, entity_id, sent_at);
     CREATE INDEX IF NOT EXISTS idx_articles_client ON articles(client_id);
     CREATE INDEX IF NOT EXISTS idx_article_versions_article ON article_versions(article_id);

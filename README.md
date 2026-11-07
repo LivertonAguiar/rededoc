@@ -53,6 +53,14 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
    - Canal de alertas via **Webhook genérico** (POST JSON) para ntfy, Telegram e gateways corporativos.
    - Prevenção rigorosa de duplicidade com registro diário em `notification_log`.
 
+10. **Monitoramento de Domínios, Certificados SSL e DNS (Fase 7)**:
+   - Gestão completa de domínios públicos e hostnames DDNS (No-IP, DuckDNS, etc.) vinculados aos condomínios.
+   - Verificação nativa de certificados SSL via `node:tls` com cálculo de dias restantes, emissor e status de validade.
+   - Resolução de registros DNS (`A`, `MX`, `NS`, `TXT`, `SPF`, `DMARC`, `CAA`) com auditoria de segurança e pontuação (score 0 a 100).
+   - Consulta RDAP resiliente (Registro.br e global) para data de expiração do registro e autoridade registradora em modo best-effort.
+   - Detecção inteligente de desvio DDNS: alerta imediato caso o IP resolvido divirja do IP público WAN cadastrado do condomínio.
+   - Integração automática com o motor unificado de vencimentos e alertas da Fase 3.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas
