@@ -150,7 +150,8 @@ backupRouter.get('/export', (req: Request, res: Response) => {
     notification_log: db.prepare('SELECT * FROM notification_log').all(),
     domains: db.prepare('SELECT * FROM domains').all(),
     favorites: db.prepare('SELECT * FROM favorites').all(),
-    subnets: db.prepare('SELECT * FROM subnets').all()
+    subnets: db.prepare('SELECT * FROM subnets').all(),
+    equipment_templates: db.prepare('SELECT * FROM equipment_templates').all()
   };
 
   const filename = `rededoc-backup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -181,6 +182,7 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       DELETE FROM domains;
       DELETE FROM favorites;
       DELETE FROM subnets;
+      DELETE FROM equipment_templates;
       DELETE FROM equipments;
       DELETE FROM service_orders;
       DELETE FROM network_topology;
@@ -219,8 +221,8 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
           local_ip, subnet_mask, gateway, primary_dns, secondary_dns, dhcp_range,
           interface_name, vlan, is_mac_reserved, public_wan_ip,
           access_url, management_port, protocol, admin_username, config_path, access_notes,
-          created_at, updated_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          custom_fields, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `);
       for (const e of data.equipments) {
         insEq.run(
@@ -229,6 +231,7 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
           e.local_ip, e.subnet_mask, e.gateway, e.primary_dns, e.secondary_dns, e.dhcp_range,
           e.interface_name, e.vlan, e.is_mac_reserved, e.public_wan_ip,
           e.access_url, e.management_port, e.protocol, e.admin_username, e.config_path, e.access_notes,
+          typeof e.custom_fields === 'object' ? JSON.stringify(e.custom_fields) : (e.custom_fields || '{}'),
           e.created_at || new Date().toISOString(), e.updated_at || new Date().toISOString()
         );
       }
@@ -390,6 +393,20 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
           s.id, s.client_id, s.location_id || null, s.name, s.cidr, s.gateway || null,
           s.vlan || null, s.dhcp_start || null, s.dhcp_end || null, s.notes || null,
           s.created_at || new Date().toISOString(), s.updated_at || new Date().toISOString()
+        );
+      }
+    }
+
+    if (data.equipment_templates) {
+      const insTmpl = db.prepare(`
+        INSERT INTO equipment_templates (id, category, name, fields, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?)
+      `);
+      for (const t of data.equipment_templates) {
+        insTmpl.run(
+          t.id, t.category, t.name,
+          typeof t.fields === 'object' ? JSON.stringify(t.fields) : t.fields || '[]',
+          t.created_at || new Date().toISOString(), t.updated_at || new Date().toISOString()
         );
       }
     }

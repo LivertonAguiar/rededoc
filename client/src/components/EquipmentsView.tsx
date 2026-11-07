@@ -28,6 +28,7 @@ import { Equipment, Client, Location } from '../types';
 import { api } from '../services/api';
 import { AddEquipmentModal } from './AddEquipmentModal';
 import { EquipmentLabelModal } from './EquipmentLabelModal';
+import { EquipmentTemplatesModal } from './EquipmentTemplatesModal';
 import { RelatedItems } from './RelatedItems';
 import { useDialog } from '../context/DialogContext';
 
@@ -57,6 +58,7 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
   const [pingStates, setPingStates] = useState<Record<string, { online: boolean; latencyMs: number | null; loading?: boolean }>>({});
   const [isPingingAll, setIsPingingAll] = useState(false);
   const [expandedLinksEqId, setExpandedLinksEqId] = useState<string | null>(targetEquipmentId || null);
+  const [isTemplatesModalOpen, setIsTemplatesModalOpen] = useState(false);
 
   useEffect(() => {
     if (targetEquipmentId) {
@@ -178,6 +180,15 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
               <Activity className="w-4 h-4 text-emerald-400" />
             )}
             <span>{isPingingAll ? 'Testando Conexões...' : 'Testar Conectividade (Ping)'}</span>
+          </button>
+
+          <button
+            onClick={() => setIsTemplatesModalOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-indigo-300 bg-indigo-600/20 hover:bg-indigo-600/30 border border-indigo-500/30 transition shadow-sm"
+            title="Definir modelos e campos customizados por categoria"
+          >
+            <Sparkles className="w-4 h-4 text-indigo-400" />
+            <span>Modelos de Hardware</span>
           </button>
 
           <button
@@ -360,6 +371,36 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
                   </span>
                 </div>
               )}
+
+              {/* Campos Personalizados do Modelo (Fase 8) */}
+              {eq.custom_fields && (() => {
+                let parsed: Record<string, any> = {};
+                try {
+                  parsed = typeof eq.custom_fields === 'string' ? JSON.parse(eq.custom_fields) : eq.custom_fields;
+                } catch {}
+                const entries = Object.entries(parsed).filter(([_, v]) => v !== undefined && v !== '' && v !== null);
+                if (entries.length === 0) return null;
+                return (
+                  <div className="py-2 px-2.5 rounded-xl bg-indigo-500/10 border border-indigo-500/25 text-[11px] mt-2 space-y-1">
+                    <span className="text-[10px] uppercase font-bold text-indigo-300 flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-indigo-400" />
+                      Especificações do Modelo
+                    </span>
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-slate-300 pt-0.5">
+                      {entries.map(([k, v]) => (
+                        <div key={k} className="truncate">
+                          <span className="text-slate-400 font-mono text-[10px] capitalize">
+                            {k.replace(/_/g, ' ')}:
+                          </span>{' '}
+                          <span className="text-slate-200 font-medium font-mono">
+                            {typeof v === 'boolean' ? (v ? 'Sim' : 'Não') : String(v)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
 
             <div className="pt-3 border-t border-[#1D3054] flex items-center justify-between text-xs">
@@ -453,6 +494,12 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
         onClose={() => setSelectedEquipmentForLabel(null)}
         equipment={selectedEquipmentForLabel}
         client={client}
+      />
+
+      {/* Modal de Gerenciamento de Modelos e Campos Personalizados (Fase 8) */}
+      <EquipmentTemplatesModal
+        isOpen={isTemplatesModalOpen}
+        onClose={() => setIsTemplatesModalOpen(false)}
       />
     </div>
   );

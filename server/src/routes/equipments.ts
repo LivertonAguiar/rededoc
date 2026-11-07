@@ -122,12 +122,14 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
     local_ip, subnet_mask, gateway, primary_dns, secondary_dns, dhcp_range,
     interface_name, vlan, is_mac_reserved, public_wan_ip,
     access_url, management_port, protocol, admin_username, config_path, access_notes,
-    internal_notes, additional_info, warranty_expires_at
+    internal_notes, additional_info, warranty_expires_at, custom_fields
   } = req.body;
 
   if (!client_id || !location_id || !name || !category) {
     return res.status(400).json({ error: 'Cliente, Local, Nome e Categoria são obrigatórios.' });
   }
+
+  const customFieldsStr = typeof custom_fields === 'object' ? JSON.stringify(custom_fields) : (custom_fields || '{}');
 
   const id = 'eq_' + crypto.randomUUID().slice(0, 8);
   execute(`
@@ -137,14 +139,14 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
       local_ip, subnet_mask, gateway, primary_dns, secondary_dns, dhcp_range,
       interface_name, vlan, is_mac_reserved, public_wan_ip,
       access_url, management_port, protocol, admin_username, config_path, access_notes,
-      internal_notes, additional_info, warranty_expires_at
+      internal_notes, additional_info, warranty_expires_at, custom_fields
     ) VALUES (
       ?, ?, ?, ?, ?, ?, ?, ?,
       ?, ?, ?, ?,
       ?, ?, ?, ?, ?, ?,
       ?, ?, ?, ?,
       ?, ?, ?, ?, ?, ?,
-      ?, ?, ?
+      ?, ?, ?, ?
     )
   `,
     id, client_id, location_id, name, category, manufacturer || null, model || null, serial_number || null,
@@ -152,7 +154,7 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
     local_ip || null, subnet_mask || '255.255.255.0', gateway || null, primary_dns || null, secondary_dns || null, dhcp_range || null,
     interface_name || null, vlan || null, is_mac_reserved ? 1 : 0, public_wan_ip || null,
     access_url || null, management_port ? Number(management_port) : null, protocol || 'http', admin_username || null, config_path || null, access_notes || null,
-    internal_notes || null, additional_info || null, warranty_expires_at || null
+    internal_notes || null, additional_info || null, warranty_expires_at || null, customFieldsStr
   );
 
   // Histórico técnico
@@ -184,8 +186,13 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
     local_ip, subnet_mask, gateway, primary_dns, secondary_dns, dhcp_range,
     interface_name, vlan, is_mac_reserved, public_wan_ip,
     access_url, management_port, protocol, admin_username, config_path, access_notes,
-    internal_notes, additional_info, warranty_expires_at
+    internal_notes, additional_info, warranty_expires_at, custom_fields
   } = req.body;
+
+  let customFieldsStr = (existing as any).custom_fields;
+  if (custom_fields !== undefined) {
+    customFieldsStr = typeof custom_fields === 'object' ? JSON.stringify(custom_fields) : (custom_fields || '{}');
+  }
 
   execute(`
     UPDATE equipments SET
@@ -194,7 +201,7 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
       local_ip = ?, subnet_mask = ?, gateway = ?, primary_dns = ?, secondary_dns = ?, dhcp_range = ?,
       interface_name = ?, vlan = ?, is_mac_reserved = ?, public_wan_ip = ?,
       access_url = ?, management_port = ?, protocol = ?, admin_username = ?, config_path = ?, access_notes = ?,
-      internal_notes = ?, additional_info = ?, warranty_expires_at = ?,
+      internal_notes = ?, additional_info = ?, warranty_expires_at = ?, custom_fields = ?,
       updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `,
@@ -226,6 +233,7 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
     internal_notes !== undefined ? internal_notes : (existing as any).internal_notes,
     additional_info !== undefined ? additional_info : (existing as any).additional_info,
     warranty_expires_at !== undefined ? (warranty_expires_at || null) : (existing as any).warranty_expires_at,
+    customFieldsStr,
     id
   );
 

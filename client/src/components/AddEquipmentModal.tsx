@@ -27,7 +27,7 @@ import {
   Clock,
   AlertTriangle
 } from 'lucide-react';
-import { Equipment, Location, EquipmentCatalogItem } from '../types';
+import { Equipment, Location, EquipmentCatalogItem, EquipmentTemplate } from '../types';
 import { api } from '../services/api';
 import { ImageSearchModal } from './ImageSearchModal';
 import { BarcodeScannerModal } from './BarcodeScannerModal';
@@ -124,14 +124,39 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
     notes: '',
     internal_notes: '',
     additional_info: '',
-    warranty_expires_at: ''
+    warranty_expires_at: '',
+    custom_fields: {} as Record<string, any>
   });
+
+  // Modelos e campos personalizados (Fase 8)
+  const [templates, setTemplates] = useState<EquipmentTemplate[]>([]);
+  const [activeTemplate, setActiveTemplate] = useState<EquipmentTemplate | null>(null);
+
+  useEffect(() => {
+    if (formData.category) {
+      api.getEquipmentTemplates(formData.category)
+        .then(tmpls => {
+          setTemplates(tmpls);
+          setActiveTemplate(tmpls.length > 0 ? tmpls[0] : null);
+        })
+        .catch(() => {});
+    }
+  }, [formData.category]);
 
   // Carrega catálogo ao abrir
   useEffect(() => {
     if (isOpen) {
       loadCatalog();
       if (equipmentToEdit) {
+        let parsedCustom = {};
+        if (equipmentToEdit.custom_fields) {
+          try {
+            parsedCustom = typeof equipmentToEdit.custom_fields === 'string'
+              ? JSON.parse(equipmentToEdit.custom_fields)
+              : equipmentToEdit.custom_fields;
+          } catch {}
+        }
+
         setFormData({
           name: equipmentToEdit.name,
           category: equipmentToEdit.category,
@@ -157,7 +182,8 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           notes: equipmentToEdit.notes || '',
           internal_notes: equipmentToEdit.internal_notes || '',
           additional_info: equipmentToEdit.additional_info || '',
-          warranty_expires_at: equipmentToEdit.warranty_expires_at || ''
+          warranty_expires_at: equipmentToEdit.warranty_expires_at || '',
+          custom_fields: parsedCustom
         });
         setSelectedCatalogItem(null);
       } else {
@@ -198,7 +224,8 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           notes: '',
           internal_notes: '',
           additional_info: '',
-          warranty_expires_at: ''
+          warranty_expires_at: '',
+          custom_fields: {}
         });
         setSelectedCatalogItem(null);
       }
@@ -469,7 +496,9 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           config_path: formData.config_path,
           notes: formData.notes,
           internal_notes: formData.internal_notes,
-          additional_info: formData.additional_info
+          additional_info: formData.additional_info,
+          warranty_expires_at: formData.warranty_expires_at || null,
+          custom_fields: formData.custom_fields || {}
         });
       } else {
         // Cria novo equipamento no condomínio
@@ -501,7 +530,9 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           config_path: formData.config_path,
           notes: formData.notes,
           internal_notes: formData.internal_notes,
-          additional_info: formData.additional_info
+          additional_info: formData.additional_info,
+          warranty_expires_at: formData.warranty_expires_at || null,
+          custom_fields: formData.custom_fields || {}
         });
 
         // Se o técnico informou senha no cadastro, salva no Cofre com AES-256-GCM
@@ -1318,6 +1349,97 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                 </span>
               </div>
             </div>
+
+            {/* Campos Dinâmicos do Modelo de Hardware (Fase 8) */}
+            {activeTemplate && activeTemplate.fields.length > 0 && (
+              <div className="bg-[#0C1525] p-4 rounded-xl border border-indigo-500/30 space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-indigo-500/20">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-indigo-400" />
+                    <span className="text-xs font-bold text-white">
+                      Campos do Modelo ({activeTemplate.name})
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-indigo-300 font-mono">
+                    {activeTemplate.fields.length} campos específicos
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {activeTemplate.fields.map(field => {
+                    const value = formData.custom_fields?.[field.key];
+                    return (
+                      <div key={field.key} className={field.type === 'boolean' ? 'sm:col-span-2' : ''}>
+                        <label className="text-slate-300 font-semibold block text-xs mb-1">
+                          {field.label} {field.required && <span className="text-rose-400">*</span>}
+                        </label>
+
+                        {field.type === 'select' ? (
+                          <select
+                            value={value || ''}
+                            onChange={(e) => setFormData(p => ({
+                              ...p,
+                              custom_fields: { ...(p.custom_fields || {}), [field.key]: e.target.value }
+                            }))}
+                            className="w-full bg-[#101C31] border border-[#24375A] focus:border-indigo-500 rounded-lg px-3 py-1.5 text-slate-200 text-xs focus:outline-none"
+                          >
+                            <option value="">Selecione uma opção...</option>
+                            {(field.options || []).map(opt => (
+                              <option key={opt} value={opt}>{opt}</option>
+                            ))}
+                          </select>
+                        ) : field.type === 'boolean' ? (
+                          <label className="flex items-center gap-2 cursor-pointer pt-1 select-none">
+                            <input
+                              type="checkbox"
+                              checked={Boolean(value)}
+                              onChange={(e) => setFormData(p => ({
+                                ...p,
+                                custom_fields: { ...(p.custom_fields || {}), [field.key]: e.target.checked }
+                              }))}
+                              className="w-4 h-4 rounded text-indigo-600 bg-[#101C31] border-[#24375A] focus:ring-0 cursor-pointer"
+                            />
+                            <span className="text-xs text-slate-300 font-medium">{field.label}</span>
+                          </label>
+                        ) : field.type === 'number' ? (
+                          <input
+                            type="number"
+                            placeholder="0"
+                            value={value ?? ''}
+                            onChange={(e) => setFormData(p => ({
+                              ...p,
+                              custom_fields: { ...(p.custom_fields || {}), [field.key]: e.target.value === '' ? '' : Number(e.target.value) }
+                            }))}
+                            className="w-full bg-[#101C31] border border-[#24375A] focus:border-indigo-500 rounded-lg px-3 py-1.5 text-slate-200 text-xs focus:outline-none"
+                          />
+                        ) : field.type === 'date' ? (
+                          <input
+                            type="date"
+                            value={value || ''}
+                            onChange={(e) => setFormData(p => ({
+                              ...p,
+                              custom_fields: { ...(p.custom_fields || {}), [field.key]: e.target.value }
+                            }))}
+                            className="w-full bg-[#101C31] border border-[#24375A] focus:border-indigo-500 rounded-lg px-3 py-1.5 text-slate-200 text-xs font-mono focus:outline-none"
+                          />
+                        ) : (
+                          <input
+                            type="text"
+                            placeholder={field.type === 'ip' ? 'Ex: 192.168.1.10' : field.type === 'mac' ? 'Ex: 00:1A:2B:3C:4D:5E' : 'Preencher...'}
+                            value={value || ''}
+                            onChange={(e) => setFormData(p => ({
+                              ...p,
+                              custom_fields: { ...(p.custom_fields || {}), [field.key]: e.target.value }
+                            }))}
+                            className="w-full bg-[#101C31] border border-[#24375A] focus:border-indigo-500 rounded-lg px-3 py-1.5 text-slate-200 text-xs focus:outline-none"
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Informações Adicionais e Notas Internas */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

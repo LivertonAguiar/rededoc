@@ -6,7 +6,8 @@ import {
   ExpirationItem, NotificationSetting, NotificationLog, Domain,
   FavoriteItem, GroupedSearchResults, DashboardOverviewData,
   Subnet, SubnetUsageReport, SubnetSuggestion, ClientIpConflictsReport,
-  SystemUser, PortalOverview, PortalEquipment, PortalServiceOrder, PortalArticle
+  SystemUser, PortalOverview, PortalEquipment, PortalServiceOrder, PortalArticle,
+  EquipmentTemplate
 } from '../types';
 
 const API_BASE = '/api';
@@ -468,5 +469,27 @@ export const api = {
   getPortalOverview: () => fetchJson<PortalOverview>('/portal/overview'),
   getPortalEquipments: () => fetchJson<PortalEquipment[]>('/portal/equipments'),
   getPortalServiceOrders: () => fetchJson<PortalServiceOrder[]>('/portal/service-orders'),
-  getPortalArticles: () => fetchJson<PortalArticle[]>('/portal/articles')
+  getPortalArticles: () => fetchJson<PortalArticle[]>('/portal/articles'),
+
+  // Modelos de Equipamento e Campos Personalizados (Fase 8)
+  getEquipmentTemplates: (category?: string) => {
+    let url = '/equipment-templates';
+    if (category) url += `?category=${encodeURIComponent(category)}`;
+    return fetchJson<EquipmentTemplate[]>(url);
+  },
+  getEquipmentTemplate: (id: string) => fetchJson<EquipmentTemplate>(`/equipment-templates/${id}`),
+  createEquipmentTemplate: (data: Partial<EquipmentTemplate>) =>
+    fetchJson<EquipmentTemplate>('/equipment-templates', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+  updateEquipmentTemplate: (id: string, data: Partial<EquipmentTemplate>) =>
+    fetchJson<EquipmentTemplate>(`/equipment-templates/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+  deleteEquipmentTemplate: (id: string) =>
+    fetchJson<{ success: boolean; message: string }>(`/equipment-templates/${id}`, {
+      method: 'DELETE'
+    })
 };

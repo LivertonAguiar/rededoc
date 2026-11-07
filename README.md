@@ -89,6 +89,15 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
    - **DTOs Sanitizados com Lista Branca Estrita**: garantia em testes de que senhas, custos financeiros (`service_cost`), tempo gasto (`time_spent_minutes`), anotações internas (`internal_notes`, `access_notes`), credenciais, portas e IPs públicos nunca saem da API do portal.
    - **Gestão Completa de Usuários** (`/api/users`): tela administrativa para cadastro, redefinição de senhas, ativação/desativação e vinculação mandatória de condomínios para o papel `cliente`.
 
+14. **Modelos por Tipo de Equipamento e Campos Personalizados (Fase 8)**:
+   - Tabela `equipment_templates` e suporte a campos customizados no inventário (`equipments.custom_fields`).
+   - Suporte a múltiplos tipos de campos dinâmicos: texto, número, IP, MAC address, seleção (dropdown com opções), sim/não (booleano) e data.
+   - **Regra de segurança estrita**: não é permitido campo tipo senha nos modelos; segredos permanecem exclusivamente no cofre criptografado com AES-256-GCM.
+   - Pré-carregamento de modelos de referência para 6 categorias: Reconhecimento Facial, CFTV/DVR, Roteador/ONT, Módulo de Portão, Switch e Access Point.
+   - Formulário inteligente de cadastro (`AddEquipmentModal`) que renderiza os campos do modelo em tempo real conforme a categoria selecionada.
+   - Exibição das especificações técnicas no card do equipamento (`EquipmentsView`) e no laudo técnico para impressão/PDF (`ReportsView`).
+   - Modal administrativo (`EquipmentTemplatesModal`) para criação, edição e exclusão de modelos customizados.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas

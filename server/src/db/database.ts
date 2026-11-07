@@ -399,7 +399,18 @@ export function initDatabase() {
       FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE SET NULL
     );
 
+    -- Tabela de Modelos por Tipo de Equipamento (Campos Personalizados - Fase 8)
+    CREATE TABLE IF NOT EXISTS equipment_templates (
+      id TEXT PRIMARY KEY,
+      category TEXT NOT NULL,
+      name TEXT NOT NULL,
+      fields TEXT NOT NULL DEFAULT '[]',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
     -- Índices para buscas rápidas
+    CREATE INDEX IF NOT EXISTS idx_equipment_templates_cat ON equipment_templates(category);
     CREATE INDEX IF NOT EXISTS idx_subnets_client ON subnets(client_id);
     CREATE INDEX IF NOT EXISTS idx_subnets_location ON subnets(location_id);
     CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
@@ -442,6 +453,7 @@ export function initDatabase() {
   try { db.exec('ALTER TABLE equipments ADD COLUMN internal_notes TEXT;'); } catch {}
   try { db.exec('ALTER TABLE equipments ADD COLUMN additional_info TEXT;'); } catch {}
   try { db.exec('ALTER TABLE equipments ADD COLUMN warranty_expires_at TEXT;'); } catch {}
+  try { db.exec('ALTER TABLE equipments ADD COLUMN custom_fields TEXT DEFAULT "{}";'); } catch {}
 
   try { db.exec('ALTER TABLE credentials ADD COLUMN rotation_days INTEGER DEFAULT 90;'); } catch {}
   try { db.exec('ALTER TABLE credentials ADD COLUMN expires_at TEXT;'); } catch {}
@@ -467,8 +479,90 @@ export function initDatabase() {
 
   // Popula catálogo padrão de equipamentos se estiver vazio
   seedEquipmentCatalog();
+  seedEquipmentTemplates();
 
   console.log('Banco de dados inicializado com sucesso.');
+}
+
+function seedEquipmentTemplates() {
+  const count = queryOne<{ count: number }>('SELECT COUNT(*) as count FROM equipment_templates');
+  if (count && count.count > 0) return;
+
+  const templates = [
+    {
+      id: 'tmpl_facial_access',
+      category: 'facial_access',
+      name: 'Terminal de Reconhecimento Facial',
+      fields: JSON.stringify([
+        { key: 'firmware_version', label: 'Versão de Firmware', type: 'text', required: false },
+        { key: 'facial_capacity', label: 'Capacidade de Usuários Faciais', type: 'number', required: false },
+        { key: 'rfid_type', label: 'Tecnologia de Cartão / Tag', type: 'select', required: false, options: ['125 kHz (EM-Marin)', '13.56 MHz (Mifare)', 'Sem leitor RFID'] },
+        { key: 'anti_passback', label: 'Anti-Passback Ativado', type: 'boolean', required: false }
+      ])
+    },
+    {
+      id: 'tmpl_cctv_dvr',
+      category: 'cctv_dvr',
+      name: 'Gravador Digital de Vídeo (CFTV / DVR / NVR)',
+      fields: JSON.stringify([
+        { key: 'channels_count', label: 'Quantidade de Canais de Câmera', type: 'number', required: true },
+        { key: 'storage_tb', label: 'Capacidade do HD (TB)', type: 'number', required: false },
+        { key: 'recording_resolution', label: 'Resolução Principal', type: 'select', required: false, options: ['1080p Full HD', '4K Ultra HD', '5 MP', '720p HD'] },
+        { key: 'codec', label: 'Compressão de Vídeo', type: 'select', required: false, options: ['H.265+', 'H.265', 'H.264'] },
+        { key: 'cloud_monitoring', label: 'Acesso Nuvem (P2P / Intelbras Cloud / HiLook)', type: 'boolean', required: false }
+      ])
+    },
+    {
+      id: 'tmpl_router_ont',
+      category: 'router_ont',
+      name: 'Roteador Gateway / ONT Fibra Óptica',
+      fields: JSON.stringify([
+        { key: 'pon_type', label: 'Tecnologia PON', type: 'select', required: false, options: ['GPON', 'EPON', 'XGS-PON'] },
+        { key: 'wifi_standard', label: 'Padrão Wi-Fi', type: 'select', required: false, options: ['Wi-Fi 6 (802.11ax)', 'Wi-Fi 5 (802.11ac)', 'Wi-Fi 4 (802.11n)'] },
+        { key: 'fiber_rx_power_dbm', label: 'Potência Óptica RX (dBm)', type: 'text', required: false }
+      ])
+    },
+    {
+      id: 'tmpl_gate_module',
+      category: 'gate_module',
+      name: 'Módulo de Guarita / Automação de Portão',
+      fields: JSON.stringify([
+        { key: 'module_type', label: 'Modelo do Módulo', type: 'select', required: true, options: ['Nice Linear-HCS 3000', 'Nice Linear 2000', 'Guarita IP Control iD', 'Receptor Avulso'] },
+        { key: 'relays_count', label: 'Relés de Acionamento', type: 'number', required: false },
+        { key: 'battery_backup', label: 'Possui Nobreak / Bateria de Backup', type: 'boolean', required: false }
+      ])
+    },
+    {
+      id: 'tmpl_switch',
+      category: 'switch',
+      name: 'Switch de Rede',
+      fields: JSON.stringify([
+        { key: 'ports_count', label: 'Quantidade de Portas Gigabit', type: 'number', required: true },
+        { key: 'poe_standard', label: 'Alimentação PoE', type: 'select', required: false, options: ['Sem PoE', 'PoE 802.3af (15.4W)', 'PoE+ 802.3at (30W)', 'PoE++ 802.3bt (60W+)'] },
+        { key: 'is_managed', label: 'Gerenciável (L2 / VLANs)', type: 'boolean', required: false }
+      ])
+    },
+    {
+      id: 'tmpl_access_point',
+      category: 'access_point',
+      name: 'Ponto de Acesso Wi-Fi Corporativo',
+      fields: JSON.stringify([
+        { key: 'frequency_bands', label: 'Bandas Suportadas', type: 'select', required: false, options: ['Dual Band (2.4GHz + 5GHz)', 'Tri Band (2.4GHz + 5GHz + 6GHz)', 'Single Band (2.4GHz)'] },
+        { key: 'controller_managed', label: 'Gerenciado por Controladora (UniFi / Omada / Ruijie)', type: 'boolean', required: false }
+      ])
+    }
+  ];
+
+  const stmt = db.prepare(`
+    INSERT INTO equipment_templates (id, category, name, fields, created_at, updated_at)
+    VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+  `);
+
+  for (const t of templates) {
+    stmt.run(t.id, t.category, t.name, t.fields);
+  }
+
+  console.log('Modelos de equipamentos populados com 6 categorias de referência.');
 }
 
 function seedEquipmentCatalog() {

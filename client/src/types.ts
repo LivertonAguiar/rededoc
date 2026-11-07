@@ -143,6 +143,7 @@ export interface Equipment {
   admin_username?: string | null;
   config_path?: string | null;
   access_notes?: string | null;
+  custom_fields?: Record<string, any> | string;
   // Enriquecidos
   ports?: PortForward[];
   attachments?: Attachment[];
@@ -675,4 +676,27 @@ export interface PortalArticle {
   tags?: string;
   updated_at: string;
 }
+
+// ==========================================
+// Tipos para Modelos de Equipamento (Fase 8)
+// ==========================================
+export type EquipmentFieldType = 'text' | 'number' | 'ip' | 'mac' | 'select' | 'boolean' | 'date';
+
+export interface EquipmentFieldDefinition {
+  key: string;
+  label: string;
+  type: EquipmentFieldType;
+  required?: boolean;
+  options?: string[];
+}
+
+export interface EquipmentTemplate {
+  id: string;
+  category: string;
+  name: string;
+  fields: EquipmentFieldDefinition[];
+  created_at: string;
+  updated_at: string;
+}
+
 

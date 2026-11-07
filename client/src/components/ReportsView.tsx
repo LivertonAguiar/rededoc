@@ -273,6 +273,29 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ client, onBack }) => {
                       </div>
                     )}
 
+                    {/* Campos Personalizados do Modelo (Fase 8) */}
+                    {eq.custom_fields && (() => {
+                      let parsed: Record<string, any> = {};
+                      try {
+                        parsed = typeof eq.custom_fields === 'string' ? JSON.parse(eq.custom_fields) : eq.custom_fields;
+                      } catch {}
+                      const entries = Object.entries(parsed).filter(([_, v]) => v !== undefined && v !== '' && v !== null);
+                      if (entries.length === 0) return null;
+                      return (
+                        <div className="text-xs text-slate-300 print:text-slate-700 bg-[#0C1525]/50 print:bg-slate-100 p-2 rounded-lg border border-slate-700/50 print:border-slate-300">
+                          <strong className="text-indigo-300 print:text-indigo-800 block mb-1">Especificações do Modelo:</strong>
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                            {entries.map(([k, v]) => (
+                              <div key={k} className="text-[11px]">
+                                <span className="font-semibold capitalize text-slate-400 print:text-slate-600">{k.replace(/_/g, ' ')}:</span>{' '}
+                                <span>{typeof v === 'boolean' ? (v ? 'Sim' : 'Não') : String(v)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })()}
+
                     {/* Galeria de Prints de Configuração e Fotos Vinculados a este Equipamento */}
                     {eqAttachments.length > 0 && (
                       <div className="space-y-2 pt-1">

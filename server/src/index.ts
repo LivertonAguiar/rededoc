@@ -33,6 +33,7 @@ import { favoritesRouter } from './routes/favorites.js';
 import { subnetsRouter } from './routes/subnets.js';
 import { portalRouter } from './routes/portal.js';
 import { usersRouter } from './routes/users.js';
+import { equipmentTemplatesRouter } from './routes/equipmentTemplates.js';
 import { initSearchIndex } from './services/searchService.js';
 import { startNotificationScheduler } from './services/notificationService.js';
 
@@ -143,6 +144,7 @@ app.use('/api/domains', domainsRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/favorites', favoritesRouter);
 app.use('/api/subnets', subnetsRouter);
+app.use('/api/equipment-templates', equipmentTemplatesRouter);
 
 // Inicia agendador de notificações em segundo plano
 startNotificationScheduler();

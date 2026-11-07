@@ -170,4 +170,35 @@ export const resetPasswordSchema = z.object({
   password: z.string().min(6, 'A nova senha deve conter ao menos 6 caracteres.')
 });
 
+/**
+ * Esquema de validação para Modelos de Equipamento e Campos Personalizados (Fase 8)
+ */
+export const allowedFieldTypes = ['text', 'number', 'ip', 'mac', 'select', 'boolean', 'date'] as const;
+export type AllowedFieldType = typeof allowedFieldTypes[number];
+
+export const equipmentFieldSchema = z.object({
+  key: z.string().min(1, 'A chave do campo é obrigatória.').regex(/^[a-z0-9_]+$/, 'A chave do campo deve conter apenas letras minúsculas, números e sublinhado (_).'),
+  label: z.string().min(1, 'O rótulo do campo é obrigatório.'),
+  type: z.enum(allowedFieldTypes),
+  required: z.boolean().optional().default(false),
+  options: z.array(z.string()).optional()
+}).refine(field => {
+  // Regra do plano: NÃO existe tipo "senha". Segredos continuam exclusivamente no cofre criptografado.
+  const lowerKey = field.key.toLowerCase();
+  if ((field.type as string) === 'password' || lowerKey.includes('password') || lowerKey.includes('senha')) {
+    return false;
+  }
+  return true;
+}, {
+  message: 'Campos do tipo senha não são permitidos em modelos. Credenciais devem ser mantidas no cofre criptografado.',
+  path: ['type']
+});
+
+export const equipmentTemplateSchema = z.object({
+  category: z.string().min(1, 'A categoria do equipamento é obrigatória.'),
+  name: z.string().min(2, 'O nome do modelo de equipamento deve conter ao menos 2 caracteres.'),
+  fields: z.array(equipmentFieldSchema).default([])
+});
+
+
 
