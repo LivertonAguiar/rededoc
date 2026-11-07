@@ -122,7 +122,7 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
     local_ip, subnet_mask, gateway, primary_dns, secondary_dns, dhcp_range,
     interface_name, vlan, is_mac_reserved, public_wan_ip,
     access_url, management_port, protocol, admin_username, config_path, access_notes,
-    internal_notes, additional_info
+    internal_notes, additional_info, warranty_expires_at
   } = req.body;
 
   if (!client_id || !location_id || !name || !category) {
@@ -137,14 +137,14 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
       local_ip, subnet_mask, gateway, primary_dns, secondary_dns, dhcp_range,
       interface_name, vlan, is_mac_reserved, public_wan_ip,
       access_url, management_port, protocol, admin_username, config_path, access_notes,
-      internal_notes, additional_info
+      internal_notes, additional_info, warranty_expires_at
     ) VALUES (
       ?, ?, ?, ?, ?, ?, ?, ?,
       ?, ?, ?, ?,
       ?, ?, ?, ?, ?, ?,
       ?, ?, ?, ?,
       ?, ?, ?, ?, ?, ?,
-      ?, ?
+      ?, ?, ?
     )
   `,
     id, client_id, location_id, name, category, manufacturer || null, model || null, serial_number || null,
@@ -152,7 +152,7 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
     local_ip || null, subnet_mask || '255.255.255.0', gateway || null, primary_dns || null, secondary_dns || null, dhcp_range || null,
     interface_name || null, vlan || null, is_mac_reserved ? 1 : 0, public_wan_ip || null,
     access_url || null, management_port ? Number(management_port) : null, protocol || 'http', admin_username || null, config_path || null, access_notes || null,
-    internal_notes || null, additional_info || null
+    internal_notes || null, additional_info || null, warranty_expires_at || null
   );
 
   // Histórico técnico
@@ -184,7 +184,7 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
     local_ip, subnet_mask, gateway, primary_dns, secondary_dns, dhcp_range,
     interface_name, vlan, is_mac_reserved, public_wan_ip,
     access_url, management_port, protocol, admin_username, config_path, access_notes,
-    internal_notes, additional_info
+    internal_notes, additional_info, warranty_expires_at
   } = req.body;
 
   execute(`
@@ -194,7 +194,7 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
       local_ip = ?, subnet_mask = ?, gateway = ?, primary_dns = ?, secondary_dns = ?, dhcp_range = ?,
       interface_name = ?, vlan = ?, is_mac_reserved = ?, public_wan_ip = ?,
       access_url = ?, management_port = ?, protocol = ?, admin_username = ?, config_path = ?, access_notes = ?,
-      internal_notes = ?, additional_info = ?,
+      internal_notes = ?, additional_info = ?, warranty_expires_at = ?,
       updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `,
@@ -225,6 +225,7 @@ equipmentsRouter.put('/:id', validateBody(equipmentSchema.partial()), (req: Auth
     access_notes !== undefined ? access_notes : existing.access_notes,
     internal_notes !== undefined ? internal_notes : (existing as any).internal_notes,
     additional_info !== undefined ? additional_info : (existing as any).additional_info,
+    warranty_expires_at !== undefined ? (warranty_expires_at || null) : (existing as any).warranty_expires_at,
     id
   );
 

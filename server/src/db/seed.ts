@@ -103,17 +103,20 @@ export async function runSeed() {
     'Avançado > NAT > Redirecionamento de portas'
   );
 
-  // 2. Control iD Facial iDFace Max
+  // 2. Control iD Facial iDFace Max (Garantia vencendo em 5 dias para teste da Fase 3)
   const eqFacialId = 'eq_facial_01';
+  const warrantyIn5Days = new Date(Date.now() + 5 * 86400000).toISOString().slice(0, 10);
   db.prepare(`
     INSERT INTO equipments (
       id, client_id, location_id, name, category, manufacturer, model, serial_number,
       mac_address, physical_location, notes, local_ip, subnet_mask, gateway,
-      is_mac_reserved, access_url, management_port, protocol, admin_username, config_path
+      is_mac_reserved, access_url, management_port, protocol, admin_username, config_path,
+      warranty_expires_at
     ) VALUES (
       ?, ?, ?, ?, ?, ?, ?, ?,
       ?, ?, ?, ?, ?, ?,
-      ?, ?, ?, ?, ?, ?
+      ?, ?, ?, ?, ?, ?,
+      ?
     )
   `).run(
     eqFacialId,
@@ -135,7 +138,8 @@ export async function runSeed() {
     80,
     'http',
     'admin',
-    'Configurações de Rede > IP Estático'
+    'Configurações de Rede > IP Estático',
+    warrantyIn5Days
   );
 
   // 3. Nice 3000 Módulo Guarita

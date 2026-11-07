@@ -80,7 +80,9 @@ export const CredentialsVaultView: React.FC<CredentialsVaultViewProps> = ({
     password: '',
     access_url: '',
     port: '',
-    notes: ''
+    notes: '',
+    rotation_days: 90,
+    expires_at: ''
   });
   const [formError, setFormError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -156,7 +158,9 @@ export const CredentialsVaultView: React.FC<CredentialsVaultViewProps> = ({
       password: '',
       access_url: equipments[0]?.access_url || 'http://',
       port: equipments[0]?.management_port ? String(equipments[0].management_port) : '80',
-      notes: ''
+      notes: '',
+      rotation_days: 90,
+      expires_at: ''
     });
     setFormError(null);
     setShowModal(true);
@@ -172,7 +176,9 @@ export const CredentialsVaultView: React.FC<CredentialsVaultViewProps> = ({
       password: '', // em branco se não for alterar
       access_url: cred.access_url || '',
       port: cred.port ? String(cred.port) : '',
-      notes: cred.notes || ''
+      notes: cred.notes || '',
+      rotation_days: cred.rotation_days || 90,
+      expires_at: cred.expires_at || ''
     });
     setFormError(null);
     setShowModal(true);
@@ -548,6 +554,33 @@ export const CredentialsVaultView: React.FC<CredentialsVaultViewProps> = ({
                     placeholder="Ex: 80, 8080"
                     className="w-full bg-[#132238] border border-[#24375A] rounded-lg px-3 py-2 text-white font-mono focus:outline-none focus:border-blue-500"
                   />
+                </div>
+
+                <div>
+                  <label className="text-amber-300 font-semibold block mb-1 text-xs">
+                    Intervalo de Troca (Dias)
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.rotation_days}
+                    onChange={(e) => setFormData(p => ({ ...p, rotation_days: Number(e.target.value) || 0 }))}
+                    placeholder="90"
+                    className="w-full bg-[#132238] border border-[#24375A] focus:border-amber-400 rounded-lg px-3 py-2 text-amber-200 font-mono focus:outline-none"
+                  />
+                  <span className="text-[10px] text-slate-500">Padrão: 90 dias p/ alerta de troca</span>
+                </div>
+
+                <div>
+                  <label className="text-amber-300 font-semibold block mb-1 text-xs">
+                    Data de Expiração (Opcional)
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.expires_at}
+                    onChange={(e) => setFormData(p => ({ ...p, expires_at: e.target.value }))}
+                    className="w-full bg-[#132238] border border-[#24375A] focus:border-amber-400 rounded-lg px-3 py-2 text-amber-200 font-mono focus:outline-none text-xs"
+                  />
+                  <span className="text-[10px] text-slate-500">Caso a senha tenha prazo fixo</span>
                 </div>
 
                 <div className="col-span-2">

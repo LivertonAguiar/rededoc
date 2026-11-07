@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { DashboardStats, ClientSummary, ServiceOrder } from '../types';
 import { api } from '../services/api';
+import { ExpirationsCard } from './ExpirationsCard';
 
 interface GlobalOverviewViewProps {
   onSelectClientAndOpenNetwork: (clientId: string) => void;
@@ -200,6 +201,9 @@ export const GlobalOverviewView: React.FC<GlobalOverviewViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* PAINEL DE VENCIMENTOS E ALERTAS GERAIS (FASE 3) */}
+      <ExpirationsCard />
 
       {/* Seção Principal: Carteira de Condomínios / Clientes com Status de Rede */}
       <div className="space-y-4">

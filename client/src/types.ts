@@ -124,6 +124,7 @@ export interface Equipment {
   notes?: string;
   internal_notes?: string;
   additional_info?: string;
+  warranty_expires_at?: string | null;
   // Rede
   local_ip?: string;
   subnet_mask?: string;
@@ -161,6 +162,8 @@ export interface Credential {
   access_url?: string;
   port?: number;
   notes?: string;
+  rotation_days?: number | null;
+  expires_at?: string | null;
   last_changed_at: string;
   equipment_name?: string;
   equipment_model?: string;
@@ -377,4 +380,42 @@ export interface EquipmentCatalogItem {
   is_builtin?: number;
   created_at?: string;
   updated_at?: string;
+}
+
+export type ExpirationStatus = 'expired' | 'due_7d' | 'due_30d' | 'ok';
+export type ExpirationKind = 'warranty' | 'credential_rotation' | 'domain' | 'ssl';
+
+export interface ExpirationItem {
+  id: string;
+  kind: ExpirationKind;
+  entityType: string;
+  entityId: string;
+  title: string;
+  subtitle: string;
+  clientId: string;
+  clientName: string;
+  dueAt: string;
+  daysRemaining: number;
+  status: ExpirationStatus;
+}
+
+export interface NotificationSetting {
+  id: string;
+  channel: string;
+  target_url: string | null;
+  advance_days: string;
+  is_active: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface NotificationLog {
+  id: string;
+  entity_type: string;
+  entity_id: string;
+  channel: string;
+  status: string;
+  sent_at: string;
+  message: string;
+  created_at: string;
 }

@@ -25,6 +25,9 @@ import { equipmentCatalogRouter } from './routes/equipmentCatalog.js';
 import { imagesRouter } from './routes/images.js';
 import { linksRouter } from './routes/links.js';
 import { articlesRouter } from './routes/articles.js';
+import { expirationsRouter } from './routes/expirations.js';
+import { notificationsRouter } from './routes/notifications.js';
+import { startNotificationScheduler } from './services/notificationService.js';
 
 dotenv.config();
 
@@ -120,6 +123,11 @@ app.use('/api/equipment-catalog', equipmentCatalogRouter);
 app.use('/api/images', imagesRouter);
 app.use('/api/links', linksRouter);
 app.use('/api/articles', articlesRouter);
+app.use('/api/expirations', expirationsRouter);
+app.use('/api/notifications', notificationsRouter);
+
+// Inicia agendador de notificações em segundo plano
+startNotificationScheduler();
 
 // Servir frontend compilado em ambiente de produção
 const clientDist = path.resolve(__dirname, '../../client/dist');

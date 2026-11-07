@@ -2,7 +2,8 @@ import {
   User, Client, Location, Equipment, PortForward, Credential,
   CredentialAuditLog, ServiceOrder, TopologyData, Attachment,
   AuditHistory, DashboardStats, TechnicalReportData, EquipmentCatalogItem,
-  RelatedItem, EntityLink, AvailableLinkTarget, Article, ArticleVersion
+  RelatedItem, EntityLink, AvailableLinkTarget, Article, ArticleVersion,
+  ExpirationItem, NotificationSetting, NotificationLog
 } from '../types';
 
 const API_BASE = '/api';
@@ -253,6 +254,28 @@ export const api = {
     fetchJson<ArticleVersion[]>(`/articles/${id}/versions`),
   restoreArticleVersion: (id: string, version: number) =>
     fetchJson<Article>(`/articles/${id}/restore/${version}`, { method: 'POST' }),
+
+  // Vencimentos e Alertas (Fase 3)
+  getExpirations: (clientId?: string, withinDays?: number) => {
+    const params = new URLSearchParams();
+    if (clientId) params.append('clientId', clientId);
+    if (withinDays !== undefined) params.append('withinDays', String(withinDays));
+    const qs = params.toString();
+    return fetchJson<ExpirationItem[]>(`/expirations${qs ? `?${qs}` : ''}`);
+  },
+  getNotificationSettings: () => fetchJson<NotificationSetting[]>('/notifications/settings'),
+  saveNotificationSetting: (data: Partial<NotificationSetting>) =>
+    fetchJson<NotificationSetting>('/notifications/settings', { method: 'POST', body: JSON.stringify(data) }),
+  testNotificationWebhook: (target_url: string) =>
+    fetchJson<{ success: boolean; message: string; statusCode?: number }>('/notifications/test', {
+      method: 'POST',
+      body: JSON.stringify({ target_url })
+    }),
+  dispatchNotificationsNow: () =>
+    fetchJson<{ totalDispatched: number; skippedDuplicates: number; errors: number }>('/notifications/dispatch-now', {
+      method: 'POST'
+    }),
+  getNotificationLogs: () => fetchJson<NotificationLog[]>('/notifications/logs'),
 
   // Histórico de Alterações / Auditoria
   getAuditHistory: (clientId?: string, equipmentId?: string, limit?: number) => {

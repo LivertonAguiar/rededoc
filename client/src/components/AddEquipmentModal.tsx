@@ -23,7 +23,8 @@ import {
   Trash2,
   RefreshCw,
   Scan,
-  Undo2
+  Undo2,
+  Clock
 } from 'lucide-react';
 import { Equipment, Location, EquipmentCatalogItem } from '../types';
 import { api } from '../services/api';
@@ -109,7 +110,8 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
     config_path: '',
     notes: '',
     internal_notes: '',
-    additional_info: ''
+    additional_info: '',
+    warranty_expires_at: ''
   });
 
   // Carrega catálogo ao abrir
@@ -141,7 +143,8 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           config_path: equipmentToEdit.config_path || '',
           notes: equipmentToEdit.notes || '',
           internal_notes: equipmentToEdit.internal_notes || '',
-          additional_info: equipmentToEdit.additional_info || ''
+          additional_info: equipmentToEdit.additional_info || '',
+          warranty_expires_at: equipmentToEdit.warranty_expires_at || ''
         });
         setSelectedCatalogItem(null);
       } else {
@@ -181,7 +184,8 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           config_path: '',
           notes: '',
           internal_notes: '',
-          additional_info: ''
+          additional_info: '',
+          warranty_expires_at: ''
         });
         setSelectedCatalogItem(null);
       }
@@ -1215,6 +1219,25 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                   onChange={(e) => setFormData(p => ({ ...p, notes: e.target.value }))}
                   className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-2 text-slate-200 focus:outline-none"
                 />
+              </div>
+            </div>
+
+            {/* Vencimento da Garantia (Fase 3 - Vencimentos e Alertas) */}
+            <div className="bg-[#0C1525] p-3.5 rounded-xl border border-amber-500/30 space-y-1.5">
+              <label className="text-amber-300 font-semibold block text-xs flex items-center gap-2">
+                <Clock className="w-4 h-4 text-amber-400" />
+                <span>Validade da Garantia do Fabricante</span>
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                <input
+                  type="date"
+                  value={formData.warranty_expires_at || ''}
+                  onChange={(e) => setFormData(p => ({ ...p, warranty_expires_at: e.target.value }))}
+                  className="w-full bg-[#101C31] border border-[#24375A] focus:border-amber-400 rounded-lg px-3 py-1.5 text-amber-200 text-xs font-mono focus:outline-none"
+                />
+                <span className="text-[11px] text-slate-400">
+                  Monitoramento proativo com alertas aos 30 e 7 dias antes do término da garantia.
+                </span>
               </div>
             </div>
 

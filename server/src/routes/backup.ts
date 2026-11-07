@@ -142,7 +142,9 @@ backupRouter.get('/export', (req: Request, res: Response) => {
     attachments: db.prepare('SELECT * FROM attachments').all(),
     entity_links: db.prepare('SELECT * FROM entity_links').all(),
     articles: db.prepare('SELECT * FROM articles').all(),
-    article_versions: db.prepare('SELECT * FROM article_versions').all()
+    article_versions: db.prepare('SELECT * FROM article_versions').all(),
+    notification_settings: db.prepare('SELECT * FROM notification_settings').all(),
+    notification_log: db.prepare('SELECT * FROM notification_log').all()
   };
 
   const filename = `rededoc-backup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -168,6 +170,8 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       DELETE FROM entity_links;
       DELETE FROM article_versions;
       DELETE FROM articles;
+      DELETE FROM notification_log;
+      DELETE FROM notification_settings;
       DELETE FROM equipments;
       DELETE FROM service_orders;
       DELETE FROM network_topology;
@@ -316,6 +320,26 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       `);
       for (const v of data.article_versions) {
         insVer.run(v.id, v.article_id, v.version, v.title, v.body_md, v.changed_by || null, v.created_at || new Date().toISOString());
+      }
+    }
+
+    if (data.notification_settings) {
+      const insNotifSet = db.prepare(`
+        INSERT INTO notification_settings (id, channel, target_url, advance_days, is_active, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const ns of data.notification_settings) {
+        insNotifSet.run(ns.id, ns.channel || 'webhook', ns.target_url || null, ns.advance_days || '30,7,0', ns.is_active ?? 1, ns.created_at || new Date().toISOString(), ns.updated_at || new Date().toISOString());
+      }
+    }
+
+    if (data.notification_log) {
+      const insNotifLog = db.prepare(`
+        INSERT INTO notification_log (id, entity_type, entity_id, channel, status, sent_at, message, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const nl of data.notification_log) {
+        insNotifLog.run(nl.id, nl.entity_type, nl.entity_id, nl.channel, nl.status, nl.sent_at, nl.message, nl.created_at || new Date().toISOString());
       }
     }
 

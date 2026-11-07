@@ -46,6 +46,7 @@ import { DashboardKpis } from './dashboard/DashboardKpis';
 import { ConnectionSummaryCard } from './dashboard/ConnectionSummaryCard';
 import { TechnicalNotesCard } from './dashboard/TechnicalNotesCard';
 import { ServiceOrdersHistorySection } from './dashboard/ServiceOrdersHistorySection';
+import { ExpirationsCard } from './ExpirationsCard';
 
 interface DashboardViewProps {
   client: Client;
@@ -913,6 +914,9 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* MONITORAMENTO DE VENCIMENTOS E ALERTAS DO CLIENTE (FASE 3) */}
+      <ExpirationsCard clientId={client.id} />
 
       {/* SEÇÃO FIXADA NO CLIENTE: Histórico de Atendimentos Modular */}
       <ServiceOrdersHistorySection

@@ -21,7 +21,8 @@ import {
   Activity,
   Loader2,
   Wifi,
-  Link2
+  Link2,
+  Clock
 } from 'lucide-react';
 import { Equipment, Client, Location } from '../types';
 import { api } from '../services/api';
@@ -347,6 +348,16 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
                 <div className="py-1 px-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-[11px] text-amber-300/90 mt-1 flex items-start gap-1.5">
                   <Lock className="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5" />
                   <span className="line-clamp-2"><strong>Interno:</strong> {eq.internal_notes}</span>
+                </div>
+              )}
+
+              {/* Validade da Garantia (Fase 3) */}
+              {eq.warranty_expires_at && (
+                <div className="py-1 px-2 rounded-lg bg-amber-500/15 border border-amber-500/30 text-[11px] text-amber-300 mt-1 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 font-medium">
+                    <Clock className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Garantia: {eq.warranty_expires_at}</span>
+                  </span>
                 </div>
               )}
             </div>

@@ -16,6 +16,7 @@ credentialsRouter.get('/', (req: Request, res: Response) => {
     SELECT 
       cred.id, cred.client_id, cred.equipment_id, cred.name, cred.category,
       cred.username, cred.access_url, cred.port, cred.notes, cred.last_changed_at,
+      cred.rotation_days, cred.expires_at,
       cred.created_at, cred.updated_at,
       e.name AS equipment_name, e.model AS equipment_model,
       c.name AS client_name,
@@ -46,6 +47,7 @@ credentialsRouter.get('/:id', (req: Request, res: Response): any => {
     SELECT 
       cred.id, cred.client_id, cred.equipment_id, cred.name, cred.category,
       cred.username, cred.access_url, cred.port, cred.notes, cred.last_changed_at,
+      cred.rotation_days, cred.expires_at,
       cred.created_at, cred.updated_at,
       e.name AS equipment_name, e.model AS equipment_model,
       c.name AS client_name,
@@ -63,7 +65,7 @@ credentialsRouter.get('/:id', (req: Request, res: Response): any => {
 });
 
 credentialsRouter.post('/', (req: AuthRequest, res: Response): any => {
-  const { client_id, equipment_id, name, category, username, password, access_url, port, notes } = req.body;
+  const { client_id, equipment_id, name, category, username, password, access_url, port, notes, rotation_days, expires_at } = req.body;
   if (!client_id || !name || !username || !password) {
     return res.status(400).json({ error: 'Cliente, Nome, Usuário e Senha são obrigatórios.' });
   }
@@ -74,11 +76,13 @@ credentialsRouter.post('/', (req: AuthRequest, res: Response): any => {
   execute(`
     INSERT INTO credentials (
       id, client_id, equipment_id, name, category, username,
-      encrypted_password, iv, auth_tag, access_url, port, notes
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      encrypted_password, iv, auth_tag, access_url, port, notes,
+      rotation_days, expires_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `,
     id, client_id, equipment_id || null, name, category || 'equipamento', username,
-    encryptedPassword, iv, authTag, access_url || null, port ? Number(port) : null, notes || null
+    encryptedPassword, iv, authTag, access_url || null, port ? Number(port) : null, notes || null,
+    rotation_days ? Number(rotation_days) : 90, expires_at || null
   );
 
   execute(`
@@ -87,7 +91,7 @@ credentialsRouter.post('/', (req: AuthRequest, res: Response): any => {
   `, 'cal_' + crypto.randomUUID().slice(0, 8), id, req.user?.id || null, req.user?.name || 'Técnico', 'create', req.ip || null);
 
   const created = queryOne(`
-    SELECT id, client_id, equipment_id, name, category, username, access_url, port, notes, '••••••••' AS masked_password
+    SELECT id, client_id, equipment_id, name, category, username, access_url, port, notes, rotation_days, expires_at, '••••••••' AS masked_password
     FROM credentials WHERE id = ?
   `, id);
 
@@ -149,7 +153,7 @@ credentialsRouter.put('/:id', (req: AuthRequest, res: Response): any => {
     return res.status(404).json({ error: 'Credencial não encontrada.' });
   }
 
-  const { equipment_id, name, category, username, password, access_url, port, notes } = req.body;
+  const { equipment_id, name, category, username, password, access_url, port, notes, rotation_days, expires_at } = req.body;
 
   let encPass = existing.encrypted_password;
   let iv = existing.iv;
@@ -168,11 +172,14 @@ credentialsRouter.put('/:id', (req: AuthRequest, res: Response): any => {
     UPDATE credentials SET
       equipment_id = ?, name = ?, category = ?, username = ?,
       encrypted_password = ?, iv = ?, auth_tag = ?, access_url = ?, port = ?, notes = ?,
+      rotation_days = ?, expires_at = ?,
       last_changed_at = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `,
     equipment_id || null, name, category || 'equipamento', username,
     encPass, iv, authTag, access_url || null, port ? Number(port) : null, notes || null,
+    rotation_days !== undefined ? (rotation_days ? Number(rotation_days) : null) : existing.rotation_days,
+    expires_at !== undefined ? (expires_at || null) : existing.expires_at,
     lastChanged, id
   );
 

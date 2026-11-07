@@ -327,7 +327,31 @@ export function initDatabase() {
       FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
     );
 
+    -- Tabela de Configurações de Notificações e Canais de Alerta (Fase 3)
+    CREATE TABLE IF NOT EXISTS notification_settings (
+      id TEXT PRIMARY KEY,
+      channel TEXT NOT NULL DEFAULT 'webhook',
+      target_url TEXT,
+      advance_days TEXT NOT NULL DEFAULT '30,7,0',
+      is_active INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
+    -- Tabela de Histórico / Registro de Envios de Notificação (Fase 3)
+    CREATE TABLE IF NOT EXISTS notification_log (
+      id TEXT PRIMARY KEY,
+      entity_type TEXT NOT NULL,
+      entity_id TEXT NOT NULL,
+      channel TEXT NOT NULL,
+      status TEXT NOT NULL,
+      sent_at DATE NOT NULL DEFAULT CURRENT_DATE,
+      message TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
     -- Índices para buscas rápidas
+    CREATE INDEX IF NOT EXISTS idx_notification_log_daily ON notification_log(entity_type, entity_id, sent_at);
     CREATE INDEX IF NOT EXISTS idx_articles_client ON articles(client_id);
     CREATE INDEX IF NOT EXISTS idx_article_versions_article ON article_versions(article_id);
     CREATE INDEX IF NOT EXISTS idx_entity_links_source ON entity_links(source_type, source_id);
@@ -362,6 +386,10 @@ export function initDatabase() {
 
   try { db.exec('ALTER TABLE equipments ADD COLUMN internal_notes TEXT;'); } catch {}
   try { db.exec('ALTER TABLE equipments ADD COLUMN additional_info TEXT;'); } catch {}
+  try { db.exec('ALTER TABLE equipments ADD COLUMN warranty_expires_at TEXT;'); } catch {}
+
+  try { db.exec('ALTER TABLE credentials ADD COLUMN rotation_days INTEGER DEFAULT 90;'); } catch {}
+  try { db.exec('ALTER TABLE credentials ADD COLUMN expires_at TEXT;'); } catch {}
 
   try { db.exec('ALTER TABLE port_forwards ADD COLUMN internal_notes TEXT;'); } catch {}
   try { db.exec('ALTER TABLE port_forwards ADD COLUMN additional_info TEXT;'); } catch {}

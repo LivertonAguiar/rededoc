@@ -45,6 +45,14 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
    - Integração com `RelatedItems`, permitindo vincular tutoriais operacionais diretamente a equipamentos, portas e credenciais.
    - Script de importação em lote idempotente (`npm run import:articles`).
 
+9. **Vencimentos e Alertas Automatizados (Fase 3)**:
+   - Monitoramento proativo de garantias de hardware (`equipments.warranty_expires_at`) e intervalo de rotação de credenciais (`credentials.rotation_days` / `expires_at`).
+   - Sinalização visual em cores (vermelho para vencidos, âmbar para prazo de 7 dias e azul para 30 dias).
+   - Cartão unificado `ExpirationsCard` presente na Visão Geral Global e no Painel individual de cada condomínio.
+   - Agendador interno periódico no Node.js (`setInterval` diário às 08:00 no fuso configurado via `ALERT_HOUR` / `TZ`).
+   - Canal de alertas via **Webhook genérico** (POST JSON) para ntfy, Telegram e gateways corporativos.
+   - Prevenção rigorosa de duplicidade com registro diário em `notification_log`.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas
