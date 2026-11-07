@@ -4,8 +4,10 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 import { initDatabase } from './db/database.js';
+import { requireAuth, requireRole, requireInternalRole, getJwtSecret } from './middleware/auth.js';
 import { authRouter } from './routes/auth.js';
 import { clientsRouter } from './routes/clients.js';
 import { locationsRouter } from './routes/locations.js';
@@ -24,6 +26,18 @@ import { imagesRouter } from './routes/images.js';
 
 dotenv.config();
 
+// Validação mandatória de segredos em ambiente de produção
+if (process.env.NODE_ENV === 'production') {
+  if (!process.env.JWT_SECRET) {
+    console.error('ERRO FATAL: Variável de ambiente JWT_SECRET é obrigatória em produção.');
+    process.exit(1);
+  }
+  if (!process.env.VAULT_SECRET_KEY) {
+    console.error('ERRO FATAL: Variável de ambiente VAULT_SECRET_KEY é obrigatória em produção.');
+    process.exit(1);
+  }
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -38,14 +52,40 @@ app.use(cors());
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 
-// Servir arquivos de uploads
+// Servir arquivos de uploads com proteção para anexos confidenciais
 const uploadsPath = process.env.UPLOAD_DIR || path.resolve(__dirname, '../../uploads');
 if (!fs.existsSync(uploadsPath)) {
   fs.mkdirSync(uploadsPath, { recursive: true });
 }
-app.use('/uploads', express.static(uploadsPath));
 
-// Rotas da API REST
+app.use('/uploads', (req, res, next) => {
+  const ext = path.extname(req.path).toLowerCase();
+  const isPublicImage = ['.png', '.jpg', '.jpeg', '.webp', '.svg', '.gif', '.ico'].includes(ext);
+
+  // Fotos de catálogo e fotos de equipamentos são públicas
+  if (isPublicImage && !req.path.startsWith('/attachments/')) {
+    return next();
+  }
+
+  // Anexos de configuração (.bin, .conf, .pdf, etc.) exigem autenticação
+  const authHeader = req.headers.authorization;
+  const token = (authHeader && authHeader.startsWith('Bearer '))
+    ? authHeader.split(' ')[1]
+    : (req.query.token as string);
+
+  if (!token) {
+    return res.status(401).json({ error: 'Acesso não autorizado ao anexo.' });
+  }
+
+  try {
+    jwt.verify(token, getJwtSecret());
+    next();
+  } catch {
+    return res.status(401).json({ error: 'Sessão inválida ou expirada.' });
+  }
+}, express.static(uploadsPath));
+
+// Rotas públicas da API REST
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -56,6 +96,12 @@ app.get('/api/health', (req, res) => {
 });
 
 app.use('/api/auth', authRouter);
+
+// Todas as demais rotas da API exigem autenticação obrigatória
+app.use('/api', requireAuth);
+app.use('/api', requireInternalRole);
+
+// Rotas internas autenticadas
 app.use('/api/clients', clientsRouter);
 app.use('/api/locations', locationsRouter);
 app.use('/api/equipments', equipmentsRouter);
@@ -67,7 +113,7 @@ app.use('/api/audit-history', auditHistoryRouter);
 app.use('/api/attachments', attachmentsRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/reports', reportsRouter);
-app.use('/api/backup', backupRouter);
+app.use('/api/backup', requireRole('admin'), backupRouter);
 app.use('/api/equipment-catalog', equipmentCatalogRouter);
 app.use('/api/images', imagesRouter);
 

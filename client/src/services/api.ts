@@ -301,8 +301,10 @@ export const api = {
     if (extraData?.serviceOrderId) formData.append('serviceOrderId', extraData.serviceOrderId);
     if (extraData?.clientId) formData.append('clientId', extraData.clientId);
 
+    const token = localStorage.getItem('rededoc_token');
     const res = await fetch(`${API_BASE}/images/upload`, {
       method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: formData
     });
     if (!res.ok) {

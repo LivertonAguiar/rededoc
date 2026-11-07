@@ -533,8 +533,10 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       form.append('category', uploadCategory);
       form.append('notes', uploadNotes);
 
+      const token = api.getToken();
       const res = await fetch('/api/attachments', {
         method: 'POST',
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: form
       });
 
@@ -890,7 +892,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                   </div>
                   <div className="flex items-center gap-1">
                     <a
-                      href={`/api/attachments/${att.id}/download`}
+                      href={`/api/attachments/${att.id}/download?token=${encodeURIComponent(api.getToken() || '')}`}
                       download
                       className="p-1.5 rounded-lg bg-blue-600/30 hover:bg-blue-600 text-blue-300 hover:text-white transition-colors"
                       title="Baixar arquivo"

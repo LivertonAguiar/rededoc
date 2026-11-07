@@ -4,12 +4,11 @@ import fs from 'node:fs';
 import jwt from 'jsonwebtoken';
 import { ZipArchive } from 'archiver';
 import { db } from '../db/database.js';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'rededoc-jwt-secret-condominio-aurora-2026';
+import { getJwtSecret } from '../middleware/auth.js';
 
 export const backupRouter = Router();
 
-// Valida token JWT via Header ou Query Parameter (para links diretos de download)
+// Valida token JWT via Header ou Query Parameter e exige papel 'admin'
 function backupAuth(req: Request, res: Response, next: NextFunction): any {
   const authHeader = req.headers.authorization;
   const token = (authHeader && authHeader.startsWith('Bearer '))
@@ -21,8 +20,13 @@ function backupAuth(req: Request, res: Response, next: NextFunction): any {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
+    const decoded = jwt.verify(token, getJwtSecret()) as any;
     (req as any).user = decoded;
+
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({ error: 'Permissão insuficiente. Operações de backup são restritas a administradores.' });
+    }
+
     next();
   } catch {
     return res.status(401).json({ error: 'Sessão inválida ou expirada.' });

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { db } from '../db/database.js';
 import { compareSystemPassword } from '../services/crypto.js';
-import { generateToken, authMiddleware, AuthRequest } from '../middleware/auth.js';
+import { generateToken, requireAuth, AuthRequest } from '../middleware/auth.js';
 import { loginLimiter } from '../middleware/rateLimiter.js';
 
 export const authRouter = Router();
@@ -26,7 +26,8 @@ authRouter.post('/login', loginLimiter, async (req: Request, res: Response): Pro
     id: user.id,
     email: user.email,
     role: user.role,
-    name: user.name
+    name: user.name,
+    client_id: user.client_id || null
   });
 
   return res.json({
@@ -35,11 +36,12 @@ authRouter.post('/login', loginLimiter, async (req: Request, res: Response): Pro
       id: user.id,
       name: user.name,
       email: user.email,
-      role: user.role
+      role: user.role,
+      client_id: user.client_id || null
     }
   });
 });
 
-authRouter.get('/me', authMiddleware, (req: AuthRequest, res: Response) => {
+authRouter.get('/me', requireAuth, (req: AuthRequest, res: Response) => {
   return res.json({ user: req.user });
 });

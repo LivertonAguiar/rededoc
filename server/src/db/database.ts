@@ -56,7 +56,8 @@ export function initDatabase() {
       name TEXT NOT NULL,
       email TEXT UNIQUE NOT NULL,
       password_hash TEXT NOT NULL,
-      role TEXT NOT NULL DEFAULT 'technician',
+      role TEXT NOT NULL DEFAULT 'tecnico',
+      client_id TEXT REFERENCES clients(id),
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
@@ -316,6 +317,10 @@ export function initDatabase() {
 
   try { db.exec('ALTER TABLE port_forwards ADD COLUMN internal_notes TEXT;'); } catch {}
   try { db.exec('ALTER TABLE port_forwards ADD COLUMN additional_info TEXT;'); } catch {}
+
+  // Padronização de papéis (technician -> tecnico) e client_id para usuários do portal
+  try { db.exec("UPDATE users SET role = 'tecnico' WHERE role = 'technician';"); } catch {}
+  try { db.exec('ALTER TABLE users ADD COLUMN client_id TEXT REFERENCES clients(id);'); } catch {}
 
   // Atualiza atendimentos existentes com valores e tempo gasto realistas de demonstração
   try {
