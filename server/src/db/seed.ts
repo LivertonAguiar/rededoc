@@ -45,6 +45,14 @@ export async function runSeed() {
     'Condomínio residencial com 2 torres, guarita presencial e sistema de controle de acesso facial e automação de portões.'
   );
 
+  console.log('Criando usuário do portal do cliente (Síndico Aurora)...');
+  const portalUserId = 'usr_sindico_aurora';
+  const portalPasswordHash = await hashSystemPassword('aurora123');
+  db.prepare(`
+    INSERT INTO users (id, name, email, password_hash, role, client_id, is_active)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `).run(portalUserId, 'Dra. Márcia (Síndica)', 'sindico@condominioaurora.com.br', portalPasswordHash, 'cliente', clientId, 1);
+
   console.log('Criando local Sede Principal...');
   const locationId = 'loc_aurora_main';
   db.prepare(`

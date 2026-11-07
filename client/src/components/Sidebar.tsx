@@ -19,7 +19,8 @@ import {
   ChevronRightSquare,
   BookOpen,
   Globe,
-  Layers
+  Layers,
+  Users
 } from 'lucide-react';
 import { User } from '../types';
 
@@ -370,6 +371,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <Database className={`w-4 h-4 shrink-0 ${activeTab === 'backup' ? 'text-purple-400' : 'text-slate-400'}`} />
             <span className="truncate">Configurações e Backup</span>
           </button>
+
+          {currentUser?.role === 'admin' && (
+            <button
+              onClick={() => handleSelectTab('users')}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+                activeTab === 'users'
+                  ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-emerald-500 font-semibold'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+              }`}
+            >
+              <Users className={`w-4 h-4 shrink-0 ${activeTab === 'users' ? 'text-emerald-400' : 'text-slate-400'}`} />
+              <span className="truncate">Gestão de Usuários</span>
+            </button>
+          )}
         </div>
       </div>
 

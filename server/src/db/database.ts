@@ -452,6 +452,7 @@ export function initDatabase() {
   // Padronização de papéis (technician -> tecnico) e client_id para usuários do portal
   try { db.exec("UPDATE users SET role = 'tecnico' WHERE role = 'technician';"); } catch {}
   try { db.exec('ALTER TABLE users ADD COLUMN client_id TEXT REFERENCES clients(id);'); } catch {}
+  try { db.exec('ALTER TABLE users ADD COLUMN is_active INTEGER NOT NULL DEFAULT 1;'); } catch {}
 
   // Atualiza atendimentos existentes com valores e tempo gasto realistas de demonstração
   try {

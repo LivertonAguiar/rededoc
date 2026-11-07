@@ -15,6 +15,8 @@ import { BackupView } from './components/BackupView';
 import { KnowledgeBaseView } from './components/KnowledgeBaseView';
 import { DomainsView } from './components/DomainsView';
 import { IpamView } from './components/IpamView';
+import { PortalApp } from './components/PortalApp';
+import { UsersManagementView } from './components/UsersManagementView';
 import { LoginView } from './components/LoginView';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
@@ -226,6 +228,15 @@ export function App() {
     );
   }
 
+  // Usuários com perfil 'cliente' acessam exclusivamente a interface dedicada do Portal do Cliente
+  if (currentUser.role === 'cliente') {
+    return (
+      <DialogProvider>
+        <PortalApp currentUser={currentUser} onLogout={handleLogout} />
+      </DialogProvider>
+    );
+  }
+
   return (
     <DialogProvider>
       <div className="flex min-h-screen bg-[#0B132B] text-slate-100">
@@ -311,6 +322,8 @@ export function App() {
                   loadClientData();
                 }}
               />
+            ) : activeTab === 'users' ? (
+              <UsersManagementView clients={clients} />
             ) : loading && !selectedClient ? (
               <div className="text-center py-20 text-slate-400 text-sm">
                 Carregando infraestrutura de rede...

@@ -31,6 +31,8 @@ import { domainsRouter } from './routes/domains.js';
 import { searchRouter } from './routes/search.js';
 import { favoritesRouter } from './routes/favorites.js';
 import { subnetsRouter } from './routes/subnets.js';
+import { portalRouter } from './routes/portal.js';
+import { usersRouter } from './routes/users.js';
 import { initSearchIndex } from './services/searchService.js';
 import { startNotificationScheduler } from './services/notificationService.js';
 
@@ -108,7 +110,13 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/auth', authRouter);
 
-// Todas as demais rotas da API exigem autenticação obrigatória
+// Portal do cliente (exclusivo para o papel 'cliente', filtrado pelo token)
+app.use('/api/portal', portalRouter);
+
+// Gestão de usuários (restrito a administradores)
+app.use('/api/users', usersRouter);
+
+// Todas as demais rotas da API exigem autenticação obrigatória e barram usuários com perfil 'cliente'
 app.use('/api', requireAuth);
 app.use('/api', requireInternalRole);
 

@@ -124,3 +124,50 @@ export const subnetSchema = z.object({
   notes: z.string().optional().nullable()
 });
 
+/**
+ * Esquema de validação para Criação de Usuários do Sistema e Portal (Fase 4)
+ */
+export const createUserSchema = z.object({
+  name: z.string().min(2, 'O nome deve ter no mínimo 2 caracteres.'),
+  email: z.string().email('E-mail em formato inválido.'),
+  password: z.string().min(6, 'A senha deve conter ao menos 6 caracteres.'),
+  role: z.enum(['admin', 'tecnico', 'cliente']),
+  client_id: z.string().optional().nullable(),
+  is_active: z.union([z.boolean(), z.number()]).optional().default(1)
+}).refine(data => {
+  if (data.role === 'cliente' && (!data.client_id || data.client_id.trim() === '')) {
+    return false;
+  }
+  return true;
+}, {
+  message: 'Usuários com papel "cliente" devem ser vinculados obrigatoriamente a um condomínio.',
+  path: ['client_id']
+});
+
+/**
+ * Esquema de validação para Atualização de Usuários (Fase 4)
+ */
+export const updateUserSchema = z.object({
+  name: z.string().min(2, 'O nome deve ter no mínimo 2 caracteres.').optional(),
+  email: z.string().email('E-mail em formato inválido.').optional(),
+  role: z.enum(['admin', 'tecnico', 'cliente']).optional(),
+  client_id: z.string().optional().nullable(),
+  is_active: z.union([z.boolean(), z.number()]).optional()
+}).refine(data => {
+  if (data.role === 'cliente' && (!data.client_id || data.client_id.trim() === '')) {
+    return false;
+  }
+  return true;
+}, {
+  message: 'Usuários com papel "cliente" devem ser vinculados obrigatoriamente a um condomínio.',
+  path: ['client_id']
+});
+
+/**
+ * Esquema de validação para Redefinição de Senha de Usuários (Fase 4)
+ */
+export const resetPasswordSchema = z.object({
+  password: z.string().min(6, 'A nova senha deve conter ao menos 6 caracteres.')
+});
+
+

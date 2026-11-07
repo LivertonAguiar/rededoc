@@ -597,3 +597,82 @@ export interface ClientIpConflictsReport {
   dhcpWithoutReservation: any[];
   hasIssues: boolean;
 }
+
+// ==========================================
+// Tipos para Gestão de Usuários (Fase 4)
+// ==========================================
+export interface SystemUser {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  client_id?: string | null;
+  client_name?: string | null;
+  client_identification?: string | null;
+  is_active: number;
+  created_at: string;
+  updated_at: string;
+}
+
+// ==========================================
+// Tipos para Portal do Cliente (Fase 4)
+// ==========================================
+export interface PortalClientInfo {
+  id: string;
+  name: string;
+  identification_name?: string;
+  document?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+}
+
+export interface PortalLocation {
+  id: string;
+  name: string;
+  address?: string;
+  contact_name?: string;
+  phone?: string;
+}
+
+export interface PortalOverview {
+  client: PortalClientInfo;
+  locations: PortalLocation[];
+  stats: {
+    total_equipments: number;
+    completed_services: number;
+    last_service_date: string | null;
+    available_guides: number;
+  };
+}
+
+export interface PortalEquipment {
+  id: string;
+  name: string;
+  category: string;
+  manufacturer?: string;
+  model?: string;
+  physical_location?: string;
+  location_name?: string;
+  photo_url?: string;
+}
+
+export interface PortalServiceOrder {
+  id: string;
+  date_time: string;
+  service_type: string;
+  problem_description: string;
+  changes_made?: string;
+  test_results?: string;
+  technician_name: string;
+  location_name?: string;
+}
+
+export interface PortalArticle {
+  id: string;
+  title: string;
+  body_md: string;
+  tags?: string;
+  updated_at: string;
+}
+

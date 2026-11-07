@@ -79,6 +79,16 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
    - Detecção automática e importação/sugestão de sub-redes a partir do inventário de equipamentos existentes.
    - Vínculos bidirecionais automáticos (`RelatedItems`) entre a sub-rede e equipamentos, credenciais ou procedimentos da infraestrutura.
 
+13. **Portal do Cliente e Gestão de Usuários RBAC (Fase 4)**:
+   - **Portal do Cliente Dedicado** (`PortalApp`): interface moderna desenhada para síndicos e gestores prediais, com navegação independente e sem acesso às rotas internas técnicas.
+   - Quatro abas intuitivas:
+     - **Visão Geral**: indicadores consolidados, locais físicos da edificação e contatos cadastrais.
+     - **Equipamentos**: inventário visual com fotografias reais, categorias, fabricantes, modelos e localização física.
+     - **Atendimentos Concluídos**: histórico transparente de manutenções com ações realizadas, resultados de testes e técnico responsável.
+     - **Manuais e Guias**: visualizador formatado e seguro de procedimentos operacionais autorizados (`visible_in_portal = 1`).
+   - **DTOs Sanitizados com Lista Branca Estrita**: garantia em testes de que senhas, custos financeiros (`service_cost`), tempo gasto (`time_spent_minutes`), anotações internas (`internal_notes`, `access_notes`), credenciais, portas e IPs públicos nunca saem da API do portal.
+   - **Gestão Completa de Usuários** (`/api/users`): tela administrativa para cadastro, redefinição de senhas, ativação/desativação e vinculação mandatória de condomínios para o papel `cliente`.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas

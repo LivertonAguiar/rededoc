@@ -17,6 +17,10 @@ authRouter.post('/login', loginLimiter, async (req: Request, res: Response): Pro
     return res.status(401).json({ error: 'Credenciais inválidas.' });
   }
 
+  if (user.is_active === 0) {
+    return res.status(403).json({ error: 'Acesso bloqueado. Este usuário foi desativado pelo administrador do sistema.' });
+  }
+
   const isValid = await compareSystemPassword(password, user.password_hash);
   if (!isValid) {
     return res.status(401).json({ error: 'Credenciais inválidas.' });

@@ -5,7 +5,8 @@ import {
   RelatedItem, EntityLink, AvailableLinkTarget, Article, ArticleVersion,
   ExpirationItem, NotificationSetting, NotificationLog, Domain,
   FavoriteItem, GroupedSearchResults, DashboardOverviewData,
-  Subnet, SubnetUsageReport, SubnetSuggestion, ClientIpConflictsReport
+  Subnet, SubnetUsageReport, SubnetSuggestion, ClientIpConflictsReport,
+  SystemUser, PortalOverview, PortalEquipment, PortalServiceOrder, PortalArticle
 } from '../types';
 
 const API_BASE = '/api';
@@ -438,5 +439,34 @@ export const api = {
   deleteSubnet: (id: string) =>
     fetchJson<{ message: string }>(`/subnets/${id}`, {
       method: 'DELETE'
-    })
+    }),
+
+  // Gestão de Usuários e RBAC (Fase 4)
+  getUsers: () => fetchJson<SystemUser[]>('/users'),
+  getUser: (id: string) => fetchJson<SystemUser>(`/users/${id}`),
+  createUser: (data: any) =>
+    fetchJson<SystemUser>('/users', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+  updateUser: (id: string, data: any) =>
+    fetchJson<SystemUser>(`/users/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+  resetUserPassword: (id: string, password: string) =>
+    fetchJson<{ success: boolean; message: string }>(`/users/${id}/reset-password`, {
+      method: 'POST',
+      body: JSON.stringify({ password })
+    }),
+  deleteUser: (id: string) =>
+    fetchJson<{ success: boolean; message: string }>(`/users/${id}`, {
+      method: 'DELETE'
+    }),
+
+  // Portal do Cliente (Fase 4)
+  getPortalOverview: () => fetchJson<PortalOverview>('/portal/overview'),
+  getPortalEquipments: () => fetchJson<PortalEquipment[]>('/portal/equipments'),
+  getPortalServiceOrders: () => fetchJson<PortalServiceOrder[]>('/portal/service-orders'),
+  getPortalArticles: () => fetchJson<PortalArticle[]>('/portal/articles')
 };
