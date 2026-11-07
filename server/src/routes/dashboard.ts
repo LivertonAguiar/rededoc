@@ -1,8 +1,102 @@
 import { Router, Request, Response } from 'express';
 import { queryAll, queryOne } from '../db/database.js';
 import { checkClientWanStatus } from '../services/wanService.js';
+import { AuthRequest } from '../middleware/auth.js';
+import { listExpirations } from '../services/expirationService.js';
 
 export const dashboardRouter = Router();
+
+/**
+ * GET /api/dashboard/overview
+ * Visão Geral Unificada (Fase 5): contadores globais, favoritos do usuário,
+ * atividades recentes de auditoria e vencimentos críticos.
+ */
+dashboardRouter.get('/overview', (req: AuthRequest, res: Response) => {
+  const userId = req.user?.id;
+
+  // 1. Contadores Globais
+  const clientsCount = (queryOne<any>('SELECT COUNT(*) as c FROM clients') || {}).c || 0;
+  const equipmentsCount = (queryOne<any>('SELECT COUNT(*) as c FROM equipments') || {}).c || 0;
+  const credentialsCount = (queryOne<any>('SELECT COUNT(*) as c FROM credentials') || {}).c || 0;
+  const portsCount = (queryOne<any>('SELECT COUNT(*) as c FROM port_forwards') || {}).c || 0;
+  const articlesCount = (queryOne<any>('SELECT COUNT(*) as c FROM articles') || {}).c || 0;
+  const domainsCount = (queryOne<any>('SELECT COUNT(*) as c FROM domains') || {}).c || 0;
+  const pendingOrdersCount = (queryOne<any>("SELECT COUNT(*) as c FROM service_orders WHERE status != 'concluido'") || {}).c || 0;
+
+  // 2. Favoritos do usuário logado
+  let userFavorites: any[] = [];
+  if (userId) {
+    const rawFavs = queryAll<any>(`
+      SELECT id, entity_type, entity_id, created_at
+      FROM favorites
+      WHERE user_id = ?
+      ORDER BY created_at DESC
+      LIMIT 10
+    `, userId);
+
+    userFavorites = rawFavs.map(f => {
+      let title = 'Favorito';
+      let subtitle = '';
+      let clientId: string | null = null;
+      let clientName: string | null = null;
+      let urlHash = '';
+
+      if (f.entity_type === 'client') {
+        const c = queryOne<any>('SELECT id, name, address FROM clients WHERE id = ?', f.entity_id);
+        if (c) {
+          title = c.name;
+          subtitle = c.address || 'Condomínio';
+          clientId = c.id;
+          clientName = c.name;
+          urlHash = 'client-network';
+        }
+      } else if (f.entity_type === 'equipment') {
+        const eq = queryOne<any>(`
+          SELECT e.id, e.name, e.model, e.local_ip, e.client_id, c.name as client_name
+          FROM equipments e
+          JOIN clients c ON c.id = e.client_id
+          WHERE e.id = ?
+        `, f.entity_id);
+        if (eq) {
+          title = eq.name;
+          subtitle = `${eq.client_name} • ${eq.model || ''}`;
+          clientId = eq.client_id;
+          clientName = eq.client_name;
+          urlHash = `equipments/${eq.id}`;
+        }
+      }
+      return { ...f, title, subtitle, clientId, clientName, urlHash };
+    }).filter(f => f.title !== 'Favorito');
+  }
+
+  // 3. Atividade recente do sistema (últimas 10 do audit_history)
+  const recentActivity = queryAll<any>(`
+    SELECT ah.id, ah.client_id, ah.user_name, ah.action, ah.entity_type,
+           ah.entity_name, ah.details, ah.created_at, c.name as client_name
+    FROM audit_history ah
+    LEFT JOIN clients c ON c.id = ah.client_id
+    ORDER BY ah.created_at DESC
+    LIMIT 10
+  `);
+
+  // 4. Vencimentos mais urgentes (próximos 30 dias)
+  const urgentExpirations = listExpirations({ withinDays: 30 }).slice(0, 5);
+
+  res.json({
+    counts: {
+      clients: clientsCount,
+      equipments: equipmentsCount,
+      credentials: credentialsCount,
+      port_forwards: portsCount,
+      articles: articlesCount,
+      domains: domainsCount,
+      pending_orders: pendingOrdersCount
+    },
+    favorites: userFavorites,
+    recent_activity: recentActivity,
+    expirations: urgentExpirations
+  });
+});
 
 dashboardRouter.get('/stats', (req: Request, res: Response) => {
   const { clientId } = req.query;

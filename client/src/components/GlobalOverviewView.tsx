@@ -15,9 +15,13 @@ import {
   ExternalLink,
   Search,
   Activity,
-  FileText
+  FileText,
+  Star,
+  History,
+  KeyRound,
+  BookOpen
 } from 'lucide-react';
-import { DashboardStats, ClientSummary, ServiceOrder } from '../types';
+import { DashboardStats, ClientSummary, ServiceOrder, DashboardOverviewData, FavoriteItem } from '../types';
 import { api } from '../services/api';
 import { ExpirationsCard } from './ExpirationsCard';
 
@@ -35,14 +39,32 @@ export const GlobalOverviewView: React.FC<GlobalOverviewViewProps> = ({
   onOpenEquipments
 }) => {
   const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [overviewData, setOverviewData] = useState<DashboardOverviewData | null>(null);
+  const [favorites, setFavorites] = useState<FavoriteItem[]>([]);
+  const [recentClients, setRecentClients] = useState<Array<{ id: string; name: string }>>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  const loadStats = async () => {
+  const loadData = async () => {
     try {
       setLoading(true);
-      const data = await api.getDashboardStats();
-      setStats(data);
+      const [statsRes, overviewRes] = await Promise.all([
+        api.getDashboardStats(),
+        api.getDashboardOverview().catch(() => null)
+      ]);
+      setStats(statsRes);
+      if (overviewRes) {
+        setOverviewData(overviewRes);
+        setFavorites(overviewRes.favorites || []);
+      }
+
+      // Carrega recentes do localStorage
+      try {
+        const rawRecent = localStorage.getItem('rededoc_recent_clients');
+        if (rawRecent) {
+          setRecentClients(JSON.parse(rawRecent));
+        }
+      } catch {}
     } catch (err) {
       console.error('Erro ao carregar estatísticas gerais:', err);
     } finally {
@@ -51,8 +73,55 @@ export const GlobalOverviewView: React.FC<GlobalOverviewViewProps> = ({
   };
 
   useEffect(() => {
-    loadStats();
+    loadData();
   }, []);
+
+  const handleOpenClientWithRecent = (clientId: string, clientName: string) => {
+    // Atualiza lista de recentes no localStorage
+    try {
+      const existing: Array<{ id: string; name: string }> = JSON.parse(
+        localStorage.getItem('rededoc_recent_clients') || '[]'
+      );
+      const updated = [{ id: clientId, name: clientName }, ...existing.filter(c => c.id !== clientId)].slice(0, 5);
+      localStorage.setItem('rededoc_recent_clients', JSON.stringify(updated));
+      setRecentClients(updated);
+    } catch {}
+
+    onSelectClientAndOpenNetwork(clientId);
+  };
+
+  const handleToggleFavorite = async (entityType: string, entityId: string) => {
+    const isFav = favorites.some(f => f.entityType === entityType && f.entityId === entityId);
+    try {
+      if (isFav) {
+        await api.removeFavorite(entityType, entityId);
+        setFavorites(prev => prev.filter(f => !(f.entityType === entityType && f.entityId === entityId)));
+      } else {
+        const res = await api.addFavorite(entityType, entityId);
+        if (res.isFavorite) {
+          const client = stats?.clients_summary?.find(c => c.id === entityId);
+          setFavorites(prev => [
+            {
+              id: res.id,
+              entityType: entityType as any,
+              entityId,
+              title: client?.name || 'Item Favorito',
+              subtitle: client?.address || '',
+              clientId: entityId,
+              urlHash: 'client-network'
+            },
+            ...prev
+          ]);
+        }
+      }
+    } catch (err) {
+      console.error('Erro ao alternar favorito:', err);
+    }
+  };
+
+  const isFavorite = (entityType: string, entityId: string) => {
+    return favorites.some(f => f.entityType === entityType && f.entityId === entityId);
+  };
 
   if (loading || !stats) {
     return (
@@ -104,6 +173,59 @@ export const GlobalOverviewView: React.FC<GlobalOverviewViewProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Barra de Acesso Rápido: Favoritos & Recentes (Fase 5) */}
+      {(favorites.length > 0 || recentClients.length > 0) && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Favoritos */}
+          {favorites.length > 0 && (
+            <div className="bg-[#101C31] border border-[#1E3150] rounded-xl p-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase tracking-wider mb-2.5">
+                <Star className="w-3.5 h-3.5 fill-amber-400" />
+                <span>Condomínios e Itens Favoritos</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {favorites.map((fav) => (
+                  <button
+                    key={fav.id}
+                    onClick={() => {
+                      if (fav.clientId) {
+                        handleOpenClientWithRecent(fav.clientId, fav.title);
+                      }
+                    }}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0C1525] hover:bg-[#182844] border border-[#1E3150] hover:border-amber-400/50 text-xs text-slate-200 transition shadow-sm"
+                  >
+                    <Building2 className="w-3.5 h-3.5 text-amber-400" />
+                    <span className="font-semibold">{fav.title}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Recentes */}
+          {recentClients.length > 0 && (
+            <div className="bg-[#101C31] border border-[#1E3150] rounded-xl p-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">
+                <History className="w-3.5 h-3.5 text-blue-400" />
+                <span>Acessados Recentemente</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {recentClients.map((rec) => (
+                  <button
+                    key={rec.id}
+                    onClick={() => handleOpenClientWithRecent(rec.id, rec.name)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0C1525] hover:bg-[#182844] border border-[#1E3150] hover:border-blue-400/50 text-xs text-slate-300 transition"
+                  >
+                    <Building2 className="w-3.5 h-3.5 text-slate-400" />
+                    <span>{rec.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Cards de Métricas Consolidadas (KPIs) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -254,9 +376,26 @@ export const GlobalOverviewView: React.FC<GlobalOverviewViewProps> = ({
                     {/* Cabeçalho do Card */}
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <h3 className="font-bold text-slate-100 text-base group-hover:text-blue-400 transition">
-                          {clientItem.name}
-                        </h3>
+                        <div className="flex items-center gap-2">
+                          <h3 className="font-bold text-slate-100 text-base group-hover:text-blue-400 transition">
+                            {clientItem.name}
+                          </h3>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleToggleFavorite('client', clientItem.id);
+                            }}
+                            className={`p-1 rounded-md border transition ${
+                              isFavorite('client', clientItem.id)
+                                ? 'text-amber-400 bg-amber-400/10 border-amber-400/30 hover:bg-amber-400/20'
+                                : 'text-slate-500 hover:text-amber-300 hover:bg-slate-800 border-transparent'
+                            }`}
+                            title={isFavorite('client', clientItem.id) ? 'Remover dos favoritos' : 'Marcar como favorito'}
+                          >
+                            <Star className={`w-3.5 h-3.5 ${isFavorite('client', clientItem.id) ? 'fill-amber-400' : ''}`} />
+                          </button>
+                        </div>
                         <div className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
                           <span>{clientItem.identification_name}</span>
                           <span>•</span>
@@ -325,7 +464,7 @@ export const GlobalOverviewView: React.FC<GlobalOverviewViewProps> = ({
                   {/* Botões de Ação */}
                   <div className="mt-5 pt-3 border-t border-[#1E3150] flex items-center justify-between gap-2">
                     <button
-                      onClick={() => onSelectClientAndOpenNetwork(clientItem.id)}
+                      onClick={() => handleOpenClientWithRecent(clientItem.id, clientItem.name)}
                       className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md shadow-blue-600/20 transition"
                     >
                       <Radio className="w-3.5 h-3.5" />
@@ -459,6 +598,40 @@ export const GlobalOverviewView: React.FC<GlobalOverviewViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Painel de Atividade Recente do Sistema (Audit History - Fase 5) */}
+      {overviewData?.recent_activity && overviewData.recent_activity.length > 0 && (
+        <div className="bg-[#101C31] border border-[#1E3150] rounded-xl p-5 shadow-sm">
+          <div className="flex items-center justify-between pb-3 border-b border-[#1E3150]">
+            <div className="flex items-center gap-2">
+              <History className="w-4 h-4 text-blue-400" />
+              <h3 className="font-bold text-white text-sm">Histórico e Atividades Recentes</h3>
+            </div>
+            <span className="text-xs text-slate-400">Auditoria Unificada</span>
+          </div>
+
+          <div className="mt-3 divide-y divide-slate-800/60">
+            {overviewData.recent_activity.map((act) => (
+              <div key={act.id} className="py-2.5 flex items-center justify-between gap-4 text-xs">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-2 h-2 rounded-full bg-blue-400 shrink-0" />
+                  <div className="truncate">
+                    <span className="font-semibold text-slate-200">{act.user_name}</span>{' '}
+                    <span className="text-slate-400">{act.action.toLowerCase().replace(/_/g, ' ')}</span>{' '}
+                    <span className="text-blue-400 font-medium">{act.entity_name}</span>
+                    {act.client_name && (
+                      <span className="text-slate-500 text-[11px] ml-1.5">({act.client_name})</span>
+                    )}
+                  </div>
+                </div>
+                <div className="text-[11px] text-slate-500 font-mono shrink-0">
+                  {act.created_at.slice(0, 16).replace('T', ' ')}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

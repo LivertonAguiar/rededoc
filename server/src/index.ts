@@ -28,6 +28,9 @@ import { articlesRouter } from './routes/articles.js';
 import { expirationsRouter } from './routes/expirations.js';
 import { notificationsRouter } from './routes/notifications.js';
 import { domainsRouter } from './routes/domains.js';
+import { searchRouter } from './routes/search.js';
+import { favoritesRouter } from './routes/favorites.js';
+import { initSearchIndex } from './services/searchService.js';
 import { startNotificationScheduler } from './services/notificationService.js';
 
 dotenv.config();
@@ -50,8 +53,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Inicializa banco de dados SQLite
+// Inicializa banco de dados SQLite e índice de busca global FTS5
 initDatabase();
+initSearchIndex();
 
 // Middlewares
 app.use(cors());
@@ -127,6 +131,8 @@ app.use('/api/articles', articlesRouter);
 app.use('/api/expirations', expirationsRouter);
 app.use('/api/notifications', notificationsRouter);
 app.use('/api/domains', domainsRouter);
+app.use('/api/search', searchRouter);
+app.use('/api/favorites', favoritesRouter);
 
 // Inicia agendador de notificações em segundo plano
 startNotificationScheduler();

@@ -370,7 +370,20 @@ export function initDatabase() {
       FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
     );
 
+    -- Tabela de Favoritos (Fase 5)
+    CREATE TABLE IF NOT EXISTS favorites (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      entity_type TEXT NOT NULL,
+      entity_id TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(user_id, entity_type, entity_id),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+
     -- Índices para buscas rápidas
+    CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
+    CREATE INDEX IF NOT EXISTS idx_favorites_entity ON favorites(entity_type, entity_id);
     CREATE INDEX IF NOT EXISTS idx_domains_client ON domains(client_id);
     CREATE INDEX IF NOT EXISTS idx_domains_name ON domains(name);
     CREATE INDEX IF NOT EXISTS idx_notification_log_daily ON notification_log(entity_type, entity_id, sent_at);

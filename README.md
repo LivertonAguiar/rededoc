@@ -61,6 +61,14 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
    - Detecção inteligente de desvio DDNS: alerta imediato caso o IP resolvido divirja do IP público WAN cadastrado do condomínio.
    - Integração automática com o motor unificado de vencimentos e alertas da Fase 3.
 
+11. **Visão Geral Melhorada e Busca Global FTS5 (Fase 5)**:
+   - Motor de busca em texto completo de alta performance via SQLite FTS5 (*Full-Text Search*) com normalização de endereços IP e MAC Address (com e sem dois-pontos).
+   - Paleta de comando modal estilo Codex/Spotlight acionada pelo atalho global `Ctrl + K` ou `/`.
+   - Navegação instantânea por teclado (Up/Down/Enter/Esc) direcionando direto para equipamentos, portas NAT, clientes, procedimentos ou credenciais.
+   - Sistema de **Favoritos** persistente por usuário (`favorites`) com marcação de estrela nos cards e cabeçalhos de condomínios.
+   - Acesso rápido a **Condomínios Recentes** com persistência em armazenamento local.
+   - Painel consolidado de **Atividades Recentes de Auditoria** na tela inicial.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas

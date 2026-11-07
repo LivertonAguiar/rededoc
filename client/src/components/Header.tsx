@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Printer, Server, Share2, Building2, MapPin, X, ArrowRight, ShieldAlert, Edit, Plus, LayoutDashboard, Menu, ArrowLeft } from 'lucide-react';
+import { Search, Printer, Server, Share2, Building2, MapPin, X, ArrowRight, ShieldAlert, Edit, Plus, LayoutDashboard, Menu, ArrowLeft, Command } from 'lucide-react';
 import { Client, Location } from '../types';
 import { api } from '../services/api';
+import { QuickSearchModal } from './QuickSearchModal';
 
 interface HeaderProps {
   activeTab?: string;
@@ -18,6 +19,7 @@ interface HeaderProps {
   onOpenPortForwards: () => void;
   onOpenReport: () => void;
   onNavigateToItem?: (type: string, id: string) => void;
+  onNavigateToTab?: (tab: string, entityId?: string) => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -34,13 +36,32 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenEquipments,
   onOpenPortForwards,
   onOpenReport,
-  onNavigateToItem
+  onNavigateToItem,
+  onNavigateToTab
 }) => {
+  const [isQuickSearchOpen, setIsQuickSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<any>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [showSearchPopup, setShowSearchPopup] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+
+  // Listener global para Ctrl+K e '/'
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const isInput = ['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName);
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsQuickSearchOpen(true);
+      } else if (e.key === '/' && !isInput) {
+        e.preventDefault();
+        setIsQuickSearchOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, []);
 
   const selectedClient = clients.find(c => c.id === selectedClientId);
   const locations = selectedClient?.locations || [];
@@ -157,104 +178,22 @@ export const Header: React.FC<HeaderProps> = ({
         )}
       </div>
 
-      {/* Barra de Busca Rápida */}
-      <div className="relative flex-1 max-w-md" ref={searchRef}>
-        <div className="relative">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onFocus={() => { if (searchResults) setShowSearchPopup(true); }}
-            placeholder="Buscar por cliente, IP, MAC, porta, modelo..."
-            className="w-full bg-[#132238] text-sm text-slate-100 placeholder-slate-400 pl-9 pr-8 py-1.5 rounded-lg border border-[#24375A] focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-          />
-          {searchQuery && (
-            <button
-              onClick={() => { setSearchQuery(''); setSearchResults(null); }}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-          )}
-        </div>
-
-        {/* Dropdown de Resultados da Busca */}
-        {showSearchPopup && searchResults && (
-          <div className="absolute left-0 right-0 mt-2 bg-[#132238] border border-[#24375A] rounded-xl shadow-2xl p-3 z-50 max-h-96 overflow-y-auto space-y-3">
-            {searchResults.equipments?.length === 0 &&
-             searchResults.ports?.length === 0 &&
-             searchResults.clients?.length === 0 && (
-              <div className="text-center py-4 text-xs text-slate-400">
-                Nenhum resultado encontrado para "{searchQuery}".
-              </div>
-            )}
-
-            {/* Equipamentos */}
-            {searchResults.equipments?.length > 0 && (
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-blue-400 mb-1 flex items-center gap-1.5">
-                  <Server className="w-3 h-3" /> Equipamentos ({searchResults.equipments.length})
-                </div>
-                <div className="space-y-1">
-                  {searchResults.equipments.map((eq: any) => (
-                    <div
-                      key={eq.id}
-                      onClick={() => {
-                        setShowSearchPopup(false);
-                        onNavigateToItem?.('equipment', eq.id);
-                      }}
-                      className="p-2 rounded bg-[#0F1B2D]/70 hover:bg-[#1D3250] cursor-pointer flex items-center justify-between text-xs transition-colors"
-                    >
-                      <div>
-                        <span className="font-semibold text-slate-100">{eq.name}</span>
-                        <span className="text-slate-400 text-[11px] ml-2">({eq.model || eq.category})</span>
-                        <div className="text-[10px] text-slate-400 font-mono">
-                          IP: <span className="text-emerald-400">{eq.local_ip || 'N/A'}</span> • MAC: {eq.mac_address || 'N/A'}
-                        </div>
-                      </div>
-                      <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Portas / NAT */}
-            {searchResults.ports?.length > 0 && (
-              <div>
-                <div className="text-[11px] font-bold uppercase tracking-wider text-amber-400 mb-1 flex items-center gap-1.5">
-                  <Share2 className="w-3 h-3" /> Regras de Portas ({searchResults.ports.length})
-                </div>
-                <div className="space-y-1">
-                  {searchResults.ports.map((p: any) => (
-                    <div
-                      key={p.id}
-                      onClick={() => {
-                        setShowSearchPopup(false);
-                        onNavigateToItem?.('port', p.id);
-                      }}
-                      className="p-2 rounded bg-[#0F1B2D]/70 hover:bg-[#1D3250] cursor-pointer flex items-center justify-between text-xs transition-colors"
-                    >
-                      <div>
-                        <div className="font-semibold text-slate-200">{p.service_name}</div>
-                        <div className="text-[11px] font-mono text-amber-300">
-                          WAN:{p.external_port} → {p.destination_local_ip}:{p.internal_port} ({p.protocol})
-                        </div>
-                      </div>
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
-                        p.status === 'funcionando' ? 'bg-emerald-500/20 text-emerald-400' :
-                        p.status === 'com_falha' ? 'bg-rose-500/20 text-rose-400' : 'bg-amber-500/20 text-amber-400'
-                      }`}>
-                        {p.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+      {/* Barra de Busca Rápida com Atalho Global */}
+      <div className="relative flex-1 max-w-md">
+        <button
+          type="button"
+          onClick={() => setIsQuickSearchOpen(true)}
+          className="w-full flex items-center justify-between bg-[#132238] text-sm text-slate-400 pl-3 pr-2 py-1.5 rounded-lg border border-[#24375A] hover:border-blue-500/60 focus:outline-none transition-colors text-left"
+          title="Abrir busca global (Atalho: Ctrl + K ou /)"
+        >
+          <div className="flex items-center gap-2 truncate">
+            <Search className="w-4 h-4 text-blue-400 flex-shrink-0" />
+            <span className="truncate text-xs sm:text-sm text-slate-300">Buscar IP, MAC, porta, equipamento...</span>
           </div>
-        )}
+          <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-[#0B132B] border border-[#24375A] rounded">
+            Ctrl K
+          </kbd>
+        </button>
       </div>
 
       {/* Botões de Ação Rápida */}
@@ -283,6 +222,21 @@ export const Header: React.FC<HeaderProps> = ({
           <span>Imprimir / PDF</span>
         </button>
       </div>
+
+      {/* Paleta de Comando e Busca Rápida Modal (FTS5) */}
+      <QuickSearchModal
+        isOpen={isQuickSearchOpen}
+        onClose={() => setIsQuickSearchOpen(false)}
+        onNavigateToTab={(tab, entityId) => {
+          if (onNavigateToTab) {
+            onNavigateToTab(tab, entityId);
+          } else if (onNavigateToItem) {
+            onNavigateToItem(tab, entityId || '');
+          }
+        }}
+        onSelectClient={onSelectClient}
+        currentClientId={selectedClientId}
+      />
     </header>
   );
 };

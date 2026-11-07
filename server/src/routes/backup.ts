@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { ZipArchive } from 'archiver';
 import { db } from '../db/database.js';
 import { getJwtSecret } from '../middleware/auth.js';
+import { rebuildSearchIndex } from '../services/searchService.js';
 
 export const backupRouter = Router();
 
@@ -97,7 +98,8 @@ backupRouter.get('/export-zip', async (req: Request, res: Response) => {
       attachments: db.prepare('SELECT * FROM attachments').all(),
       entity_links: db.prepare('SELECT * FROM entity_links').all(),
       articles: db.prepare('SELECT * FROM articles').all(),
-      article_versions: db.prepare('SELECT * FROM article_versions').all()
+      article_versions: db.prepare('SELECT * FROM article_versions').all(),
+      favorites: db.prepare('SELECT * FROM favorites').all()
     };
     archive.append(JSON.stringify(fullJsonData, null, 2), { name: 'data_export.json' });
 
@@ -145,7 +147,8 @@ backupRouter.get('/export', (req: Request, res: Response) => {
     article_versions: db.prepare('SELECT * FROM article_versions').all(),
     notification_settings: db.prepare('SELECT * FROM notification_settings').all(),
     notification_log: db.prepare('SELECT * FROM notification_log').all(),
-    domains: db.prepare('SELECT * FROM domains').all()
+    domains: db.prepare('SELECT * FROM domains').all(),
+    favorites: db.prepare('SELECT * FROM favorites').all()
   };
 
   const filename = `rededoc-backup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -174,6 +177,7 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       DELETE FROM notification_log;
       DELETE FROM notification_settings;
       DELETE FROM domains;
+      DELETE FROM favorites;
       DELETE FROM equipments;
       DELETE FROM service_orders;
       DELETE FROM network_topology;
@@ -362,7 +366,18 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       }
     }
 
+    if (data.favorites) {
+      const insFav = db.prepare(`
+        INSERT INTO favorites (id, user_id, entity_type, entity_id, created_at)
+        VALUES (?, ?, ?, ?, ?)
+      `);
+      for (const f of data.favorites) {
+        insFav.run(f.id, f.user_id, f.entity_type, f.entity_id, f.created_at || new Date().toISOString());
+      }
+    }
+
     db.exec('COMMIT;');
+    rebuildSearchIndex();
     res.json({ message: 'Backup restaurado com sucesso!' });
   } catch (err: any) {
     db.exec('ROLLBACK;');

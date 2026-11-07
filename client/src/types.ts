@@ -466,3 +466,57 @@ export interface Domain {
   created_at?: string;
   updated_at?: string;
 }
+
+export interface FavoriteItem {
+  id: string;
+  entityType: 'client' | 'equipment' | 'credential' | 'article' | 'domain';
+  entityId: string;
+  title: string;
+  subtitle: string;
+  clientId?: string | null;
+  clientName?: string | null;
+  urlHash: string;
+  createdAt?: string;
+}
+
+export interface SearchResultItem {
+  id: string;
+  type: 'client' | 'location' | 'equipment' | 'credential' | 'port_forward' | 'service_order' | 'article' | 'domain';
+  title: string;
+  subtitle: string;
+  clientId?: string | null;
+  clientName?: string | null;
+  urlHash: string;
+  badge?: string;
+}
+
+export interface GroupedSearchResults {
+  total: number;
+  results: SearchResultItem[];
+  byType: Record<string, SearchResultItem[]>;
+}
+
+export interface DashboardOverviewData {
+  counts: {
+    clients: number;
+    equipments: number;
+    credentials: number;
+    port_forwards: number;
+    articles: number;
+    domains: number;
+    pending_orders: number;
+  };
+  favorites: FavoriteItem[];
+  recent_activity: Array<{
+    id: string;
+    client_id?: string;
+    client_name?: string;
+    user_name: string;
+    action: string;
+    entity_type: string;
+    entity_name: string;
+    details?: string;
+    created_at: string;
+  }>;
+  expirations: ExpirationItem[];
+}

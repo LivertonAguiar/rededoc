@@ -3,7 +3,8 @@ import {
   CredentialAuditLog, ServiceOrder, TopologyData, Attachment,
   AuditHistory, DashboardStats, TechnicalReportData, EquipmentCatalogItem,
   RelatedItem, EntityLink, AvailableLinkTarget, Article, ArticleVersion,
-  ExpirationItem, NotificationSetting, NotificationLog, Domain
+  ExpirationItem, NotificationSetting, NotificationLog, Domain,
+  FavoriteItem, GroupedSearchResults, DashboardOverviewData
 } from '../types';
 
 const API_BASE = '/api';
@@ -387,5 +388,29 @@ export const api = {
     fetchJson<{ success: boolean; localUrl: string; message: string }>('/images/remove-background', {
       method: 'POST',
       body: JSON.stringify({ imageUrl, equipmentId })
+    }),
+
+  // Visão Geral Global (Fase 5)
+  getDashboardOverview: () => fetchJson<DashboardOverviewData>('/dashboard/overview'),
+
+  // Busca Global Unificada FTS5 (Fase 5)
+  searchGlobal: (query: string, clientId?: string) => {
+    let url = `/search?q=${encodeURIComponent(query)}`;
+    if (clientId) url += `&clientId=${encodeURIComponent(clientId)}`;
+    return fetchJson<GroupedSearchResults>(url);
+  },
+
+  // Favoritos do Usuário (Fase 5)
+  getFavorites: () => fetchJson<FavoriteItem[]>('/favorites'),
+  checkFavorite: (type: string, id: string) =>
+    fetchJson<{ isFavorite: boolean }>(`/favorites/check?type=${encodeURIComponent(type)}&id=${encodeURIComponent(id)}`),
+  addFavorite: (entityType: string, entityId: string) =>
+    fetchJson<{ id: string; isFavorite: boolean }>('/favorites', {
+      method: 'POST',
+      body: JSON.stringify({ entityType, entityId })
+    }),
+  removeFavorite: (entityType: string, entityId: string) =>
+    fetchJson<{ message: string; isFavorite: boolean }>(`/favorites/${encodeURIComponent(entityType)}/${encodeURIComponent(entityId)}`, {
+      method: 'DELETE'
     })
 };

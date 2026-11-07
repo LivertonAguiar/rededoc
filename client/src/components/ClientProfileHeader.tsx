@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Radio,
   Server,
@@ -9,9 +9,11 @@ import {
   FileText,
   Building2,
   History,
-  Globe
+  Globe,
+  Star
 } from 'lucide-react';
 import { Client, Equipment, PortForward } from '../types';
+import { api } from '../services/api';
 
 interface ClientProfileHeaderProps {
   client: Client;
@@ -30,6 +32,30 @@ export const ClientProfileHeader: React.FC<ClientProfileHeaderProps> = ({
   portForwards,
   onOpenReport
 }) => {
+  const [isFav, setIsFav] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (client?.id) {
+      api.checkFavorite('client', client.id)
+        .then(res => setIsFav(Boolean(res.isFavorite)))
+        .catch(() => setIsFav(false));
+    }
+  }, [client?.id]);
+
+  const handleToggleFav = async () => {
+    if (!client?.id) return;
+    try {
+      if (isFav) {
+        await api.removeFavorite('client', client.id);
+        setIsFav(false);
+      } else {
+        await api.addFavorite('client', client.id);
+        setIsFav(true);
+      }
+    } catch (err) {
+      console.error('Erro ao alternar favorito:', err);
+    }
+  };
   const tabs = [
     {
       id: 'client-network',
@@ -93,6 +119,18 @@ export const ClientProfileHeader: React.FC<ClientProfileHeaderProps> = ({
               <h2 className="text-base sm:text-lg font-bold text-white tracking-tight truncate">
                 {client.name}
               </h2>
+              <button
+                type="button"
+                onClick={handleToggleFav}
+                className={`p-1 rounded-lg border transition ${
+                  isFav
+                    ? 'text-amber-400 bg-amber-400/10 border-amber-400/30 hover:bg-amber-400/20'
+                    : 'text-slate-500 hover:text-amber-300 hover:bg-slate-800 border-transparent'
+                }`}
+                title={isFav ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+              >
+                <Star className={`w-4 h-4 ${isFav ? 'fill-amber-400' : ''}`} />
+              </button>
               <span className="text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/30 shrink-0">
                 Cliente Ativo
               </span>
