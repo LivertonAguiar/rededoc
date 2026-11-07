@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Server,
   Plus,
@@ -20,12 +20,14 @@ import {
   Tag,
   Activity,
   Loader2,
-  Wifi
+  Wifi,
+  Link2
 } from 'lucide-react';
 import { Equipment, Client, Location } from '../types';
 import { api } from '../services/api';
 import { AddEquipmentModal } from './AddEquipmentModal';
 import { EquipmentLabelModal } from './EquipmentLabelModal';
+import { RelatedItems } from './RelatedItems';
 import { useDialog } from '../context/DialogContext';
 
 interface EquipmentsViewProps {
@@ -33,13 +35,17 @@ interface EquipmentsViewProps {
   equipments: Equipment[];
   onRefresh: () => void;
   onOpenVault: () => void;
+  targetEquipmentId?: string;
+  onNavigateToTab?: (tab: string, entityId?: string) => void;
 }
 
 export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
   client,
   equipments,
   onRefresh,
-  onOpenVault
+  onOpenVault,
+  targetEquipmentId,
+  onNavigateToTab
 }) => {
   const { showToast, confirm } = useDialog();
   const [filterCategory, setFilterCategory] = useState<string>('all');
@@ -49,6 +55,19 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
   const [selectedEquipmentForLabel, setSelectedEquipmentForLabel] = useState<Equipment | null>(null);
   const [pingStates, setPingStates] = useState<Record<string, { online: boolean; latencyMs: number | null; loading?: boolean }>>({});
   const [isPingingAll, setIsPingingAll] = useState(false);
+  const [expandedLinksEqId, setExpandedLinksEqId] = useState<string | null>(targetEquipmentId || null);
+
+  useEffect(() => {
+    if (targetEquipmentId) {
+      setExpandedLinksEqId(targetEquipmentId);
+      setTimeout(() => {
+        const el = document.getElementById(`eq-card-${targetEquipmentId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  }, [targetEquipmentId]);
 
   const handlePingSingle = async (eq: Equipment) => {
     if (!eq.local_ip) {
@@ -225,7 +244,10 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
           {filteredEquipments.map(eq => (
           <div
             key={eq.id}
-            className="bg-[#101C31] border border-[#1D3054] hover:border-[#2A4374] rounded-2xl p-5 shadow-xl flex flex-col justify-between transition-all"
+            id={`eq-card-${eq.id}`}
+            className={`bg-[#101C31] border rounded-2xl p-5 shadow-xl flex flex-col justify-between transition-all ${
+              expandedLinksEqId === eq.id ? 'border-blue-500/60 ring-1 ring-blue-500/20' : 'border-[#1D3054] hover:border-[#2A4374]'
+            }`}
           >
             <div>
               <div className="flex items-start justify-between gap-2 pb-3 border-b border-[#1D3054]">
@@ -348,6 +370,18 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
                   )}
                 </button>
                 <button
+                  type="button"
+                  onClick={() => setExpandedLinksEqId(prev => prev === eq.id ? null : eq.id)}
+                  className={`p-1.5 rounded-lg border transition ${
+                    expandedLinksEqId === eq.id
+                      ? 'bg-blue-600/30 text-blue-300 border-blue-500/40'
+                      : 'bg-[#182845] hover:bg-[#20365D] text-slate-300 border-transparent hover:text-white'
+                  }`}
+                  title="Itens Relacionados (Vínculos)"
+                >
+                  <Link2 className="w-3.5 h-3.5" />
+                </button>
+                <button
                   onClick={() => setSelectedEquipmentForLabel(eq)}
                   className="p-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400"
                   title="Imprimir Etiqueta com QR Code"
@@ -370,6 +404,17 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
                 </button>
               </div>
             </div>
+
+            {expandedLinksEqId === eq.id && (
+              <div className="mt-4 pt-3 border-t border-[#1D3054]">
+                <RelatedItems
+                  clientId={client.id}
+                  entityType="equipment"
+                  entityId={eq.id}
+                  onNavigate={onNavigateToTab}
+                />
+              </div>
+            )}
           </div>
         ))}
       </div>

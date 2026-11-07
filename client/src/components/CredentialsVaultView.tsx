@@ -13,28 +13,45 @@ import {
   ExternalLink,
   Lock,
   X,
-  Server
+  Server,
+  Link2
 } from 'lucide-react';
 import { Credential, CredentialAuditLog, Equipment, Client } from '../types';
 import { api } from '../services/api';
+import { RelatedItems } from './RelatedItems';
 import { useDialog } from '../context/DialogContext';
 
 interface CredentialsVaultViewProps {
   client: Client;
   equipments: Equipment[];
   onRefresh: () => void;
+  targetCredentialId?: string;
+  onNavigateToTab?: (tab: string, entityId?: string) => void;
 }
 
 export const CredentialsVaultView: React.FC<CredentialsVaultViewProps> = ({
   client,
   equipments,
-  onRefresh
+  onRefresh,
+  targetCredentialId,
+  onNavigateToTab
 }) => {
   const { showToast, confirm } = useDialog();
   const [credentials, setCredentials] = useState<Credential[]>([]);
   const [loading, setLoading] = useState(true);
   const [revealed, setRevealed] = useState<Record<string, string>>({});
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [expandedLinksCredId, setExpandedLinksCredId] = useState<string | null>(targetCredentialId || null);
+
+  useEffect(() => {
+    if (targetCredentialId) {
+      setExpandedLinksCredId(targetCredentialId);
+      setTimeout(() => {
+        const el = document.getElementById(`cred-card-${targetCredentialId}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [targetCredentialId]);
 
   // Modal de Auditoria
   const [auditLogs, setAuditLogs] = useState<CredentialAuditLog[] | null>(null);
@@ -247,7 +264,10 @@ export const CredentialsVaultView: React.FC<CredentialsVaultViewProps> = ({
           return (
             <div
               key={cred.id}
-              className="bg-[#101C31] border border-[#1D3054] hover:border-[#2D4A7D] rounded-2xl p-5 shadow-xl flex flex-col justify-between transition-all"
+              id={`cred-card-${cred.id}`}
+              className={`bg-[#101C31] border rounded-2xl p-5 shadow-xl flex flex-col justify-between transition-all ${
+                expandedLinksCredId === cred.id ? 'border-blue-500/60 ring-1 ring-blue-500/20' : 'border-[#1D3054] hover:border-[#2D4A7D]'
+              }`}
             >
               <div>
                 <div className="flex items-start justify-between gap-2 pb-3 border-b border-[#1D3054]">
@@ -325,13 +345,28 @@ export const CredentialsVaultView: React.FC<CredentialsVaultViewProps> = ({
               </div>
 
               <div className="pt-3 border-t border-[#1D3054] flex items-center justify-between text-xs">
-                <button
-                  onClick={() => handleOpenAudit(cred)}
-                  className="flex items-center gap-1 text-slate-400 hover:text-blue-400 transition-colors"
-                >
-                  <History className="w-3.5 h-3.5" />
-                  <span>Auditoria</span>
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleOpenAudit(cred)}
+                    className="flex items-center gap-1 text-slate-400 hover:text-blue-400 transition-colors"
+                  >
+                    <History className="w-3.5 h-3.5" />
+                    <span>Auditoria</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setExpandedLinksCredId(prev => prev === cred.id ? null : cred.id)}
+                    className={`flex items-center gap-1 px-2 py-1 rounded-lg border transition ${
+                      expandedLinksCredId === cred.id
+                        ? 'bg-blue-600/30 text-blue-300 border-blue-500/40'
+                        : 'bg-[#182845] hover:bg-[#20365D] text-slate-400 border-transparent hover:text-white'
+                    }`}
+                    title="Ver itens relacionados"
+                  >
+                    <Link2 className="w-3.5 h-3.5" />
+                    <span>Vínculos</span>
+                  </button>
+                </div>
 
                 <div className="flex items-center gap-2">
                   <button
@@ -350,6 +385,17 @@ export const CredentialsVaultView: React.FC<CredentialsVaultViewProps> = ({
                   </button>
                 </div>
               </div>
+
+              {expandedLinksCredId === cred.id && (
+                <div className="mt-4 pt-3 border-t border-[#1D3054]">
+                  <RelatedItems
+                    clientId={client.id}
+                    entityType="credential"
+                    entityId={cred.id}
+                    onNavigate={onNavigateToTab}
+                  />
+                </div>
+              )}
             </div>
           );
         })}

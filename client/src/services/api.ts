@@ -1,7 +1,8 @@
 import {
   User, Client, Location, Equipment, PortForward, Credential,
   CredentialAuditLog, ServiceOrder, TopologyData, Attachment,
-  AuditHistory, DashboardStats, TechnicalReportData, EquipmentCatalogItem
+  AuditHistory, DashboardStats, TechnicalReportData, EquipmentCatalogItem,
+  RelatedItem, EntityLink, AvailableLinkTarget
 } from '../types';
 
 const API_BASE = '/api';
@@ -221,6 +222,16 @@ export const api = {
     fetchJson<{ message: string }>('/topology', { method: 'POST', body: JSON.stringify(data) }),
   resetTopology: (clientId: string, locationId?: string) =>
     fetchJson<{ message: string }>(`/topology/reset?clientId=${clientId}${locationId ? `&locationId=${locationId}` : ''}`, { method: 'DELETE' }),
+
+  // Vínculos entre Registros (Itens Relacionados)
+  getRelatedItems: (type: string, id: string) =>
+    fetchJson<RelatedItem[]>(`/links?type=${type}&id=${id}`),
+  createLink: (data: { client_id: string; source_type: string; source_id: string; target_type: string; target_id: string; label?: string }) =>
+    fetchJson<EntityLink>('/links', { method: 'POST', body: JSON.stringify(data) }),
+  deleteLink: (id: string) =>
+    fetchJson<{ message: string }>(`/links/${id}`, { method: 'DELETE' }),
+  getAvailableLinkTargets: (clientId: string, excludeType: string, excludeId: string) =>
+    fetchJson<AvailableLinkTarget[]>(`/links/available?clientId=${clientId}&excludeType=${excludeType}&excludeId=${excludeId}`),
 
   // Histórico de Alterações / Auditoria
   getAuditHistory: (clientId?: string, equipmentId?: string, limit?: number) => {

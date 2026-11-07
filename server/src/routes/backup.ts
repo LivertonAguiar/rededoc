@@ -94,7 +94,8 @@ backupRouter.get('/export-zip', async (req: Request, res: Response) => {
       service_orders: db.prepare('SELECT * FROM service_orders').all(),
       network_topology: db.prepare('SELECT * FROM network_topology').all(),
       audit_history: db.prepare('SELECT * FROM audit_history').all(),
-      attachments: db.prepare('SELECT * FROM attachments').all()
+      attachments: db.prepare('SELECT * FROM attachments').all(),
+      entity_links: db.prepare('SELECT * FROM entity_links').all()
     };
     archive.append(JSON.stringify(fullJsonData, null, 2), { name: 'data_export.json' });
 
@@ -136,7 +137,8 @@ backupRouter.get('/export', (req: Request, res: Response) => {
     service_orders: db.prepare('SELECT * FROM service_orders').all(),
     network_topology: db.prepare('SELECT * FROM network_topology').all(),
     audit_history: db.prepare('SELECT * FROM audit_history').all(),
-    attachments: db.prepare('SELECT * FROM attachments').all()
+    attachments: db.prepare('SELECT * FROM attachments').all(),
+    entity_links: db.prepare('SELECT * FROM entity_links').all()
   };
 
   const filename = `rededoc-backup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -159,6 +161,7 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       DELETE FROM credential_audit_logs;
       DELETE FROM credentials;
       DELETE FROM port_forwards;
+      DELETE FROM entity_links;
       DELETE FROM equipments;
       DELETE FROM service_orders;
       DELETE FROM network_topology;
@@ -275,6 +278,17 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
           s.changes_made, s.tests_performed, s.test_results, s.technical_notes,
           s.created_at || new Date().toISOString(), s.updated_at || new Date().toISOString()
         );
+      }
+    }
+
+    // Restaura Vínculos entre Entidades
+    if (data.entity_links) {
+      const insLink = db.prepare(`
+        INSERT INTO entity_links (id, client_id, source_type, source_id, target_type, target_id, label, created_at, created_by)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const l of data.entity_links) {
+        insLink.run(l.id, l.client_id, l.source_type, l.source_id, l.target_type, l.target_id, l.label || null, l.created_at || new Date().toISOString(), l.created_by || null);
       }
     }
 

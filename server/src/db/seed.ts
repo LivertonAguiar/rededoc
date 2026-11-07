@@ -10,6 +10,7 @@ export async function runSeed() {
     DELETE FROM credential_audit_logs;
     DELETE FROM credentials;
     DELETE FROM port_forwards;
+    DELETE FROM entity_links;
     DELETE FROM equipments;
     DELETE FROM service_orders;
     DELETE FROM network_topology;
@@ -525,6 +526,21 @@ export async function runSeed() {
     JSON.stringify(nodes),
     JSON.stringify(edges),
     'detailed'
+  );
+
+  console.log('Criando vínculos manuais de exemplo (entity_links)...');
+  db.prepare(`
+    INSERT INTO entity_links (id, client_id, source_type, source_id, target_type, target_id, label, created_by)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    'link_aurora_01',
+    clientId,
+    'equipment',
+    eqFacialId,
+    'equipment',
+    eqOntId,
+    'Conexão física via porta LAN 2 da ONT',
+    'Liverton Aguiar'
   );
 
   console.log('Seed concluído com sucesso!');

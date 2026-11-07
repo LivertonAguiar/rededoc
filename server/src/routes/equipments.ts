@@ -271,6 +271,7 @@ equipmentsRouter.delete('/:id', (req: AuthRequest, res: Response): any => {
     return res.status(404).json({ error: 'Equipamento não encontrado.' });
   }
 
+  execute('DELETE FROM entity_links WHERE (source_type = "equipment" AND source_id = ?) OR (target_type = "equipment" AND target_id = ?)', id, id);
   execute('DELETE FROM equipments WHERE id = ?', id);
 
   execute(`

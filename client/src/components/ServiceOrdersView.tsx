@@ -22,24 +22,36 @@ import {
 import { ServiceOrder, Client, Equipment, Attachment } from '../types';
 import { api } from '../services/api';
 import { ImageSearchModal } from './ImageSearchModal';
+import { RelatedItems } from './RelatedItems';
 import { useDialog } from '../context/DialogContext';
 
 interface ServiceOrdersViewProps {
   client: Client;
   equipments: Equipment[];
   onRefresh: () => void;
+  targetOrderId?: string;
+  onNavigateToTab?: (tab: string, entityId?: string) => void;
 }
 
 export const ServiceOrdersView: React.FC<ServiceOrdersViewProps> = ({
   client,
   equipments,
-  onRefresh
+  onRefresh,
+  targetOrderId,
+  onNavigateToTab
 }) => {
   const { showToast, confirm } = useDialog();
   const [orders, setOrders] = useState<ServiceOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState<ServiceOrder | null>(null);
   const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    if (targetOrderId && orders.length > 0) {
+      const found = orders.find(o => o.id === targetOrderId);
+      if (found) setSelectedOrder(found);
+    }
+  }, [targetOrderId, orders]);
 
   // Fecha modais com tecla Escape
   useEffect(() => {
@@ -452,6 +464,16 @@ export const ServiceOrdersView: React.FC<ServiceOrdersViewProps> = ({
                 </p>
               </div>
             )}
+
+            {/* SEÇÃO: ITENS RELACIONADOS */}
+            <div className="pt-2 border-t border-[#1D3054]">
+              <RelatedItems
+                clientId={client.id}
+                entityType="service_order"
+                entityId={selectedOrder.id}
+                onNavigate={onNavigateToTab}
+              />
+            </div>
 
             {/* SEÇÃO: FOTOS E EVIDÊNCIAS DO ATENDIMENTO */}
             <div className="pt-2 border-t border-[#1D3054] space-y-3">

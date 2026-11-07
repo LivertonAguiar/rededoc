@@ -69,3 +69,32 @@ export const portForwardSchema = z.object({
   notes: z.string().optional().nullable()
 });
 
+/**
+ * Esquema de validação para Vínculos entre Entidades (Itens Relacionados)
+ */
+export const validEntityTypes = [
+  'client',
+  'location',
+  'equipment',
+  'credential',
+  'port_forward',
+  'service_order',
+  'article',
+  'domain',
+  'subnet',
+  'attachment'
+] as const;
+
+export type ValidEntityType = typeof validEntityTypes[number];
+
+export const linkSchema = z.object({
+  client_id: z.string().min(1, 'O cliente vinculado é obrigatório.'),
+  source_type: z.enum(validEntityTypes),
+  source_id: z.string().min(1, 'source_id é obrigatório.'),
+  target_type: z.enum(validEntityTypes),
+  target_id: z.string().min(1, 'target_id é obrigatório.'),
+  label: z.string().optional().nullable()
+}).refine(data => !(data.source_type === data.target_type && data.source_id === data.target_id), {
+  message: 'Não é possível vincular um registro a si mesmo.'
+});
+

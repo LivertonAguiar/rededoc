@@ -8,6 +8,50 @@ export interface User {
   client_id?: string | null;
 }
 
+export type EntityType =
+  | 'client'
+  | 'location'
+  | 'equipment'
+  | 'credential'
+  | 'port_forward'
+  | 'service_order'
+  | 'article'
+  | 'domain'
+  | 'subnet'
+  | 'attachment';
+
+export interface EntityLink {
+  id: string;
+  client_id: string;
+  source_type: EntityType;
+  source_id: string;
+  target_type: EntityType;
+  target_id: string;
+  label?: string | null;
+  created_at: string;
+  created_by?: string | null;
+}
+
+export interface RelatedItem {
+  linkId?: string;
+  type: EntityType;
+  id: string;
+  title: string;
+  subtitle: string;
+  clientId: string;
+  origin: 'implicit' | 'manual';
+  label?: string | null;
+  createdAt?: string;
+}
+
+export interface AvailableLinkTarget {
+  type: EntityType;
+  id: string;
+  title: string;
+  subtitle: string;
+  category: string;
+}
+
 export interface Client {
   id: string;
   name: string;

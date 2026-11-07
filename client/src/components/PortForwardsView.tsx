@@ -15,10 +15,12 @@ import {
   Play,
   Loader2,
   Zap,
-  X
+  X,
+  Link2
 } from 'lucide-react';
 import { PortForward, Equipment, Client } from '../types';
 import { api } from '../services/api';
+import { RelatedItems } from './RelatedItems';
 import { useDialog } from '../context/DialogContext';
 
 interface PortForwardsViewProps {
@@ -26,18 +28,33 @@ interface PortForwardsViewProps {
   equipments: Equipment[];
   portForwards: PortForward[];
   onRefresh: () => void;
+  targetPortForwardId?: string;
+  onNavigateToTab?: (tab: string, entityId?: string) => void;
 }
 
 export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
   client,
   equipments,
   portForwards,
-  onRefresh
+  onRefresh,
+  targetPortForwardId,
+  onNavigateToTab
 }) => {
   const { showToast, confirm } = useDialog();
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [showModal, setShowModal] = useState(false);
   const [editingRule, setEditingRule] = useState<PortForward | null>(null);
+  const [expandedLinksPfId, setExpandedLinksPfId] = useState<string | null>(targetPortForwardId || null);
+
+  useEffect(() => {
+    if (targetPortForwardId) {
+      setExpandedLinksPfId(targetPortForwardId);
+      setTimeout(() => {
+        const el = document.getElementById(`pf-row-${targetPortForwardId}`);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [targetPortForwardId]);
 
   // Estados do Testador de Portas TCP Real
   const [testingRuleId, setTestingRuleId] = useState<string | null>(null);
@@ -372,7 +389,8 @@ export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
             </thead>
             <tbody className="divide-y divide-[#1D3054]/60">
               {filteredRules.map(rule => (
-                <tr key={rule.id} className="hover:bg-[#14233D] transition-colors">
+                <React.Fragment key={rule.id}>
+                  <tr id={`pf-row-${rule.id}`} className="hover:bg-[#14233D] transition-colors">
                   <td className="py-3 px-4">
                     <div className="font-bold text-white text-sm">{rule.service_name}</div>
                     {rule.notes && <div className="text-[11px] text-slate-400 truncate max-w-xs">{rule.notes}</div>}
@@ -456,6 +474,18 @@ export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
                       </button>
 
                       <button
+                        type="button"
+                        onClick={() => setExpandedLinksPfId(prev => prev === rule.id ? null : rule.id)}
+                        className={`p-1.5 rounded-lg border transition ${
+                          expandedLinksPfId === rule.id
+                            ? 'bg-blue-600/30 text-blue-300 border-blue-500/40'
+                            : 'bg-[#182845] hover:bg-[#20365D] text-slate-300 border-transparent hover:text-white'
+                        }`}
+                        title="Itens Relacionados (Vínculos)"
+                      >
+                        <Link2 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
                         onClick={() => handleOpenEdit(rule)}
                         className="p-1.5 rounded-lg bg-[#182845] hover:bg-[#20365D] text-slate-300 hover:text-white"
                         title="Editar"
@@ -472,7 +502,20 @@ export const PortForwardsView: React.FC<PortForwardsViewProps> = ({
                     </div>
                   </td>
                 </tr>
-              ))}
+                {expandedLinksPfId === rule.id && (
+                  <tr className="bg-[#0c1628]">
+                    <td colSpan={6} className="p-4 border-b border-[#1D3054]">
+                      <RelatedItems
+                        clientId={client.id}
+                        entityType="port_forward"
+                        entityId={rule.id}
+                        onNavigate={onNavigateToTab}
+                      />
+                    </td>
+                  </tr>
+                )}
+              </React.Fragment>
+            ))}
             </tbody>
           </table>
         </div>

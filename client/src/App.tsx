@@ -25,7 +25,13 @@ export function App() {
   const [authChecking, setAuthChecking] = useState<boolean>(true);
 
   const [activeTab, setActiveTab] = useState<string>(() => {
-    return window.location.hash.replace('#', '') || localStorage.getItem('rededoc_activeTab') || 'overview';
+    const raw = window.location.hash.replace('#', '');
+    const tab = raw.split('/')[0];
+    return tab || localStorage.getItem('rededoc_activeTab') || 'overview';
+  });
+  const [targetEntityId, setTargetEntityId] = useState<string>(() => {
+    const raw = window.location.hash.replace('#', '');
+    return raw.split('/')[1] || '';
   });
   const [historyStack, setHistoryStack] = useState<string[]>([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -73,15 +79,17 @@ export function App() {
     setCurrentUser(null);
   };
 
-  // Navegação contextual com histórico interno e navegador (popstate)
-  const navigateToTab = (newTab: string, pushHistory = true) => {
-    if (newTab === activeTab) return;
+  // Navegação contextual com histórico interno e navegador (#aba/id)
+  const navigateToTab = (newTab: string, entityId?: string, pushHistory = true) => {
+    const targetTab = newTab === 'ports' ? 'port-forwards' : newTab === 'services' ? 'service-orders' : newTab;
+    const fullHash = entityId ? `${targetTab}/${entityId}` : targetTab;
     if (pushHistory) {
       setHistoryStack(prev => [...prev, activeTab]);
-      window.history.pushState({ tab: newTab }, '', '#' + newTab);
+      window.history.pushState({ tab: targetTab, entityId }, '', '#' + fullHash);
     }
-    setActiveTab(newTab);
-    localStorage.setItem('rededoc_activeTab', newTab);
+    setActiveTab(targetTab);
+    setTargetEntityId(entityId || '');
+    localStorage.setItem('rededoc_activeTab', targetTab);
     setIsMobileMenuOpen(false);
   };
 
@@ -90,10 +98,12 @@ export function App() {
       const prev = historyStack[historyStack.length - 1];
       setHistoryStack(prevStack => prevStack.slice(0, -1));
       setActiveTab(prev);
+      setTargetEntityId('');
       localStorage.setItem('rededoc_activeTab', prev);
       window.history.replaceState({ tab: prev }, '', '#' + prev);
     } else if (activeTab !== 'overview') {
       setActiveTab('overview');
+      setTargetEntityId('');
       localStorage.setItem('rededoc_activeTab', 'overview');
       window.history.replaceState({ tab: 'overview' }, '', '#overview');
     } else {
@@ -102,14 +112,21 @@ export function App() {
   };
 
   useEffect(() => {
-    // Sincroniza com o botão Voltar nativo do navegador
-    const handlePopState = (e: PopStateEvent) => {
-      const nextTab = (e.state && e.state.tab) || window.location.hash.replace('#', '') || localStorage.getItem('rededoc_activeTab') || 'overview';
-      setActiveTab(nextTab);
-      localStorage.setItem('rededoc_activeTab', nextTab);
+    // Sincroniza com o botão Voltar do navegador e mudanças de hash
+    const handlePopState = (e?: PopStateEvent) => {
+      const raw = (e?.state && e.state.tab) || window.location.hash.replace('#', '') || localStorage.getItem('rededoc_activeTab') || 'overview';
+      const [nextTab, nextId] = raw.split('/');
+      const cleanTab = nextTab === 'ports' ? 'port-forwards' : nextTab === 'services' ? 'service-orders' : nextTab;
+      setActiveTab(cleanTab || 'overview');
+      setTargetEntityId(nextId || (e?.state && e.state.entityId) || '');
+      localStorage.setItem('rededoc_activeTab', cleanTab || 'overview');
     };
     window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', () => handlePopState());
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', () => handlePopState());
+    };
   }, []);
 
   // Carrega clientes iniciais
@@ -310,6 +327,8 @@ export function App() {
                     equipments={equipments}
                     onRefresh={loadClientData}
                     onOpenVault={() => navigateToTab('credentials')}
+                    targetEquipmentId={targetEntityId}
+                    onNavigateToTab={navigateToTab}
                   />
                 )}
                 {activeTab === 'topology' && (
@@ -326,6 +345,8 @@ export function App() {
                     equipments={equipments}
                     portForwards={portForwards}
                     onRefresh={loadClientData}
+                    targetPortForwardId={targetEntityId}
+                    onNavigateToTab={navigateToTab}
                   />
                 )}
                 {activeTab === 'credentials' && (
@@ -333,6 +354,8 @@ export function App() {
                     client={selectedClient}
                     equipments={equipments}
                     onRefresh={loadClientData}
+                    targetCredentialId={targetEntityId}
+                    onNavigateToTab={navigateToTab}
                   />
                 )}
                 {activeTab === 'service-orders' && (
@@ -340,6 +363,8 @@ export function App() {
                     client={selectedClient}
                     equipments={equipments}
                     onRefresh={loadClientData}
+                    targetOrderId={targetEntityId}
+                    onNavigateToTab={navigateToTab}
                   />
                 )}
                 {activeTab === 'audit-history' && (

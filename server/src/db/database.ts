@@ -284,7 +284,25 @@ export function initDatabase() {
       FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
     );
 
+    -- Tabela de Vínculos entre Registros (Itens Relacionados)
+    CREATE TABLE IF NOT EXISTS entity_links (
+      id TEXT PRIMARY KEY,
+      client_id TEXT NOT NULL,
+      source_type TEXT NOT NULL,
+      source_id TEXT NOT NULL,
+      target_type TEXT NOT NULL,
+      target_id TEXT NOT NULL,
+      label TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      created_by TEXT,
+      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
+      UNIQUE(source_type, source_id, target_type, target_id)
+    );
+
     -- Índices para buscas rápidas
+    CREATE INDEX IF NOT EXISTS idx_entity_links_source ON entity_links(source_type, source_id);
+    CREATE INDEX IF NOT EXISTS idx_entity_links_target ON entity_links(target_type, target_id);
+    CREATE INDEX IF NOT EXISTS idx_entity_links_client ON entity_links(client_id);
     CREATE INDEX IF NOT EXISTS idx_equipments_client ON equipments(client_id);
     CREATE INDEX IF NOT EXISTS idx_equipments_location ON equipments(location_id);
     CREATE INDEX IF NOT EXISTS idx_equipments_local_ip ON equipments(local_ip);
