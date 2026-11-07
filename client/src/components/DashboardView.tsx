@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Globe,
+  Network,
   Router as RouterIcon,
   Server,
   Share2,
@@ -56,6 +57,7 @@ interface DashboardViewProps {
   onOpenReport: () => void;
   onOpenVault: () => void;
   onSelectEquipment: (eqId: string) => void;
+  onOpenTopology?: () => void;
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
@@ -67,7 +69,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   onRefresh,
   onOpenReport,
   onOpenVault,
-  onSelectEquipment
+  onSelectEquipment,
+  onOpenTopology
 }) => {
   const { showToast, confirm, showAlert } = useDialog();
   const [viewMode, setViewMode] = useState<'detailed' | 'simplified'>('detailed');
@@ -678,16 +681,30 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </p>
             </div>
 
-            <div className="hidden sm:flex items-center gap-3 text-[11px] text-slate-400">
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Funcionando
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Não testada
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Com falha
-              </span>
+            <div className="flex items-center gap-3">
+              <div className="hidden md:flex items-center gap-3 text-[11px] text-slate-400">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Funcionando
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Não testada
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Com falha
+                </span>
+              </div>
+
+              {onOpenTopology && (
+                <button
+                  type="button"
+                  onClick={onOpenTopology}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-blue-300 bg-blue-900/40 hover:bg-blue-800/60 border border-blue-500/40 shadow-sm transition"
+                  title="Abrir editor completo de topologia para adicionar e conectar dispositivos"
+                >
+                  <Network className="w-3.5 h-3.5" />
+                  <span>Personalizar Conexões</span>
+                </button>
+              )}
             </div>
           </div>
 

@@ -10,6 +10,12 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
     return res.status(400).json({ error: 'clientId é obrigatório.' });
   }
 
+  const allClientEquipments = queryAll(`
+    SELECT e.* FROM equipments e
+    WHERE e.client_id = ? ${locationId ? 'AND e.location_id = ?' : ''}
+    ORDER BY CASE WHEN e.category = 'router_ont' THEN 0 ELSE 1 END, e.name ASC
+  `, ...(locationId ? [clientId, locationId] : [clientId])) as any[];
+
   let topo = queryOne(`
     SELECT * FROM network_topology
     WHERE client_id = ? ${locationId ? 'AND location_id = ?' : ''}
@@ -17,22 +23,26 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
   `, ...(locationId ? [clientId, locationId] : [clientId])) as any;
 
   if (topo) {
+    const nodes = JSON.parse(topo.nodes_data || '[]');
+    const edges = JSON.parse(topo.edges_data || '[]');
+    const nodeIds = new Set(nodes.map((n: any) => n.id));
+
+    // Identifica equipamentos cadastrados que ainda não estão presentes na topologia salva
+    const availableEquipments = allClientEquipments.filter(eq => !nodeIds.has(eq.id));
+
     return res.json({
       id: topo.id,
       client_id: topo.client_id,
       location_id: topo.location_id,
       view_mode: topo.view_mode,
-      nodes: JSON.parse(topo.nodes_data || '[]'),
-      edges: JSON.parse(topo.edges_data || '[]'),
+      nodes,
+      edges,
+      available_equipments: availableEquipments,
       updated_at: topo.updated_at
     });
   }
 
-  const equipments = queryAll(`
-    SELECT e.* FROM equipments e
-    WHERE e.client_id = ? ${locationId ? 'AND e.location_id = ?' : ''}
-    ORDER BY CASE WHEN e.category = 'router_ont' THEN 0 ELSE 1 END, e.name ASC
-  `, ...(locationId ? [clientId, locationId] : [clientId])) as any[];
+  const equipments = allClientEquipments;
 
   // Se o cliente não tem nenhum equipamento cadastrado, retorna topologia vazia (em branco)
   if (equipments.length === 0) {
@@ -43,11 +53,12 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
       view_mode: 'detailed',
       nodes: [],
       edges: [],
+      available_equipments: [],
       updated_at: new Date().toISOString()
     });
   }
 
-  const router = equipments.find(e => e.category === 'router_ont') || equipments[0];
+  const router = equipments.find(e => e.category === 'router_ont' || e.category === 'router' || e.category === 'ont' || Boolean(e.public_wan_ip)) || equipments[0];
   const wanIp = router?.public_wan_ip || null;
 
   const nodes: any[] = [
@@ -56,8 +67,8 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
       label: 'Internet',
       ip: wanIp,
       type: 'internet',
-      x: 350,
-      y: 20
+      x: 400,
+      y: 40
     }
   ];
 
@@ -69,15 +80,16 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
       label: router.name,
       sublabel: `${router.manufacturer || ''} ${router.model || ''}`.trim(),
       ip: router.local_ip || '192.168.1.1',
-      type: 'router',
-      x: 350,
-      y: 120
+      type: router.category || 'router_ont',
+      photo_url: router.photo_url || null,
+      x: 400,
+      y: 160
     });
     edges.push({ from: 'internet', to: router.id, label: 'WAN' });
 
     const others = equipments.filter(e => e.id !== router.id);
-    const startX = 100;
-    const spacing = others.length > 1 ? 600 / (others.length - 1) : 0;
+    const startX = 120;
+    const spacing = others.length > 1 ? 560 / (others.length - 1) : 0;
 
     others.forEach((eq, idx) => {
       const ports = queryAll('SELECT external_port, internal_port, status FROM port_forwards WHERE equipment_id = ?', eq.id) as any[];
@@ -98,8 +110,9 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
         ip: eq.local_ip,
         mac: eq.mac_address,
         type: eq.category,
-        x: others.length === 1 ? 350 : Math.round(startX + idx * spacing),
-        y: 260,
+        photo_url: eq.photo_url || null,
+        x: others.length === 1 ? 400 : Math.round(startX + idx * spacing),
+        y: 300,
         portBadge,
         status
       });
@@ -119,14 +132,26 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
     view_mode: 'detailed',
     nodes,
     edges,
+    available_equipments: [],
     is_auto_generated: true
   });
 });
 
 topologyRouter.post('/', (req: Request, res: Response): any => {
-  const { client_id, location_id, nodes, edges, view_mode } = req.body;
-  if (!client_id || !location_id) {
-    return res.status(400).json({ error: 'client_id e location_id são obrigatórios.' });
+  let { client_id, location_id, nodes, edges, view_mode } = req.body;
+  if (!client_id) {
+    return res.status(400).json({ error: 'client_id é obrigatório.' });
+  }
+
+  // Se location_id não foi passado, recupera ou cria a localização padrão do cliente
+  if (!location_id) {
+    const loc = queryOne('SELECT id FROM locations WHERE client_id = ? LIMIT 1', client_id) as any;
+    if (loc) {
+      location_id = loc.id;
+    } else {
+      location_id = 'loc_' + crypto.randomUUID().slice(0, 8);
+      execute('INSERT INTO locations (id, client_id, name) VALUES (?, ?, ?)', location_id, client_id, 'Sede Principal');
+    }
   }
 
   const nodesJson = JSON.stringify(nodes || []);
@@ -150,4 +175,19 @@ topologyRouter.post('/', (req: Request, res: Response): any => {
   }
 
   res.json({ message: 'Topologia salva com sucesso.' });
+});
+
+// Redefine a topologia para o layout gerado automaticamente a partir dos equipamentos
+topologyRouter.delete('/reset', (req: Request, res: Response): any => {
+  const { clientId, locationId } = req.query;
+  if (!clientId) {
+    return res.status(400).json({ error: 'clientId é obrigatório.' });
+  }
+
+  execute(`
+    DELETE FROM network_topology
+    WHERE client_id = ? ${locationId ? 'AND location_id = ?' : ''}
+  `, ...(locationId ? [clientId, locationId] : [clientId]));
+
+  res.json({ message: 'Topologia redefinida para o layout padrão com sucesso.' });
 });

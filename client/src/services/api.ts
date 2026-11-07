@@ -219,6 +219,8 @@ export const api = {
     fetchJson<TopologyData>(`/topology?clientId=${clientId}${locationId ? `&locationId=${locationId}` : ''}`),
   saveTopology: (data: Partial<TopologyData>) =>
     fetchJson<{ message: string }>('/topology', { method: 'POST', body: JSON.stringify(data) }),
+  resetTopology: (clientId: string, locationId?: string) =>
+    fetchJson<{ message: string }>(`/topology/reset?clientId=${clientId}${locationId ? `&locationId=${locationId}` : ''}`, { method: 'DELETE' }),
 
   // Histórico de Alterações / Auditoria
   getAuditHistory: (clientId?: string, equipmentId?: string, limit?: number) => {

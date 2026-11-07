@@ -291,6 +291,7 @@ export function App() {
                     onOpenReport={() => navigateToTab('reports')}
                     onOpenVault={() => navigateToTab('credentials')}
                     onSelectEquipment={() => navigateToTab('equipments')}
+                    onOpenTopology={() => navigateToTab('topology')}
                   />
                 )}
                 {activeTab === 'clients' && (

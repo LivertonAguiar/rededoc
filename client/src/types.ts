@@ -160,6 +160,7 @@ export interface TopologyNode {
   ip?: string;
   mac?: string;
   type: string;
+  photo_url?: string | null;
   x: number;
   y: number;
   portBadge?: string;
@@ -179,6 +180,7 @@ export interface TopologyData {
   view_mode: 'simplified' | 'detailed';
   nodes: TopologyNode[];
   edges: TopologyEdge[];
+  available_equipments?: Equipment[];
   is_auto_generated?: boolean;
 }
 
