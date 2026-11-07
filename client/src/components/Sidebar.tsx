@@ -16,7 +16,8 @@ import {
   LogOut,
   ChevronDown,
   ChevronRight,
-  ChevronRightSquare
+  ChevronRightSquare,
+  BookOpen
 } from 'lucide-react';
 import { User } from '../types';
 
@@ -55,7 +56,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     'credentials',
     'service-orders',
     'audit-history',
-    'reports'
+    'reports',
+    'procedures'
   ].includes(activeTab);
 
   const sidebarContent = (
@@ -115,6 +117,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
           >
             <Building2 className={`w-4 h-4 shrink-0 ${activeTab === 'clients' ? 'text-blue-400' : 'text-slate-400'}`} />
             <span className="truncate">Clientes e Locais</span>
+          </button>
+
+          <button
+            onClick={() => handleSelectTab('procedures')}
+            className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
+              activeTab === 'procedures'
+                ? 'bg-[#1D3250] text-white shadow-sm border-l-4 border-cyan-500 font-semibold'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+            }`}
+          >
+            <BookOpen className={`w-4 h-4 shrink-0 ${activeTab === 'procedures' ? 'text-cyan-400' : 'text-slate-400'}`} />
+            <span className="truncate">Procedimentos (KB)</span>
           </button>
         </div>
 
@@ -266,6 +280,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     >
                       <History className="w-3.5 h-3.5 text-slate-400" />
                       <span>Histórico Técnico</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleSelectTab('procedures')}
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs transition ${
+                        activeTab === 'procedures'
+                          ? 'bg-[#1D3250] text-white font-semibold'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                      }`}
+                    >
+                      <BookOpen className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>Procedimentos</span>
                     </button>
                   </div>
                 )}

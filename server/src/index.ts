@@ -24,6 +24,7 @@ import { backupRouter } from './routes/backup.js';
 import { equipmentCatalogRouter } from './routes/equipmentCatalog.js';
 import { imagesRouter } from './routes/images.js';
 import { linksRouter } from './routes/links.js';
+import { articlesRouter } from './routes/articles.js';
 
 dotenv.config();
 
@@ -118,6 +119,7 @@ app.use('/api/backup', requireRole('admin'), backupRouter);
 app.use('/api/equipment-catalog', equipmentCatalogRouter);
 app.use('/api/images', imagesRouter);
 app.use('/api/links', linksRouter);
+app.use('/api/articles', articlesRouter);
 
 // Servir frontend compilado em ambiente de produção
 const clientDist = path.resolve(__dirname, '../../client/dist');

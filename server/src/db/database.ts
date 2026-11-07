@@ -299,7 +299,37 @@ export function initDatabase() {
       UNIQUE(source_type, source_id, target_type, target_id)
     );
 
+    -- Tabela de Artigos da Base de Conhecimento (Procedimentos Técnicos)
+    CREATE TABLE IF NOT EXISTS articles (
+      id TEXT PRIMARY KEY,
+      client_id TEXT,
+      title TEXT NOT NULL,
+      body_md TEXT NOT NULL,
+      tags TEXT,
+      visible_in_portal INTEGER NOT NULL DEFAULT 0,
+      version INTEGER NOT NULL DEFAULT 1,
+      created_by TEXT,
+      updated_by TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+    );
+
+    -- Tabela de Versões de Artigos (Histórico e Auditoria de Procedimentos)
+    CREATE TABLE IF NOT EXISTS article_versions (
+      id TEXT PRIMARY KEY,
+      article_id TEXT NOT NULL,
+      version INTEGER NOT NULL,
+      title TEXT NOT NULL,
+      body_md TEXT NOT NULL,
+      changed_by TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
+    );
+
     -- Índices para buscas rápidas
+    CREATE INDEX IF NOT EXISTS idx_articles_client ON articles(client_id);
+    CREATE INDEX IF NOT EXISTS idx_article_versions_article ON article_versions(article_id);
     CREATE INDEX IF NOT EXISTS idx_entity_links_source ON entity_links(source_type, source_id);
     CREATE INDEX IF NOT EXISTS idx_entity_links_target ON entity_links(target_type, target_id);
     CREATE INDEX IF NOT EXISTS idx_entity_links_client ON entity_links(client_id);

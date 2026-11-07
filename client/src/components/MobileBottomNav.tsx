@@ -4,7 +4,8 @@ import {
   Building2,
   Network,
   KeyRound,
-  Menu
+  Menu,
+  BookOpen
 } from 'lucide-react';
 
 interface MobileBottomNavProps {
@@ -34,10 +35,10 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       requiresClient: false
     },
     {
-      id: 'client-network',
-      label: 'Rede',
-      icon: Network,
-      requiresClient: true
+      id: 'procedures',
+      label: 'Proced.',
+      icon: BookOpen,
+      requiresClient: false
     },
     {
       id: 'credentials',

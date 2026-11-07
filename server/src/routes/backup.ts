@@ -95,7 +95,9 @@ backupRouter.get('/export-zip', async (req: Request, res: Response) => {
       network_topology: db.prepare('SELECT * FROM network_topology').all(),
       audit_history: db.prepare('SELECT * FROM audit_history').all(),
       attachments: db.prepare('SELECT * FROM attachments').all(),
-      entity_links: db.prepare('SELECT * FROM entity_links').all()
+      entity_links: db.prepare('SELECT * FROM entity_links').all(),
+      articles: db.prepare('SELECT * FROM articles').all(),
+      article_versions: db.prepare('SELECT * FROM article_versions').all()
     };
     archive.append(JSON.stringify(fullJsonData, null, 2), { name: 'data_export.json' });
 
@@ -138,7 +140,9 @@ backupRouter.get('/export', (req: Request, res: Response) => {
     network_topology: db.prepare('SELECT * FROM network_topology').all(),
     audit_history: db.prepare('SELECT * FROM audit_history').all(),
     attachments: db.prepare('SELECT * FROM attachments').all(),
-    entity_links: db.prepare('SELECT * FROM entity_links').all()
+    entity_links: db.prepare('SELECT * FROM entity_links').all(),
+    articles: db.prepare('SELECT * FROM articles').all(),
+    article_versions: db.prepare('SELECT * FROM article_versions').all()
   };
 
   const filename = `rededoc-backup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -162,6 +166,8 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       DELETE FROM credentials;
       DELETE FROM port_forwards;
       DELETE FROM entity_links;
+      DELETE FROM article_versions;
+      DELETE FROM articles;
       DELETE FROM equipments;
       DELETE FROM service_orders;
       DELETE FROM network_topology;
@@ -289,6 +295,27 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       `);
       for (const l of data.entity_links) {
         insLink.run(l.id, l.client_id, l.source_type, l.source_id, l.target_type, l.target_id, l.label || null, l.created_at || new Date().toISOString(), l.created_by || null);
+      }
+    }
+
+    // Restaura Artigos e Versões
+    if (data.articles) {
+      const insArt = db.prepare(`
+        INSERT INTO articles (id, client_id, title, body_md, tags, visible_in_portal, version, created_by, updated_by, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const a of data.articles) {
+        insArt.run(a.id, a.client_id || null, a.title, a.body_md, a.tags || null, a.visible_in_portal || 0, a.version || 1, a.created_by || null, a.updated_by || null, a.created_at || new Date().toISOString(), a.updated_at || new Date().toISOString());
+      }
+    }
+
+    if (data.article_versions) {
+      const insVer = db.prepare(`
+        INSERT INTO article_versions (id, article_id, version, title, body_md, changed_by, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const v of data.article_versions) {
+        insVer.run(v.id, v.article_id, v.version, v.title, v.body_md, v.changed_by || null, v.created_at || new Date().toISOString());
       }
     }
 

@@ -38,6 +38,13 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
    - Exportação em 1 clique de dump completo do sistema em formato `.json`.
    - Importação e restauração transacional com reversão automática em caso de inconsistência.
 
+8. **Base de Conhecimento e Procedimentos Operacionais (Fase 2)**:
+   - Editor Markdown com pré-visualização em tempo real e sanitização estrita contra XSS via DOMPurify.
+   - Histórico completo de versões (`article_versions`) com rastreamento de autor e restauração transacional.
+   - Artigos globais ou específicos por condomínio, organizados por tags e busca contextual.
+   - Integração com `RelatedItems`, permitindo vincular tutoriais operacionais diretamente a equipamentos, portas e credenciais.
+   - Script de importação em lote idempotente (`npm run import:articles`).
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas

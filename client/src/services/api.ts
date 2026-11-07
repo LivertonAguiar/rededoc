@@ -2,7 +2,7 @@ import {
   User, Client, Location, Equipment, PortForward, Credential,
   CredentialAuditLog, ServiceOrder, TopologyData, Attachment,
   AuditHistory, DashboardStats, TechnicalReportData, EquipmentCatalogItem,
-  RelatedItem, EntityLink, AvailableLinkTarget
+  RelatedItem, EntityLink, AvailableLinkTarget, Article, ArticleVersion
 } from '../types';
 
 const API_BASE = '/api';
@@ -232,6 +232,27 @@ export const api = {
     fetchJson<{ message: string }>(`/links/${id}`, { method: 'DELETE' }),
   getAvailableLinkTargets: (clientId: string, excludeType: string, excludeId: string) =>
     fetchJson<AvailableLinkTarget[]>(`/links/available?clientId=${clientId}&excludeType=${excludeType}&excludeId=${excludeId}`),
+
+  // Base de Conhecimento (Procedimentos)
+  getArticles: (clientId?: string, tag?: string, q?: string) => {
+    const params = new URLSearchParams();
+    if (clientId) params.append('clientId', clientId);
+    if (tag) params.append('tag', tag);
+    if (q) params.append('q', q);
+    const qs = params.toString();
+    return fetchJson<Article[]>(`/articles${qs ? `?${qs}` : ''}`);
+  },
+  getArticle: (id: string) => fetchJson<Article>(`/articles/${id}`),
+  createArticle: (data: Partial<Article>) =>
+    fetchJson<Article>('/articles', { method: 'POST', body: JSON.stringify(data) }),
+  updateArticle: (id: string, data: Partial<Article>) =>
+    fetchJson<Article>(`/articles/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteArticle: (id: string) =>
+    fetchJson<{ message: string }>(`/articles/${id}`, { method: 'DELETE' }),
+  getArticleVersions: (id: string) =>
+    fetchJson<ArticleVersion[]>(`/articles/${id}/versions`),
+  restoreArticleVersion: (id: string, version: number) =>
+    fetchJson<Article>(`/articles/${id}/restore/${version}`, { method: 'POST' }),
 
   // Histórico de Alterações / Auditoria
   getAuditHistory: (clientId?: string, equipmentId?: string, limit?: number) => {

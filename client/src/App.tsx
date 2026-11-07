@@ -12,6 +12,7 @@ import { ClientsView } from './components/ClientsView';
 import { AuditHistoryView } from './components/AuditHistoryView';
 import { ReportsView } from './components/ReportsView';
 import { BackupView } from './components/BackupView';
+import { KnowledgeBaseView } from './components/KnowledgeBaseView';
 import { LoginView } from './components/LoginView';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
@@ -269,6 +270,13 @@ export function App() {
                 onOpenClients={() => navigateToTab('clients')}
                 onOpenServiceOrders={() => navigateToTab('service-orders')}
                 onOpenEquipments={() => navigateToTab('equipments')}
+              />
+            ) : activeTab === 'procedures' ? (
+              <KnowledgeBaseView
+                client={selectedClient}
+                clients={clients}
+                targetArticleId={targetEntityId}
+                onNavigateToTab={navigateToTab}
               />
             ) : loading && !selectedClient ? (
               <div className="text-center py-20 text-slate-400 text-sm">

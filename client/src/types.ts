@@ -332,6 +332,31 @@ export interface TechnicalReportData {
   };
 }
 
+export interface Article {
+  id: string;
+  client_id?: string | null;
+  client_name?: string | null;
+  title: string;
+  body_md: string;
+  tags?: string | null;
+  visible_in_portal?: number;
+  version: number;
+  created_by?: string | null;
+  updated_by?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface ArticleVersion {
+  id: string;
+  article_id: string;
+  version: number;
+  title: string;
+  body_md: string;
+  changed_by?: string | null;
+  created_at: string;
+}
+
 export interface EquipmentCatalogItem {
   id: string;
   name: string;

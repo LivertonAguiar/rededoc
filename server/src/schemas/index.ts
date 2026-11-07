@@ -98,3 +98,14 @@ export const linkSchema = z.object({
   message: 'Não é possível vincular um registro a si mesmo.'
 });
 
+/**
+ * Esquema de validação para Artigos da Base de Conhecimento (Procedimentos)
+ */
+export const articleSchema = z.object({
+  client_id: z.string().optional().nullable(),
+  title: z.string().min(2, 'O título do procedimento deve conter ao menos 2 caracteres.'),
+  body_md: z.string().min(1, 'O conteúdo do procedimento em Markdown é obrigatório.'),
+  tags: z.string().optional().nullable(),
+  visible_in_portal: z.union([z.boolean(), z.number()]).optional().default(0)
+});
+
