@@ -7,6 +7,9 @@ echo "========================================"
 
 cd /opt/docker/itfy
 
+echo "-> Atualizando código do repositório (git pull)..."
+git pull origin main
+
 echo "-> Reconstruindo imagem Docker itfy-app..."
 docker compose build itfy-app
 
