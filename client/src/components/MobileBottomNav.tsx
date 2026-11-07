@@ -5,7 +5,8 @@ import {
   Network,
   KeyRound,
   Menu,
-  BookOpen
+  BookOpen,
+  Wrench
 } from 'lucide-react';
 
 interface MobileBottomNavProps {
@@ -33,18 +34,15 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       label: 'Clientes',
       icon: Building2,
       requiresClient: false
-    },
+    }
+  ];
+
+  const secondaryItems = [
     {
       id: 'procedures',
       label: 'Proced.',
       icon: BookOpen,
       requiresClient: false
-    },
-    {
-      id: 'credentials',
-      label: 'Cofre',
-      icon: KeyRound,
-      requiresClient: true
     }
   ];
 
@@ -71,6 +69,49 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
                   ? 'text-blue-400 font-bold'
                   : isDisabled
                   ? 'text-slate-600'
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <div className="relative">
+                <Icon className={`w-5 h-5 transition-transform ${isActive ? 'scale-110' : ''}`} />
+                {isActive && (
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-400"></span>
+                )}
+              </div>
+              <span className="text-[10px] mt-1 tracking-tight">{item.label}</span>
+            </button>
+          );
+        })}
+
+        {/* Atalho Novo Atendimento (Fase 9 - App de Campo) */}
+        <button
+          onClick={() => {
+            if (hasSelectedClient) {
+              onSelectTab('service-orders');
+            } else {
+              onSelectTab('clients');
+            }
+          }}
+          className="flex flex-col items-center justify-center -mt-3.5 select-none"
+          title="Novo Atendimento em Campo"
+        >
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-600 to-cyan-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/40 border-2 border-[#070D1B] hover:scale-105 active:scale-95 transition">
+            <Wrench className="w-5 h-5" />
+          </div>
+          <span className="text-[9px] mt-0.5 font-bold text-cyan-300">Novo OS</span>
+        </button>
+
+        {secondaryItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeTab === item.id;
+
+          return (
+            <button
+              key={item.id}
+              onClick={() => onSelectTab(item.id)}
+              className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-xl transition-all relative ${
+                isActive
+                  ? 'text-blue-400 font-bold'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
             >

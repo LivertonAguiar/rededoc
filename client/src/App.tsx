@@ -19,6 +19,7 @@ import { PortalApp } from './components/PortalApp';
 import { UsersManagementView } from './components/UsersManagementView';
 import { LoginView } from './components/LoginView';
 import { MobileBottomNav } from './components/MobileBottomNav';
+import { OfflineQueueIndicator } from './components/OfflineQueueIndicator';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
 import { ClientProfileHeader } from './components/ClientProfileHeader';
 import { Client, Equipment, PortForward, Attachment, User } from './types';
@@ -445,6 +446,9 @@ export function App() {
             )}
           </main>
         </div>
+
+        {/* Indicador Flutuante de Sincronização e Fila Offline (Fase 9) */}
+        <OfflineQueueIndicator />
 
         {/* Barra de Navegação Inferior para Celular */}
         <MobileBottomNav

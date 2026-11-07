@@ -98,6 +98,15 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
    - Exibição das especificações técnicas no card do equipamento (`EquipmentsView`) e no laudo técnico para impressão/PDF (`ReportsView`).
    - Modal administrativo (`EquipmentTemplatesModal`) para criação, edição e exclusão de modelos customizados.
 
+15. **App de Campo, Câmera e Modo Offline (Fase 9)**:
+   - **Captura Direta de Fotos**: acionamento de câmera nativa do celular via `<input type="file" capture="environment">` com pré-visualização instantânea, categorização (`foto_equipamento`, `foto_rack`, `foto_etiqueta`, `documento`) e campo de notas/legendas.
+   - **Compressão Automática no Navegador**: redimensionamento via Canvas para o lado maior máximo de 1600px e compressão JPEG a 85% de qualidade, reduzindo arquivos pesados de câmeras móveis (15MB+) para ~250KB antes da transmissão.
+   - **Fila Offline com IndexedDB** (`offlineQueue`): quando o técnico está em subsolos, garagens ou locais sem sinal celular, as fotos e seus metadados são gravados em banco de dados local seguro no dispositivo.
+   - **Sincronização Automática**: escuta eventos `online` do navegador para descarregar e transmitir automaticamente as fotos pendentes assim que a conexão for restabelecida.
+   - **Indicador Flutuante de Fila** (`OfflineQueueIndicator`): badge discreto e moderno exibindo contagem de fotos pendentes, botão de sincronização manual e status de conectividade em tempo real.
+   - **Leitor Óptico Integrado na Busca Global**: leitor de código de barras e QR Code via câmera acionado diretamente no modal de busca global (`Ctrl + K` / `/`) e no cadastro de equipamentos, permitindo bipar etiquetas de MAC e Serial diretamente no local físico.
+   - **Navegação Móvel Otimizada**: barra inferior (`MobileBottomNav`) com atalho central destacado para abertura imediata de novos atendimentos de campo.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas

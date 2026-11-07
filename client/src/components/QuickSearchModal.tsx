@@ -12,10 +12,12 @@ import {
   ChevronRight,
   Command,
   CornerDownLeft,
-  Loader2
+  Loader2,
+  Scan
 } from 'lucide-react';
 import { api } from '../services/api';
 import { SearchResultItem, GroupedSearchResults } from '../types';
+import { BarcodeScannerModal } from './BarcodeScannerModal';
 
 interface QuickSearchModalProps {
   isOpen: boolean;
@@ -36,6 +38,7 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<SearchResultItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isScannerOpen, setIsScannerOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -177,6 +180,17 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
               <X className="w-4 h-4" />
             </button>
           )}
+
+          {/* Botão de Leitor de Código de Barras / QR Code */}
+          <button
+            type="button"
+            onClick={() => setIsScannerOpen(true)}
+            className="p-1.5 rounded-lg text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 transition-colors mr-2"
+            title="Escanear Código de Barras / QR Code da etiqueta com a câmera"
+          >
+            <Scan className="w-4 h-4" />
+          </button>
+
           <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono font-medium text-slate-400 bg-slate-800 border border-slate-700 rounded-md">
             ESC
           </kbd>
@@ -262,6 +276,20 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
           </span>
         </div>
       </div>
+
+      {/* Leitor Óptico de Código de Barras / QR Code via Câmera */}
+      {isScannerOpen && (
+        <BarcodeScannerModal
+          isOpen={isScannerOpen}
+          onClose={() => setIsScannerOpen(false)}
+          title="Escanear Etiqueta de Equipamento (MAC / Serial / QR Code)"
+          targetField="any"
+          onScan={(scanned) => {
+            setQuery(scanned);
+            setIsScannerOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };

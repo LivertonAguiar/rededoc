@@ -29,6 +29,7 @@ import { api } from '../services/api';
 import { AddEquipmentModal } from './AddEquipmentModal';
 import { EquipmentLabelModal } from './EquipmentLabelModal';
 import { EquipmentTemplatesModal } from './EquipmentTemplatesModal';
+import { CameraCaptureModal } from './CameraCaptureModal';
 import { RelatedItems } from './RelatedItems';
 import { useDialog } from '../context/DialogContext';
 
@@ -59,6 +60,7 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
   const [isPingingAll, setIsPingingAll] = useState(false);
   const [expandedLinksEqId, setExpandedLinksEqId] = useState<string | null>(targetEquipmentId || null);
   const [isTemplatesModalOpen, setIsTemplatesModalOpen] = useState(false);
+  const [cameraTargetEquipment, setCameraTargetEquipment] = useState<Equipment | null>(null);
 
   useEffect(() => {
     if (targetEquipmentId) {
@@ -434,6 +436,13 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
                   <Link2 className="w-3.5 h-3.5" />
                 </button>
                 <button
+                  onClick={() => setCameraTargetEquipment(eq)}
+                  className="p-1.5 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 transition"
+                  title="Capturar foto deste equipamento com a câmera"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                </button>
+                <button
                   onClick={() => setSelectedEquipmentForLabel(eq)}
                   className="p-1.5 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400"
                   title="Imprimir Etiqueta com QR Code"
@@ -501,6 +510,21 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
         isOpen={isTemplatesModalOpen}
         onClose={() => setIsTemplatesModalOpen(false)}
       />
+
+      {/* Modal de Captura de Foto com Câmera / Fila Offline (Fase 9) */}
+      {cameraTargetEquipment && (
+        <CameraCaptureModal
+          isOpen={!!cameraTargetEquipment}
+          onClose={() => setCameraTargetEquipment(null)}
+          clientId={client.id}
+          equipmentId={cameraTargetEquipment.id}
+          locationId={cameraTargetEquipment.location_id}
+          title={`Foto: ${cameraTargetEquipment.name}`}
+          onSuccess={() => {
+            onRefresh();
+          }}
+        />
+      )}
     </div>
   );
 };

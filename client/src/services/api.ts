@@ -328,6 +328,40 @@ export const api = {
     return fetchJson<Attachment[]>(`/attachments${q ? `?${q}` : ''}`);
   },
   deleteAttachment: (id: string) => fetchJson<{ message: string }>(`/attachments/${id}`, { method: 'DELETE' }),
+  uploadAttachment: async (file: File | Blob, data: {
+    clientId: string;
+    locationId?: string;
+    equipmentId?: string;
+    serviceOrderId?: string;
+    category?: string;
+    notes?: string;
+    fileName?: string;
+  }) => {
+    const formData = new FormData();
+    const fileName = data.fileName || (file instanceof File ? file.name : 'foto.jpg');
+    formData.append('file', file, fileName);
+    formData.append('client_id', data.clientId);
+    if (data.locationId) formData.append('location_id', data.locationId);
+    if (data.equipmentId) formData.append('equipment_id', data.equipmentId);
+    if (data.serviceOrderId) formData.append('service_order_id', data.serviceOrderId);
+    if (data.category) formData.append('category', data.category);
+    if (data.notes) formData.append('notes', data.notes);
+
+    const token = localStorage.getItem('rededoc_token');
+    const res = await fetch(`${API_BASE}/attachments`, {
+      method: 'POST',
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      body: formData
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: 'Falha no upload do anexo.' }));
+      throw new Error(err.error || 'Erro no upload.');
+    }
+
+    invalidateApiCache('attachments');
+    return res.json() as Promise<Attachment>;
+  },
 
   // Relatório Técnico
   getTechnicalReport: (clientId: string, locationId?: string, includePasswords?: boolean) => {

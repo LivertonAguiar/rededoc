@@ -23,6 +23,7 @@ import { ServiceOrder, Client, Equipment, Attachment } from '../types';
 import { api } from '../services/api';
 import { ImageSearchModal } from './ImageSearchModal';
 import { RelatedItems } from './RelatedItems';
+import { CameraCaptureModal } from './CameraCaptureModal';
 import { useDialog } from '../context/DialogContext';
 
 interface ServiceOrdersViewProps {
@@ -71,6 +72,7 @@ export const ServiceOrdersView: React.FC<ServiceOrdersViewProps> = ({
   const [loadingAttachments, setLoadingAttachments] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
@@ -381,6 +383,14 @@ export const ServiceOrdersView: React.FC<ServiceOrdersViewProps> = ({
                 </div>
 
                 <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsCameraOpen(true)}
+                  className="px-3 py-1.5 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-xs font-semibold text-blue-300 border border-blue-500/30 flex items-center gap-1.5 transition"
+                  title="Capturar foto deste atendimento com a câmera do celular"
+                >
+                  <Camera className="w-3.5 h-3.5" />
+                  <span>Foto em Campo</span>
+                </button>
                 <button
                   onClick={() => handleOpenEdit(selectedOrder)}
                   className="px-3 py-1.5 rounded-xl bg-[#172744] hover:bg-[#20365D] text-xs font-semibold text-slate-200 border border-[#24375A]"
@@ -770,6 +780,20 @@ export const ServiceOrdersView: React.FC<ServiceOrdersViewProps> = ({
           clientId={client.id}
           serviceOrderId={selectedOrder.id}
           onSelectImage={handleSelectPhotoFromWeb}
+        />
+      )}
+
+      {/* Modal de Captura de Foto com Câmera em Campo (Fase 9) */}
+      {isCameraOpen && selectedOrder && (
+        <CameraCaptureModal
+          isOpen={isCameraOpen}
+          onClose={() => setIsCameraOpen(false)}
+          clientId={client.id}
+          serviceOrderId={selectedOrder.id}
+          title={`Foto do Atendimento: ${selectedOrder.service_type}`}
+          onSuccess={() => {
+            loadAttachments(selectedOrder.id);
+          }}
         />
       )}
     </div>
