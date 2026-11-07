@@ -69,6 +69,16 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
    - Acesso rápido a **Condomínios Recentes** com persistência em armazenamento local.
    - Painel consolidado de **Atividades Recentes de Auditoria** na tela inicial.
 
+12. **IPAM Simples por Cliente e Detecção de Conflitos (Fase 6)**:
+   - Gerenciamento de sub-redes IPv4 por condomínio (tabela `subnets`) com cálculo matemático nativo de rede, broadcast, primeiro/último IP utilizável e total de hosts.
+   - Grade visual de ocupação de endereços IP com distinção de status: Gateway, Ocupado (estático), DHCP, Livre e Em Conflito.
+   - **Prevenção e detecção ativa de conflitos**:
+     - Alerta de IP duplicado entre equipamentos no mesmo cliente.
+     - Alerta de equipamento com IP estático dentro da faixa DHCP sem reserva de MAC documentada.
+   - Algoritmo inteligente de **Sugestão do Próximo IP Livre** dentro da faixa do condomínio com botão de 1 clique ("Usar próximo livre") no modal de cadastro de equipamentos.
+   - Detecção automática e importação/sugestão de sub-redes a partir do inventário de equipamentos existentes.
+   - Vínculos bidirecionais automáticos (`RelatedItems`) entre a sub-rede e equipamentos, credenciais ou procedimentos da infraestrutura.
+
 ---
 
 ## 🛠️ Tecnologias Utilizadas

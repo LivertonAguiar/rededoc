@@ -4,7 +4,8 @@ import {
   AuditHistory, DashboardStats, TechnicalReportData, EquipmentCatalogItem,
   RelatedItem, EntityLink, AvailableLinkTarget, Article, ArticleVersion,
   ExpirationItem, NotificationSetting, NotificationLog, Domain,
-  FavoriteItem, GroupedSearchResults, DashboardOverviewData
+  FavoriteItem, GroupedSearchResults, DashboardOverviewData,
+  Subnet, SubnetUsageReport, SubnetSuggestion, ClientIpConflictsReport
 } from '../types';
 
 const API_BASE = '/api';
@@ -411,6 +412,31 @@ export const api = {
     }),
   removeFavorite: (entityType: string, entityId: string) =>
     fetchJson<{ message: string; isFavorite: boolean }>(`/favorites/${encodeURIComponent(entityType)}/${encodeURIComponent(entityId)}`, {
+      method: 'DELETE'
+    }),
+
+  // IPAM e Sub-redes (Fase 6)
+  getSubnets: (clientId?: string) => {
+    let url = '/subnets';
+    if (clientId) url += `?clientId=${encodeURIComponent(clientId)}`;
+    return fetchJson<Subnet[]>(url);
+  },
+  getSubnet: (id: string) => fetchJson<Subnet>(`/subnets/${id}`),
+  getSubnetUsage: (id: string) => fetchJson<SubnetUsageReport>(`/subnets/${id}/usage`),
+  suggestSubnets: (clientId: string) => fetchJson<SubnetSuggestion[]>(`/subnets/suggest?clientId=${encodeURIComponent(clientId)}`),
+  detectSubnetConflicts: (clientId: string) => fetchJson<ClientIpConflictsReport>(`/subnets/conflicts?clientId=${encodeURIComponent(clientId)}`),
+  createSubnet: (data: Partial<Subnet>) =>
+    fetchJson<Subnet>('/subnets', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    }),
+  updateSubnet: (id: string, data: Partial<Subnet>) =>
+    fetchJson<Subnet>(`/subnets/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data)
+    }),
+  deleteSubnet: (id: string) =>
+    fetchJson<{ message: string }>(`/subnets/${id}`, {
       method: 'DELETE'
     })
 };

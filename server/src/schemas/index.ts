@@ -109,3 +109,18 @@ export const articleSchema = z.object({
   visible_in_portal: z.union([z.boolean(), z.number()]).optional().default(0)
 });
 
+/**
+ * Esquema de validação para Sub-redes e IPAM (Fase 6)
+ */
+export const subnetSchema = z.object({
+  client_id: z.string().min(1, 'O cliente vinculado é obrigatório.'),
+  location_id: z.string().optional().nullable(),
+  name: z.string().min(2, 'O nome da sub-rede deve conter ao menos 2 caracteres.'),
+  cidr: z.string().regex(/^(\d{1,3}\.){3}\d{1,3}\/\d{1,2}$/, 'Formato CIDR inválido (ex: 192.168.1.0/24)'),
+  gateway: z.string().optional().nullable(),
+  vlan: z.string().optional().nullable(),
+  dhcp_start: z.string().optional().nullable(),
+  dhcp_end: z.string().optional().nullable(),
+  notes: z.string().optional().nullable()
+});
+

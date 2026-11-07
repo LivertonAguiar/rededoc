@@ -14,6 +14,7 @@ import { ReportsView } from './components/ReportsView';
 import { BackupView } from './components/BackupView';
 import { KnowledgeBaseView } from './components/KnowledgeBaseView';
 import { DomainsView } from './components/DomainsView';
+import { IpamView } from './components/IpamView';
 import { LoginView } from './components/LoginView';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
@@ -287,6 +288,13 @@ export function App() {
                 targetDomainId={targetEntityId}
                 onNavigateToTab={navigateToTab}
               />
+            ) : activeTab === 'ipam' ? (
+              <IpamView
+                client={selectedClient}
+                clients={clients}
+                targetSubnetId={targetEntityId}
+                onNavigateToTab={navigateToTab}
+              />
             ) : activeTab === 'clients' ? (
               <ClientsView
                 clients={clients}
@@ -314,6 +322,7 @@ export function App() {
                   'dashboard',
                   'equipments',
                   'topology',
+                  'ipam',
                   'port-forwards',
                   'credentials',
                   'domains',

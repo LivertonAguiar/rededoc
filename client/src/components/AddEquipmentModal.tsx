@@ -24,7 +24,8 @@ import {
   RefreshCw,
   Scan,
   Undo2,
-  Clock
+  Clock,
+  AlertTriangle
 } from 'lucide-react';
 import { Equipment, Location, EquipmentCatalogItem } from '../types';
 import { api } from '../services/api';
@@ -61,6 +62,18 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [saveToCatalog, setSaveToCatalog] = useState<boolean>(true); // Salvar novo modelo no catálogo para uso futuro
   const [scannerTarget, setScannerTarget] = useState<'mac' | 'serial' | null>(null);
+
+  // Estados de IPAM para validação de conflitos e sugestão do próximo IP livre
+  const [existingEquipments, setExistingEquipments] = useState<Equipment[]>([]);
+  const [ipConflictWarning, setIpConflictWarning] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isOpen && clientId) {
+      api.getEquipments(clientId)
+        .then(setExistingEquipments)
+        .catch(() => {});
+    }
+  }, [isOpen, clientId]);
 
   // Modal dedicado de Criação de Novo Modelo no Catálogo
   const [isNewModelModalOpen, setIsNewModelModalOpen] = useState<boolean>(false);
@@ -211,6 +224,51 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
       console.error('Erro ao carregar catálogo:', err);
     } finally {
       setLoadingCatalog(false);
+    }
+  };
+
+  // Validação contínua de conflitos de IP
+  useEffect(() => {
+    const cleanIp = formData.local_ip?.trim();
+    if (!cleanIp || existingEquipments.length === 0) {
+      setIpConflictWarning(null);
+      return;
+    }
+    const dup = existingEquipments.find(
+      e => e.local_ip?.trim() === cleanIp && e.id !== equipmentToEdit?.id
+    );
+    if (dup) {
+      setIpConflictWarning(`Conflito: IP já utilizado por "${dup.name}" (${dup.model || dup.category})`);
+    } else {
+      setIpConflictWarning(null);
+    }
+  }, [formData.local_ip, existingEquipments, equipmentToEdit?.id]);
+
+  const handleSuggestNextFreeIp = async () => {
+    if (!clientId) return;
+    try {
+      const subs = await api.getSubnets(clientId);
+      if (subs.length > 0) {
+        const usage = await api.getSubnetUsage(subs[0].id);
+        if (usage.nextFreeIp) {
+          setFormData(prev => ({ ...prev, local_ip: usage.nextFreeIp! }));
+          showToast(`Próximo IP livre ${usage.nextFreeIp} preenchido!`, 'success');
+          return;
+        }
+      }
+
+      // Fallback: calcular próximo IP a partir dos equipamentos existentes
+      const usedIps = new Set(existingEquipments.map(e => e.local_ip?.trim()).filter(Boolean));
+      for (let i = 2; i <= 254; i++) {
+        const candidate = `192.168.1.${i}`;
+        if (!usedIps.has(candidate)) {
+          setFormData(prev => ({ ...prev, local_ip: candidate }));
+          showToast(`Próximo IP livre ${candidate} preenchido!`, 'success');
+          return;
+        }
+      }
+    } catch {
+      showToast('Não foi possível calcular o próximo IP livre.', 'warning');
     }
   };
 
@@ -817,18 +875,38 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
 
                 {/* IP Local */}
                 <div>
-                  <label className="text-slate-300 font-semibold block mb-1">
-                    Endereço IP Local <span className="text-emerald-400">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="text-slate-300 font-semibold block">
+                      Endereço IP Local <span className="text-emerald-400">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={handleSuggestNextFreeIp}
+                      className="text-[11px] text-blue-400 hover:text-blue-300 flex items-center gap-1 font-mono font-medium transition"
+                      title="Preencher com o próximo IP livre da sub-rede do condomínio"
+                    >
+                      <Sparkles className="w-3 h-3 text-amber-300" />
+                      <span>Usar próximo livre</span>
+                    </button>
+                  </div>
                   <input
                     type="text"
                     required
                     placeholder="Ex: 192.168.1.50"
                     value={formData.local_ip}
                     onChange={(e) => setFormData(p => ({ ...p, local_ip: e.target.value }))}
-                    className="w-full bg-[#101C31] border border-[#24375A] focus:border-emerald-400 rounded-lg px-3 py-2 text-emerald-400 font-mono font-bold focus:outline-none"
+                    className={`w-full bg-[#101C31] border ${
+                      ipConflictWarning ? 'border-rose-500 focus:border-rose-400 text-rose-300' : 'border-[#24375A] focus:border-emerald-400 text-emerald-400'
+                    } rounded-lg px-3 py-2 font-mono font-bold focus:outline-none`}
                   />
-                  <span className="text-[10px] text-slate-500 mt-0.5 block">IP interno na sub-rede</span>
+                  {ipConflictWarning ? (
+                    <span className="text-[11px] text-rose-400 mt-1 flex items-center gap-1 font-semibold">
+                      <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                      {ipConflictWarning}
+                    </span>
+                  ) : (
+                    <span className="text-[10px] text-slate-500 mt-0.5 block">IP interno na sub-rede</span>
+                  )}
                 </div>
 
                 {/* Localização Física no Condomínio */}

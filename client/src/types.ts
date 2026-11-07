@@ -520,3 +520,80 @@ export interface DashboardOverviewData {
   }>;
   expirations: ExpirationItem[];
 }
+
+export interface Subnet {
+  id: string;
+  client_id: string;
+  location_id?: string | null;
+  name: string;
+  cidr: string;
+  gateway?: string | null;
+  vlan?: string | null;
+  dhcp_start?: string | null;
+  dhcp_end?: string | null;
+  notes?: string | null;
+  client_name?: string;
+  location_name?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface SubnetIpSlot {
+  ip: string;
+  status: 'free' | 'used' | 'dhcp' | 'dhcp_conflict' | 'conflict' | 'gateway';
+  equipment?: {
+    id: string;
+    name: string;
+    model?: string;
+    category?: string;
+    mac_address?: string;
+    is_mac_reserved?: number;
+  };
+  conflictingEquipments?: Array<{
+    id: string;
+    name: string;
+    model?: string;
+    mac_address?: string;
+  }>;
+}
+
+export interface SubnetUsageReport {
+  subnet: Subnet;
+  cidrInfo: {
+    networkIp: string;
+    prefix: number;
+    netmask: string;
+    firstUsableIp: string;
+    lastUsableIp: string;
+    broadcastIp: string;
+    totalHosts: number;
+  };
+  stats: {
+    totalHosts: number;
+    usedHosts: number;
+    freeHosts: number;
+    dhcpHosts: number;
+    conflictCount: number;
+    usagePercentage: number;
+  };
+  nextFreeIp: string | null;
+  slots: SubnetIpSlot[];
+}
+
+export interface SubnetSuggestion {
+  name: string;
+  cidr: string;
+  gateway: string;
+  vlan?: string;
+  dhcp_start?: string;
+  dhcp_end?: string;
+  location_id?: string;
+  matchedEquipmentsCount: number;
+}
+
+export interface ClientIpConflictsReport {
+  duplicates: Array<{ ip: string; equipments: any[] }>;
+  outOfSubnet: any[];
+  dhcpWithoutReservation: any[];
+  hasIssues: boolean;
+}

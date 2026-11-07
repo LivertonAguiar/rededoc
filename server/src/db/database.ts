@@ -381,7 +381,27 @@ export function initDatabase() {
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
 
+    -- Tabela de Sub-redes e IPAM por Cliente (Fase 6)
+    CREATE TABLE IF NOT EXISTS subnets (
+      id TEXT PRIMARY KEY,
+      client_id TEXT NOT NULL,
+      location_id TEXT,
+      name TEXT NOT NULL,
+      cidr TEXT NOT NULL,
+      gateway TEXT,
+      vlan TEXT,
+      dhcp_start TEXT,
+      dhcp_end TEXT,
+      notes TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE,
+      FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE SET NULL
+    );
+
     -- Índices para buscas rápidas
+    CREATE INDEX IF NOT EXISTS idx_subnets_client ON subnets(client_id);
+    CREATE INDEX IF NOT EXISTS idx_subnets_location ON subnets(location_id);
     CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
     CREATE INDEX IF NOT EXISTS idx_favorites_entity ON favorites(entity_type, entity_id);
     CREATE INDEX IF NOT EXISTS idx_domains_client ON domains(client_id);

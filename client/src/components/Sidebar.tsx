@@ -18,7 +18,8 @@ import {
   ChevronRight,
   ChevronRightSquare,
   BookOpen,
-  Globe
+  Globe,
+  Layers
 } from 'lucide-react';
 import { User } from '../types';
 
@@ -59,7 +60,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     'audit-history',
     'reports',
     'procedures',
-    'domains'
+    'domains',
+    'ipam'
   ].includes(activeTab);
 
   const sidebarContent = (
@@ -227,6 +229,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     >
                       <Network className="w-3.5 h-3.5 text-slate-400" />
                       <span>Topologia da Rede</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleSelectTab('ipam')}
+                      className={`w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg text-xs transition ${
+                        activeTab === 'ipam'
+                          ? 'bg-[#1D3250] text-white font-semibold'
+                          : 'text-slate-400 hover:text-slate-200 hover:bg-[#132238]'
+                      }`}
+                    >
+                      <Layers className="w-3.5 h-3.5 text-slate-400" />
+                      <span>Sub-redes (IPAM)</span>
                     </button>
 
                     <button

@@ -10,6 +10,7 @@ import {
   Building2,
   History,
   Globe,
+  Layers,
   Star
 } from 'lucide-react';
 import { Client, Equipment, PortForward } from '../types';
@@ -72,6 +73,11 @@ export const ClientProfileHeader: React.FC<ClientProfileHeaderProps> = ({
       id: 'topology',
       label: 'Topologia Visual',
       icon: Network
+    },
+    {
+      id: 'ipam',
+      label: 'IPAM / Sub-redes',
+      icon: Layers
     },
     {
       id: 'port-forwards',

@@ -586,6 +586,25 @@ export async function runSeed() {
     })
   );
 
+  console.log('Criando sub-rede demonstrativa da Fase 6 (subnets)...');
+  const subAuroraId = 'sub_aurora_01';
+  db.prepare(`
+    INSERT INTO subnets (
+      id, client_id, location_id, name, cidr, gateway, vlan, dhcp_start, dhcp_end, notes
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    subAuroraId,
+    clientId,
+    locationId,
+    'LAN Principal (Guarita & CFTV)',
+    '192.168.1.0/24',
+    '192.168.1.1',
+    '1',
+    '192.168.1.100',
+    '192.168.1.200',
+    'Rede interna principal dos equipamentos de segurança do Condomínio Aurora'
+  );
+
   console.log('Seed concluído com sucesso!');
 }
 

@@ -99,7 +99,8 @@ backupRouter.get('/export-zip', async (req: Request, res: Response) => {
       entity_links: db.prepare('SELECT * FROM entity_links').all(),
       articles: db.prepare('SELECT * FROM articles').all(),
       article_versions: db.prepare('SELECT * FROM article_versions').all(),
-      favorites: db.prepare('SELECT * FROM favorites').all()
+      favorites: db.prepare('SELECT * FROM favorites').all(),
+      subnets: db.prepare('SELECT * FROM subnets').all()
     };
     archive.append(JSON.stringify(fullJsonData, null, 2), { name: 'data_export.json' });
 
@@ -148,7 +149,8 @@ backupRouter.get('/export', (req: Request, res: Response) => {
     notification_settings: db.prepare('SELECT * FROM notification_settings').all(),
     notification_log: db.prepare('SELECT * FROM notification_log').all(),
     domains: db.prepare('SELECT * FROM domains').all(),
-    favorites: db.prepare('SELECT * FROM favorites').all()
+    favorites: db.prepare('SELECT * FROM favorites').all(),
+    subnets: db.prepare('SELECT * FROM subnets').all()
   };
 
   const filename = `rededoc-backup-${new Date().toISOString().slice(0, 10)}.json`;
@@ -178,6 +180,7 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       DELETE FROM notification_settings;
       DELETE FROM domains;
       DELETE FROM favorites;
+      DELETE FROM subnets;
       DELETE FROM equipments;
       DELETE FROM service_orders;
       DELETE FROM network_topology;
@@ -373,6 +376,21 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
       `);
       for (const f of data.favorites) {
         insFav.run(f.id, f.user_id, f.entity_type, f.entity_id, f.created_at || new Date().toISOString());
+      }
+    }
+
+    if (data.subnets) {
+      const insSubnet = db.prepare(`
+        INSERT INTO subnets (
+          id, client_id, location_id, name, cidr, gateway, vlan, dhcp_start, dhcp_end, notes, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+      for (const s of data.subnets) {
+        insSubnet.run(
+          s.id, s.client_id, s.location_id || null, s.name, s.cidr, s.gateway || null,
+          s.vlan || null, s.dhcp_start || null, s.dhcp_end || null, s.notes || null,
+          s.created_at || new Date().toISOString(), s.updated_at || new Date().toISOString()
+        );
       }
     }
 
