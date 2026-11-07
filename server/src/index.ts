@@ -82,7 +82,7 @@ if (fs.existsSync(clientDist)) {
 
 app.listen(PORT, () => {
   console.log(`=========================================`);
-  console.log(` ITFY Server executando na porta ${PORT}`);
-  console.log(` API Health: http://localhost:${PORT}/api/health`);
+  console.log(` ITFY Server ativo na porta ${PORT} [${process.env.NODE_ENV || 'production'}]`);
+  console.log(` Health Check: /api/health`);
   console.log(`=========================================`);
 });

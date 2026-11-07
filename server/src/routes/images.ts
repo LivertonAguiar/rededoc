@@ -57,7 +57,7 @@ imagesRouter.get('/search', async (req: Request, res: Response): Promise<any> =>
   }
 });
 
-// 2. Baixar imagem externa para o servidor local e associar
+// 2. Baixar imagem externa para o armazenamento persistente do servidor e associar
 imagesRouter.post('/fetch-and-save', async (req: Request, res: Response): Promise<any> => {
   const { imageUrl, fallbackUrl, equipmentId, serviceOrderId, clientId } = req.body;
   if (!imageUrl) {

@@ -50,49 +50,87 @@ Projetado com foco em agilidade na recuperação de informações técnicas, seg
 
 ---
 
-## 🏁 Como Executar o Projeto
+## 🚀 Implantação Self-Hosted no Servidor (Proxmox / VPS)
 
-### 1. Execução Local Direta (Node.js)
+O ITFY foi arquitetado para rodar em modo **Self-Hosted** em servidores dedicados, containers LXC / VMs no **Proxmox VE** ou instâncias **VPS** (Oracle Cloud, Hetzner, DigitalOcean, AWS, etc.) através de contêineres Docker isolados com alta segurança, persistência e proxy reverso.
 
-Clone ou navegue até o diretório do projeto:
+### 1. Requisitos do Servidor
 
-```bash
-cd c:\Users\Suporte\Documents\ITLY
-```
-
-Popule o banco de dados com os dados de demonstração do **Condomínio Aurora**:
-```bash
-npm run seed
-```
-
-Inicie o servidor de produção (serve a API e o Frontend compilado):
-```bash
-npm start
-```
-
-Acesse em seu navegador:
-👉 **http://localhost:3001**
-
-Para desenvolvimento simultâneo com hot-reload:
-```bash
-# Terminal 1: Backend
-npm run dev --workspace=server
-
-# Terminal 2: Frontend
-npm run dev --workspace=client
-```
+- Sistema Operacional Linux (Ubuntu 22.04+, Debian 12+, Alpine ou Proxmox LXC/VM)
+- **Docker** e **Docker Compose Plugin** instalados
+- Proxy Reverso ou Gerenciador de Túnel (Nginx, Nginx Proxy Manager, Traefik, Caddy ou Cloudflare Tunnel)
 
 ---
 
-### 2. Implantação com Docker Compose
+### 2. Passo a Passo de Instalação no Servidor
 
-Para executar em contêineres Docker isolados com volumes persistentes para banco e uploads:
+Clone o repositório no diretório de containers do seu servidor (ex: `/opt/docker/itfy`):
+
+```bash
+git clone https://github.com/LivertonAguiar/rededoc.git /opt/docker/itfy
+cd /opt/docker/itfy
+```
+
+Crie o arquivo de variáveis de ambiente a partir do modelo de produção:
+
+```bash
+cp .env.production.example .env
+```
+
+Edite o `.env` e configure chaves secretas exclusivas para criptografia do cofre e autenticação JWT:
+
+```bash
+nano .env
+```
+
+Suba o container com build automático:
 
 ```bash
 docker compose up -d --build
 ```
 
-A aplicação estará disponível em `http://localhost:3001` (ou em produção via `https://itfy.lpaguiar.com.br`). Os dados são mantidos nos volumes `./data` e `./uploads`.
+(Opcional) Popule o banco de dados inicial com o cenário de teste:
+
+```bash
+docker exec itfy-app npm run seed
+```
+
+---
+
+### 3. Atualização Contínua do Servidor (Zero-Downtime)
+
+Para atualizar a aplicação no servidor após novos commits no GitHub, basta executar o script automatizado de atualização:
+
+```bash
+./update-container.sh
+```
+
+O script baixa as novas alterações, reconstrói o container, aguarda a inicialização e valida a integridade do serviço via endpoint `/api/health`.
+
+---
+
+### 4. Persistência de Dados e Backup
+
+Os dados do sistema são mantidos nos volumes persistentes mapeados na raiz do projeto:
+- `./data` → `/app/data`: Armazena o banco relacional SQLite com WAL (`itfy.db`, `itfy.db-wal`, `itfy.db-shm`).
+- `./uploads` → `/app/uploads`: Armazena fotos de equipamentos, documentos e anexos de ordens de serviço.
+
+---
+
+### 5. Verificação de Integridade e Saúde da API
+
+A saúde do backend pode ser consultada a qualquer momento através do endpoint:
+- `GET /api/health`
+
+Exemplo de resposta:
+```json
+{
+  "status": "ok",
+  "system": "ITFY API",
+  "version": "1.0.0",
+  "timestamp": "2026-11-07T15:46:11.784Z"
+}
+```
 
 ---
 
