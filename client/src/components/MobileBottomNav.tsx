@@ -47,7 +47,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   ];
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#070D1B]/95 backdrop-blur-lg border-t border-[#1D3054] px-2 py-1 safe-bottom shadow-2xl">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#070D1B]/95 backdrop-blur-lg border-t border-[#1D3054] px-2 pt-1.5 safe-bottom-nav shadow-2xl safe-left safe-right">
       <div className="flex items-center justify-around max-w-md mx-auto">
         {navItems.map((item) => {
           const Icon = item.icon;

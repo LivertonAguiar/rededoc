@@ -18,13 +18,29 @@
   }
 }
 
-/* Suporte a Safe Area Insets para dispositivos móveis */
+/* Suporte a Safe Area Insets para dispositivos móveis com entalhe (Notch / Cutout) */
 .safe-top {
   padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
 }
 
+.safe-top-extra {
+  padding-top: max(0.85rem, calc(env(safe-area-inset-top, 0px) + 0.5rem));
+}
+
 .safe-bottom {
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+
+.safe-bottom-nav {
+  padding-bottom: max(0.6rem, calc(env(safe-area-inset-bottom, 0px) + 0.35rem));
+}
+
+.safe-left {
+  padding-left: max(0px, env(safe-area-inset-left, 0px));
+}
+
+.safe-right {
+  padding-right: max(0px, env(safe-area-inset-right, 0px));
 }
 
 /* Custom Scrollbars */

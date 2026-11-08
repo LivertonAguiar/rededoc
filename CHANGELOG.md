@@ -7,6 +7,26 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [1.0.2] - 2026-11-08
+
+### 🚀 Novas Funcionalidades & Design
+- **Modo Tela Cheia & Respeito ao Entalhe (Notch / Display Cutout)**:
+  - Configurado `android:windowLayoutInDisplayCutoutMode="shortEdges"` no tema nativo do Android (`styles.xml`), permitindo expansão fluida da interface sobre todo o display.
+  - Cores nativas das barras do sistema alinhadas ao tema escuro da aplicação (`statusBarColor #0F1B2D` e `navigationBarColor #0A1424`).
+  - Suporte completo a Safe Area Insets (`safe-top`, `safe-bottom-nav`, `safe-left`, `safe-right`) para prevenir qualquer sobreposição de elementos interativos com câmeras frontais tipo gota/furo ou barra de gestos do Android.
+- **Redesenho Completo da Sidebar**:
+  - Interface moderna estilo Cyber Glassmorphism (`#0A1324` com bordas sutis `#1B2F52`).
+  - Logotipo oficial `ItfyLogo` integrado com insígnia `Pro` no topo.
+  - Card interativo e destacado com o condomínio/cliente selecionado em atendimento e indicador de status.
+  - Efeito de seleção neon com gradiente (`from-blue-600/30 via-cyan-500/15`) e animações suaves ao pairar o mouse/toque.
+  - Card de download direto do APK mobile com versão e destaque visual.
+  - Rodapé funcional com avatar do técnico, status de conexão em tempo real, botão de notas de versão e encerramento de sessão.
+
+### 🛡️ Assinatura e Compatibilidade Android
+- **Assinatura Determinística v1/v2**: Inclusão de keystore definitivo permitindo atualizações sucessivas sem conflito de pacotes no Android.
+
+---
+
 ## [1.0.1] - 2026-11-08
 
 ### 🚀 Novas Funcionalidades

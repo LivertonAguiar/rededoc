@@ -1,7 +1,7 @@
 import { api } from './api';
 
-export const CURRENT_CLIENT_VERSION = '1.0.1'; // Versão instalada no bundle local
-export const CURRENT_CLIENT_BUILD = 2;
+export const CURRENT_CLIENT_VERSION = '1.0.2'; // Versão instalada no bundle local
+export const CURRENT_CLIENT_BUILD = 3;
 
 export interface VersionInfo {
   version: string;

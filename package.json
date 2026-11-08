@@ -1,6 +1,6 @@
 {
   "name": "itfy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "ITFY — Sistema de Documentação e Gerenciamento de Infraestrutura de Redes e TI",
   "private": true,
   "workspaces": [

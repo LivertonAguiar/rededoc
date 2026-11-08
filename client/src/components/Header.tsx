@@ -117,7 +117,7 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   return (
-    <header className="bg-[#0F1B2D] border-b border-[#1D3054] px-3 sm:px-6 py-2 sm:py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 sticky top-0 z-30">
+    <header className="bg-[#0F1B2D] border-b border-[#1D3054] px-3 sm:px-6 py-2 sm:py-3 safe-top safe-left safe-right flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 sticky top-0 z-30">
       {/* Barra de Navegação Superior e Seletores */}
       <div className="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-2 w-full sm:w-auto min-w-0">
         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
