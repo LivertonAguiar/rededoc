@@ -130,11 +130,12 @@ app.get(['/api/download/apk', '/download/apk'], (req, res) => {
 // Verificação de versão e suporte a atualizações OTA (Over-The-Air)
 app.get('/api/app/version', (req, res) => {
   res.json({
-    version: '1.0.4',
-    buildNumber: 5,
-    releaseName: 'ITFY 1.0.1 (Cyber Nexus, OTA & Offline-First)',
+    version: '1.0.1', // Mantém 1.0.1 para desarmar o popup invasivo em aparelhos que ainda possuem o APK inicial
+    latestVersion: '1.0.4',
+    buildNumber: 1,
+    releaseName: 'ITFY 1.0.4 Oficial',
     releaseDate: '2026-11-08',
-    otaSupported: true,
+    otaSupported: false,
     minSupportedVersion: '1.0.0',
     changelog: [
       {

@@ -49,8 +49,9 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
   useEffect(() => {
     api.getAppVersion()
       .then(info => {
-        if (info?.version) {
-          setAppVersion(info.version);
+        const ver = (info as any)?.latestVersion || info?.version;
+        if (ver) {
+          setAppVersion(ver);
         }
       })
       .catch(() => {});
