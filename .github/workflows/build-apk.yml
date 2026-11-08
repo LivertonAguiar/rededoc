@@ -26,11 +26,11 @@ jobs:
           node-version: 22.x
           cache: 'npm'
 
-      - name: Configurar Java JDK 17 (Temurin)
+      - name: Configurar Java JDK 21 (Temurin)
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Configurar Cache do Gradle
         uses: gradle/actions/setup-gradle@v4
