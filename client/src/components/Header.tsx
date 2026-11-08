@@ -66,6 +66,21 @@ export const Header: React.FC<HeaderProps> = ({
   const selectedClient = clients.find(c => c.id === selectedClientId);
   const locations = selectedClient?.locations || [];
 
+  // Abas que pertencem especificamente ao contexto de visualização de um condomínio
+  const clientContextTabs = [
+    'client-network',
+    'dashboard',
+    'equipments',
+    'topology',
+    'ipam',
+    'port-forwards',
+    'credentials',
+    'service-orders',
+    'audit-history',
+    'reports'
+  ];
+  const isClientContext = Boolean(selectedClient && clientContextTabs.includes(activeTab || ''));
+
   // Busca rápida com debounce
   useEffect(() => {
     if (!searchQuery.trim()) {
@@ -117,8 +132,8 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         )}
 
-        {/* Botão Voltar para Tela Anterior */}
-        {canGoBack && onGoBack && (
+        {/* Botão Voltar para Tela Anterior (exibido apenas quando fora da visão geral raiz) */}
+        {canGoBack && onGoBack && activeTab !== 'overview' && (
           <button
             type="button"
             onClick={onGoBack}
@@ -130,14 +145,11 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         )}
 
-        {onOpenOverview && (
+        {/* Botão Atalho para Visão Geral (exibido apenas quando fora da visão geral) */}
+        {onOpenOverview && activeTab !== 'overview' && (
           <button
             onClick={onOpenOverview}
-            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition shrink-0 ${
-              activeTab === 'overview'
-                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 border border-blue-500'
-                : 'bg-[#132238] text-slate-300 hover:text-white hover:bg-[#1A2D48] border border-[#24375A]'
-            }`}
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition shrink-0 bg-[#132238] text-slate-300 hover:text-white hover:bg-[#1A2D48] border border-[#24375A]"
             title="Ir para a Visão Geral de Todos os Condomínios"
           >
             <LayoutDashboard className="w-3.5 h-3.5 text-amber-300" />
@@ -145,36 +157,51 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
         )}
 
-        <div className="flex items-center gap-2 bg-[#132238] border border-[#24375A] rounded-lg px-3 py-1.5">
-          <Building2 className="w-4 h-4 text-blue-400" />
-          <select
-            value={selectedClientId}
-            onChange={(e) => onSelectClient(e.target.value)}
-            className="bg-transparent text-sm font-semibold text-white focus:outline-none cursor-pointer pr-2"
-          >
-            {clients.map(c => (
-              <option key={c.id} value={c.id} className="bg-[#0F1B2D] text-slate-100">
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {locations.length > 0 && (
-          <div className="flex items-center gap-2 bg-[#132238] border border-[#24375A] rounded-lg px-3 py-1.5">
-            <MapPin className="w-4 h-4 text-emerald-400" />
-            <select
-              value={selectedLocationId}
-              onChange={(e) => onSelectLocation(e.target.value)}
-              className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer pr-2"
-            >
-              {locations.map(loc => (
-                <option key={loc.id} value={loc.id} className="bg-[#0F1B2D] text-slate-200">
-                  {loc.name}
-                </option>
-              ))}
-            </select>
+        {/* Indicador de Painel Consolidado Global (quando na Visão Geral) */}
+        {activeTab === 'overview' && (
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#132238]/70 border border-[#24375A] text-xs">
+            <span className="w-2 h-2 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50"></span>
+            <span className="font-semibold text-slate-200">Painel Geral</span>
+            <span className="text-slate-500">•</span>
+            <span className="text-slate-400">Todos os Condomínios</span>
           </div>
+        )}
+
+        {/* Seletores de Condomínio e Localidade (exibidos APENAS quando em contexto de condomínio selecionado) */}
+        {isClientContext && selectedClient && (
+          <>
+            <div className="flex items-center gap-2 bg-[#132238] border border-[#24375A] rounded-lg px-3 py-1.5">
+              <Building2 className="w-4 h-4 text-blue-400" />
+              <select
+                value={selectedClientId}
+                onChange={(e) => onSelectClient(e.target.value)}
+                className="bg-transparent text-sm font-semibold text-white focus:outline-none cursor-pointer pr-2"
+              >
+                {clients.map(c => (
+                  <option key={c.id} value={c.id} className="bg-[#0F1B2D] text-slate-100">
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {locations.length > 0 && (
+              <div className="flex items-center gap-2 bg-[#132238] border border-[#24375A] rounded-lg px-3 py-1.5">
+                <MapPin className="w-4 h-4 text-emerald-400" />
+                <select
+                  value={selectedLocationId}
+                  onChange={(e) => onSelectLocation(e.target.value)}
+                  className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer pr-2"
+                >
+                  {locations.map(loc => (
+                    <option key={loc.id} value={loc.id} className="bg-[#0F1B2D] text-slate-200">
+                      {loc.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -196,32 +223,34 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
       </div>
 
-      {/* Botões de Ação Rápida */}
-      <div className="flex items-center gap-2">
-        <button
-          onClick={onOpenEquipments}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-200 bg-[#172643] hover:bg-[#1E335A] border border-[#24375A] transition-all"
-        >
-          <Server className="w-3.5 h-3.5 text-blue-400" />
-          <span>Equipamentos</span>
-        </button>
+      {/* Botões de Ação Rápida do Condomínio (exibidos APENAS quando em contexto de condomínio selecionado) */}
+      {isClientContext && (
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onOpenEquipments}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-200 bg-[#172643] hover:bg-[#1E335A] border border-[#24375A] transition-all"
+          >
+            <Server className="w-3.5 h-3.5 text-blue-400" />
+            <span>Equipamentos</span>
+          </button>
 
-        <button
-          onClick={onOpenPortForwards}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-200 bg-[#172643] hover:bg-[#1E335A] border border-[#24375A] transition-all"
-        >
-          <Share2 className="w-3.5 h-3.5 text-amber-400" />
-          <span>Regras de portas</span>
-        </button>
+          <button
+            onClick={onOpenPortForwards}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-200 bg-[#172643] hover:bg-[#1E335A] border border-[#24375A] transition-all"
+          >
+            <Share2 className="w-3.5 h-3.5 text-amber-400" />
+            <span>Regras de portas</span>
+          </button>
 
-        <button
-          onClick={onOpenReport}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-500 shadow-sm transition-all"
-        >
-          <Printer className="w-3.5 h-3.5" />
-          <span>Imprimir / PDF</span>
-        </button>
-      </div>
+          <button
+            onClick={onOpenReport}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium text-white bg-blue-600 hover:bg-blue-500 shadow-sm transition-all"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            <span>Imprimir / PDF</span>
+          </button>
+        </div>
+      )}
 
       {/* Paleta de Comando e Busca Rápida Modal (FTS5) */}
       <QuickSearchModal
