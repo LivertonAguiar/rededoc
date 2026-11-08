@@ -21,6 +21,7 @@ import { LoginView } from './components/LoginView';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { OfflineQueueIndicator } from './components/OfflineQueueIndicator';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
+import { PullToRefresh } from './components/PullToRefresh';
 import { ClientProfileHeader } from './components/ClientProfileHeader';
 import { Client, Equipment, PortForward, Attachment, User } from './types';
 import { api } from './services/api';
@@ -209,6 +210,27 @@ export function App() {
     }
   };
 
+  // Atualização puxando para baixo (Pull-to-Refresh PWA)
+  const handlePullRefresh = async () => {
+    try {
+      await Promise.all([
+        loadClients(),
+        loadClientData()
+      ]);
+      // Emite evento global para que a tela ativa recarregue seus dados internos
+      window.dispatchEvent(new CustomEvent('app:pull-refresh'));
+      // Atualiza o Service Worker se suportado
+      if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+        try {
+          const reg = await navigator.serviceWorker.getRegistration();
+          if (reg) await reg.update();
+        } catch {}
+      }
+    } catch (err) {
+      console.warn('Aviso no pull-to-refresh:', err);
+    }
+  };
+
   if (authChecking) {
     return (
       <div className="min-h-screen bg-[#070D1B] flex items-center justify-center text-slate-400 text-xs">
@@ -275,8 +297,9 @@ export function App() {
             onNavigateToTab={navigateToTab}
           />
 
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-            {activeTab === 'overview' ? (
+          <PullToRefresh onRefresh={handlePullRefresh}>
+            <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+              {activeTab === 'overview' ? (
               <GlobalOverviewView
                 onSelectClientAndOpenNetwork={(clientId) => {
                   handleSelectClient(clientId);
@@ -445,7 +468,8 @@ export function App() {
               </div>
             )}
           </main>
-        </div>
+        </PullToRefresh>
+      </div>
 
         {/* Indicador Flutuante de Sincronização e Fila Offline (Fase 9) */}
         <OfflineQueueIndicator />

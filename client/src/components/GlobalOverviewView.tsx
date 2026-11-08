@@ -74,6 +74,11 @@ export const GlobalOverviewView: React.FC<GlobalOverviewViewProps> = ({
 
   useEffect(() => {
     loadData();
+    const handlePull = () => {
+      loadData();
+    };
+    window.addEventListener('app:pull-refresh', handlePull);
+    return () => window.removeEventListener('app:pull-refresh', handlePull);
   }, []);
 
   const handleOpenClientWithRecent = (clientId: string, clientName: string) => {

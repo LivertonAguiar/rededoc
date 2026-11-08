@@ -25,6 +25,7 @@ import DOMPurify from 'dompurify';
 import { User, PortalOverview, PortalEquipment, PortalServiceOrder, PortalArticle } from '../types';
 import { api } from '../services/api';
 import { useDialog } from '../context/DialogContext';
+import { PullToRefresh } from './PullToRefresh';
 
 interface PortalAppProps {
   currentUser: User;
@@ -241,8 +242,9 @@ export const PortalApp: React.FC<PortalAppProps> = ({ currentUser, onLogout }) =
         </div>
       </header>
 
-      {/* Conteúdo Principal do Portal */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+      {/* Conteúdo Principal do Portal com Pull-to-Refresh móvel */}
+      <PullToRefresh onRefresh={loadPortalData}>
+        <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
         {loading ? (
           <div className="flex flex-col items-center justify-center min-h-[300px] text-slate-400 gap-3">
             <div className="w-8 h-8 border-3 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -713,8 +715,9 @@ export const PortalApp: React.FC<PortalAppProps> = ({ currentUser, onLogout }) =
           </>
         )}
       </main>
+    </PullToRefresh>
 
-      {/* Rodapé simples do Portal */}
+    {/* Rodapé simples do Portal */}
       <footer className="border-t border-[#1A2C49] bg-[#070D1B] py-4 text-center text-xs text-slate-400">
         <p>ITFY — Portal de Transparência e Infraestrutura • Todos os direitos reservados</p>
       </footer>
