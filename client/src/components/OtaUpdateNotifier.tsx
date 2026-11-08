@@ -30,12 +30,26 @@ export const OtaUpdateNotifier: React.FC<OtaUpdateNotifierProps> = ({ onOpenChan
     return () => clearInterval(interval);
   }, []);
 
+  const handleDismiss = () => {
+    if (updateInfo?.version && typeof localStorage !== 'undefined') {
+      localStorage.setItem(`itfy_dismissed_update_${updateInfo.version}`, 'true');
+    }
+    setIsDismissed(true);
+  };
+
   const handleApplyUpdate = async () => {
     setIsUpdating(true);
+    if (updateInfo?.version && typeof localStorage !== 'undefined') {
+      localStorage.setItem('itfy_applied_version', updateInfo.version);
+      localStorage.setItem(`itfy_dismissed_update_${updateInfo.version}`, 'true');
+    }
     if (isNative) {
       showToast(`Iniciando download do ITFY-v${updateInfo?.version || ''}.apk... Toque na notificação para concluir a instalação.`, 'success');
       applyOtaUpdate(updateInfo?.apkDownloadUrl);
-      setTimeout(() => setIsUpdating(false), 2000);
+      setTimeout(() => {
+        setIsUpdating(false);
+        setIsDismissed(true);
+      }, 2000);
     } else {
       showToast('Baixando e sincronizando novos recursos do ITFY...', 'info');
       try {
@@ -79,7 +93,7 @@ export const OtaUpdateNotifier: React.FC<OtaUpdateNotifierProps> = ({ onOpenChan
         </div>
 
         <button
-          onClick={() => setIsDismissed(true)}
+          onClick={handleDismiss}
           className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800/60 transition"
           aria-label="Dispensar notificação"
         >
@@ -114,7 +128,7 @@ export const OtaUpdateNotifier: React.FC<OtaUpdateNotifierProps> = ({ onOpenChan
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => setIsDismissed(true)}
+            onClick={handleDismiss}
             className="px-3 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:bg-slate-800 transition cursor-pointer"
           >
             Depois

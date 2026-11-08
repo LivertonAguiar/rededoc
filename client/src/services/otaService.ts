@@ -28,9 +28,22 @@ export function isNativeMobile(): boolean {
 }
 
 /**
- * Compara se a versão remota é superior à versão local
+ * Compara se a versão remota é superior à versão local e se não foi dispensada
  */
 export function isNewerVersion(remoteVer: string, remoteBuild?: number): boolean {
+  if (typeof localStorage !== 'undefined') {
+    // 1. Se o usuário dispensou esta versão nesta instalação, respeita e não exibe novamente
+    const dismissed = localStorage.getItem(`itfy_dismissed_update_${remoteVer}`);
+    if (dismissed === 'true') {
+      return false;
+    }
+    // 2. Se o usuário já acionou a atualização para esta versão, não reexibe
+    const applied = localStorage.getItem('itfy_applied_version');
+    if (applied === remoteVer) {
+      return false;
+    }
+  }
+
   if (remoteBuild && remoteBuild > CURRENT_CLIENT_BUILD) {
     return true;
   }
