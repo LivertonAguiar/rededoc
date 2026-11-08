@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Search,
   X,
@@ -119,6 +120,16 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
     };
   }, [isOpen]);
 
+  // Trava scroll do body enquanto a busca rápida estiver aberta
+  useEffect(() => {
+    if (!isOpen) return;
+    const orig = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = orig;
+    };
+  }, [isOpen]);
+
   // Rola o item ativo para a visão
   useEffect(() => {
     if (listRef.current) {
@@ -169,12 +180,12 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
     }
   };
 
-  return (
+  return createPortal(
     <div
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-start justify-center p-3 sm:p-4 sm:pt-20 animate-in fade-in duration-150"
+      className="fixed inset-0 z-[70] bg-slate-950/80 backdrop-blur-sm flex items-start justify-center p-3 sm:p-4 sm:pt-20 animate-in fade-in duration-150"
     >
       <div
         className="w-full max-w-2xl bg-[#0F172A] border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
@@ -336,6 +347,7 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
           }}
         />
       )}
-    </div>
+    </div>,
+    document.body
   );
 };

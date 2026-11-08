@@ -158,7 +158,7 @@ export const ClientProfileHeader: React.FC<ClientProfileHeaderProps> = ({
       </div>
 
       {/* Abas Horizontais do Cliente */}
-      <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
+      <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-none overscroll-x-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;

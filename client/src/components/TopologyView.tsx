@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Network,
   Globe,
@@ -811,8 +812,8 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
       )}
 
       {/* MODAL 1: Conectar Dois Nós */}
-      {showConnectModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+      {showConnectModal && createPortal(
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
           <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl w-full max-w-md p-6 shadow-2xl text-white">
             <div className="flex items-center justify-between pb-3 border-b border-[#1D3054] mb-4">
               <h2 className="text-base font-bold flex items-center gap-2 text-blue-400">
@@ -904,12 +905,13 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* MODAL 2: Adicionar Equipamento à Topologia */}
-      {showAddNodeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+      {showAddNodeModal && createPortal(
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
           <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl w-full max-w-lg p-6 shadow-2xl text-white">
             <div className="flex items-center justify-between pb-3 border-b border-[#1D3054] mb-4">
               <h2 className="text-base font-bold flex items-center gap-2 text-emerald-400">
@@ -977,12 +979,13 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* MODAL 3: Gerenciar Todas as Conexões Existentes */}
-      {showManageEdgesModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+      {showManageEdgesModal && createPortal(
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fadeIn">
           <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl w-full max-w-lg p-6 shadow-2xl text-white">
             <div className="flex items-center justify-between pb-3 border-b border-[#1D3054] mb-4">
               <h2 className="text-base font-bold flex items-center gap-2 text-indigo-400">
@@ -1040,7 +1043,8 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Modal de Criação de Novo Equipamento integrado */}

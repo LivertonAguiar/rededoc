@@ -117,96 +117,98 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   return (
-    <header className="bg-[#0F1B2D] border-b border-[#1D3054] px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-30">
-      {/* Botões de Ação, Navegação e Seletores de Cliente */}
-      <div className="flex flex-wrap items-center gap-2">
-        {/* Botão Mobile para Abrir Menu Lateral */}
-        {onToggleMobileMenu && (
-          <button
-            type="button"
-            onClick={onToggleMobileMenu}
-            className="lg:hidden p-2 rounded-lg bg-[#132238] hover:bg-[#1C2F4D] text-slate-300 hover:text-white border border-[#24375A] transition shrink-0"
-            title="Abrir Menu de Navegação"
-          >
-            <Menu className="w-4 h-4" />
-          </button>
-        )}
+    <header className="bg-[#0F1B2D] border-b border-[#1D3054] px-3 sm:px-6 py-2 sm:py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-3 sticky top-0 z-30">
+      {/* Barra de Navegação Superior e Seletores */}
+      <div className="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-2 w-full sm:w-auto min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+          {/* Botão Mobile para Abrir Menu Lateral */}
+          {onToggleMobileMenu && (
+            <button
+              type="button"
+              onClick={onToggleMobileMenu}
+              className="lg:hidden p-1.5 sm:p-2 rounded-lg bg-[#132238] hover:bg-[#1C2F4D] text-slate-300 hover:text-white border border-[#24375A] transition shrink-0"
+              title="Abrir Menu de Navegação"
+            >
+              <Menu className="w-4 h-4" />
+            </button>
+          )}
 
-        {/* Botão Voltar para Tela Anterior (exibido apenas quando fora da visão geral raiz) */}
-        {canGoBack && onGoBack && activeTab !== 'overview' && (
-          <button
-            type="button"
-            onClick={onGoBack}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#16253E] hover:bg-[#1E3150] text-slate-200 hover:text-white border border-[#24375A] shadow-sm transition shrink-0"
-            title="Voltar para a tela anterior"
-          >
-            <ArrowLeft className="w-3.5 h-3.5 text-blue-400" />
-            <span className="hidden sm:inline">Voltar</span>
-          </button>
-        )}
+          {/* Botão Voltar para Tela Anterior (exibido apenas quando fora da visão geral raiz) */}
+          {canGoBack && onGoBack && activeTab !== 'overview' && (
+            <button
+              type="button"
+              onClick={onGoBack}
+              className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold bg-[#16253E] hover:bg-[#1E3150] text-slate-200 hover:text-white border border-[#24375A] shadow-sm transition shrink-0"
+              title="Voltar para a tela anterior"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 text-blue-400" />
+              <span className="hidden sm:inline">Voltar</span>
+            </button>
+          )}
 
-        {/* Botão Atalho para Visão Geral (exibido apenas quando fora da visão geral) */}
-        {onOpenOverview && activeTab !== 'overview' && (
-          <button
-            onClick={onOpenOverview}
-            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition shrink-0 bg-[#132238] text-slate-300 hover:text-white hover:bg-[#1A2D48] border border-[#24375A]"
-            title="Ir para a Visão Geral de Todos os Condomínios"
-          >
-            <LayoutDashboard className="w-3.5 h-3.5 text-amber-300" />
-            <span className="hidden sm:inline">Visão Geral</span>
-          </button>
-        )}
+          {/* Botão Atalho para Visão Geral (exibido apenas quando fora da visão geral) */}
+          {onOpenOverview && activeTab !== 'overview' && (
+            <button
+              onClick={onOpenOverview}
+              className="flex items-center gap-1 px-2 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition shrink-0 bg-[#132238] text-slate-300 hover:text-white hover:bg-[#1A2D48] border border-[#24375A]"
+              title="Ir para a Visão Geral de Todos os Condomínios"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5 text-amber-300" />
+              <span className="hidden sm:inline">Visão Geral</span>
+            </button>
+          )}
 
-        {/* Indicador de Painel Consolidado Global (quando na Visão Geral) */}
-        {activeTab === 'overview' && (
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#132238]/70 border border-[#24375A] text-xs">
-            <span className="w-2 h-2 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50"></span>
-            <span className="font-semibold text-slate-200">Painel Geral</span>
-            <span className="text-slate-500">•</span>
-            <span className="text-slate-400">Todos os Condomínios</span>
-          </div>
-        )}
-
-        {/* Seletores de Condomínio e Localidade (exibidos APENAS quando em contexto de condomínio selecionado) */}
-        {isClientContext && selectedClient && (
-          <>
-            <div className="flex items-center gap-2 bg-[#132238] border border-[#24375A] rounded-lg px-3 py-1.5">
-              <Building2 className="w-4 h-4 text-blue-400" />
-              <select
-                value={selectedClientId}
-                onChange={(e) => onSelectClient(e.target.value)}
-                className="bg-transparent text-sm font-semibold text-white focus:outline-none cursor-pointer pr-2"
-              >
-                {clients.map(c => (
-                  <option key={c.id} value={c.id} className="bg-[#0F1B2D] text-slate-100">
-                    {c.name}
-                  </option>
-                ))}
-              </select>
+          {/* Indicador de Painel Consolidado Global (quando na Visão Geral) */}
+          {activeTab === 'overview' && (
+            <div className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-[#132238]/70 border border-[#24375A] text-xs">
+              <span className="w-2 h-2 rounded-full bg-blue-400 shadow-sm shadow-blue-400/50"></span>
+              <span className="font-semibold text-slate-200">Painel Geral</span>
+              <span className="hidden sm:inline text-slate-500">•</span>
+              <span className="hidden sm:inline text-slate-400">Todos os Condomínios</span>
             </div>
+          )}
 
-            {locations.length > 0 && (
-              <div className="flex items-center gap-2 bg-[#132238] border border-[#24375A] rounded-lg px-3 py-1.5">
-                <MapPin className="w-4 h-4 text-emerald-400" />
+          {/* Seletores de Condomínio e Localidade (exibidos APENAS quando em contexto de condomínio selecionado) */}
+          {isClientContext && selectedClient && (
+            <>
+              <div className="flex items-center gap-1.5 sm:gap-2 bg-[#132238] border border-[#24375A] rounded-lg px-2 sm:px-3 py-1 sm:py-1.5 max-w-[170px] xs:max-w-[230px] sm:max-w-xs">
+                <Building2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-400 shrink-0" />
                 <select
-                  value={selectedLocationId}
-                  onChange={(e) => onSelectLocation(e.target.value)}
-                  className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer pr-2"
+                  value={selectedClientId}
+                  onChange={(e) => onSelectClient(e.target.value)}
+                  className="bg-transparent text-xs sm:text-sm font-semibold text-white focus:outline-none cursor-pointer pr-1 truncate w-full"
                 >
-                  {locations.map(loc => (
-                    <option key={loc.id} value={loc.id} className="bg-[#0F1B2D] text-slate-200">
-                      {loc.name}
+                  {clients.map(c => (
+                    <option key={c.id} value={c.id} className="bg-[#0F1B2D] text-slate-100">
+                      {c.name}
                     </option>
                   ))}
                 </select>
               </div>
-            )}
-          </>
-        )}
+
+              {locations.length > 0 && (
+                <div className="hidden sm:flex items-center gap-2 bg-[#132238] border border-[#24375A] rounded-lg px-2.5 py-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <select
+                    value={selectedLocationId}
+                    onChange={(e) => onSelectLocation(e.target.value)}
+                    className="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer pr-2 max-w-[140px] truncate"
+                  >
+                    {locations.map(loc => (
+                      <option key={loc.id} value={loc.id} className="bg-[#0F1B2D] text-slate-200">
+                        {loc.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
 
       {/* Barra de Busca Rápida com Atalho Global */}
-      <div className="relative flex-1 max-w-md">
+      <div className="relative w-full sm:flex-1 sm:max-w-md">
         <button
           type="button"
           onClick={() => setIsQuickSearchOpen(true)}
@@ -223,9 +225,9 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
       </div>
 
-      {/* Botões de Ação Rápida do Condomínio (exibidos APENAS quando em contexto de condomínio selecionado) */}
+      {/* Botões de Ação Rápida do Condomínio (Disponíveis em Telas Médias e Grandes; no Mobile ficam nos atalhos do Perfil) */}
       {isClientContext && (
-        <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2 shrink-0">
           <button
             onClick={onOpenEquipments}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-200 bg-[#172643] hover:bg-[#1E335A] border border-[#24375A] transition-all"

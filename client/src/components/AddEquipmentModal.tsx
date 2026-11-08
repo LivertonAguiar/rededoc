@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import {
   Server,
   X,
@@ -348,6 +349,32 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, isNewModelModalOpen, isImageSearchOpen, isNewModelImageSearchOpen, onClose]);
 
+  // Trava scroll do body no mobile e desktop quando o modal está aberto
+  useEffect(() => {
+    if (!isOpen) return;
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isOpen]);
+
+  // Suporte ao botão/gesto voltar nativo do celular
+  useEffect(() => {
+    if (!isOpen) return;
+    window.history.pushState({ modal: 'add-equipment' }, '');
+    const handlePopState = () => {
+      onClose();
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      if (window.history.state?.modal === 'add-equipment') {
+        window.history.back();
+      }
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   // Filtra itens do catálogo
@@ -678,26 +705,28 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
     }
   };
 
-  return (
+  return createPortal(
     <div
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
-      className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 z-50 overflow-y-auto animate-fadeIn"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-0 sm:p-4 z-[70] overflow-y-auto animate-fadeIn"
     >
-      <div className="bg-[#101C31] border border-[#24375A] rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div className="bg-[#101C31] border-0 sm:border border-[#24375A] rounded-none sm:rounded-2xl w-full max-w-4xl h-full sm:h-auto sm:max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Cabeçalho do Modal */}
-        <div className="p-5 border-b border-[#1E3150] flex items-center justify-between bg-[#0C1525]">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center border border-blue-500/30">
-              <Server className="w-5 h-5" />
+        <div className="p-3.5 sm:p-5 border-b border-[#1E3150] flex items-center justify-between bg-[#0C1525] shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center border border-blue-500/30 shrink-0">
+              <Server className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                {equipmentToEdit ? 'Editar Equipamento' : 'Adicionar Equipamento no Condomínio'}
-                <span className="text-[10px] font-semibold uppercase px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">
+            <div className="min-w-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h2 className="text-sm sm:text-lg font-bold text-white truncate">
+                  {equipmentToEdit ? 'Editar Equipamento' : 'Adicionar Equipamento no Condomínio'}
+                </h2>
+                <span className="text-[9px] sm:text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30 whitespace-nowrap">
                   {equipmentToEdit ? 'Edição' : 'Catálogo Integrado'}
                 </span>
-              </h2>
-              <p className="text-xs text-slate-400">
+              </div>
+              <p className="text-[11px] sm:text-xs text-slate-400 truncate">
                 Selecione o modelo no catálogo para auto-preenchimento ou personalize os parâmetros de rede.
               </p>
             </div>
@@ -706,14 +735,15 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-[#1A2C49] transition"
+            className="text-slate-400 hover:text-white p-2 rounded-lg hover:bg-[#1A2C49] transition shrink-0 ml-2"
+            title="Fechar Modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Corpo com Scroll */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 sm:space-y-6 overscroll-contain" style={{ WebkitOverflowScrolling: 'touch' }}>
           {errorMessage && (
             <div className="p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-300 flex items-center gap-2">
               <Info className="w-4 h-4 shrink-0 text-rose-400" />
@@ -1609,18 +1639,18 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
         </div>
 
         {/* Rodapé com Botões de Ação */}
-        <div className="p-4 border-t border-[#1E3150] bg-[#0C1525] flex items-center justify-between">
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+        <div className="p-3.5 sm:p-4 border-t border-[#1E3150] bg-[#0C1525] flex items-center justify-between safe-bottom shrink-0">
+          <div className="hidden sm:flex items-center gap-2 text-xs text-slate-400">
+            <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>Dados auditados e registrados na linha do tempo técnica.</span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
             <button
               type="button"
               onClick={onClose}
               disabled={isSubmitting}
-              className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-300 bg-[#16253E] hover:bg-[#1E3150] transition"
+              className="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 bg-[#16253E] hover:bg-[#1E3150] transition"
             >
               Cancelar
             </button>
@@ -1632,13 +1662,13 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                 handleSubmit(e);
               }}
               disabled={isSubmitting}
-              className="px-5 py-2 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/20 transition flex items-center gap-2 cursor-pointer"
+              className="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/20 transition flex items-center justify-center gap-2 cursor-pointer"
             >
               {isSubmitting ? (
                 <span>Salvando...</span>
               ) : (
                 <>
-                  <CheckCircle2 className="w-4 h-4" />
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
                   <span>{equipmentToEdit ? 'Atualizar Equipamento' : 'Salvar Equipamento no Condomínio'}</span>
                 </>
               )}
@@ -1882,7 +1912,8 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           setScannerTarget(null);
         }}
       />
-    </div>
+    </div>,
+    document.body
   );
 };
 
