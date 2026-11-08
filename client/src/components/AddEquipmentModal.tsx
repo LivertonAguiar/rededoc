@@ -25,7 +25,9 @@ import {
   Scan,
   Undo2,
   Clock,
-  AlertTriangle
+  AlertTriangle,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 import { Equipment, Location, EquipmentCatalogItem, EquipmentTemplate } from '../types';
 import { api } from '../services/api';
@@ -96,6 +98,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
   const [isUploadingPhoto, setIsUploadingPhoto] = useState<boolean>(false);
   const [isRemovingBg, setIsRemovingBg] = useState<boolean>(false);
   const [originalPhotoUrl, setOriginalPhotoUrl] = useState<string>('');
+  const [showAdminPassword, setShowAdminPassword] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Formulário do Equipamento
@@ -1313,9 +1316,9 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                 </>
               )}
 
-              <div>
+              <div className={formData.category === 'router_ont' ? '' : 'sm:col-span-3'}>
                 <label className="text-slate-300 font-semibold block mb-1">Reserva de IP por MAC?</label>
-                <div className="flex items-center gap-2 mt-1.5">
+                <div className="flex items-center gap-2 mt-1.5 h-[34px]">
                   <input
                     type="checkbox"
                     id="is_mac_reserved"
@@ -1329,32 +1332,47 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                 </div>
               </div>
 
-              {/* Usuário e Senha de Acesso */}
-              <div>
-                <label className="text-slate-300 font-semibold block mb-1">Usuário de Acesso</label>
+              {/* Usuário e Senha de Acesso (50% cada para simetria visual perfeita com a linha abaixo) */}
+              <div className="col-span-1 sm:col-span-2">
+                <label className="text-slate-300 font-semibold text-xs mb-1 flex items-center justify-between min-h-[18px]">
+                  <span>Usuário de Acesso</span>
+                  <span className="text-[10px] text-slate-400 font-normal">Login de administração</span>
+                </label>
                 <input
                   type="text"
                   placeholder="admin"
                   value={formData.admin_username}
                   onChange={(e) => setFormData(p => ({ ...p, admin_username: e.target.value }))}
-                  className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none"
+                  className="w-full bg-[#101C31] border border-[#24375A] focus:border-blue-500 rounded-lg px-3 py-1.5 text-slate-200 font-mono text-sm focus:outline-none"
                 />
               </div>
 
-              <div>
-                <label className="text-slate-300 font-semibold block mb-1 flex items-center justify-between">
+              <div className="col-span-1 sm:col-span-2">
+                <label className="text-slate-300 font-semibold text-xs mb-1 flex items-center justify-between min-h-[18px]">
                   <span>Senha (Cofre AES-256)</span>
-                  {equipmentToEdit && (
-                    <span className="text-[10px] text-slate-400 font-normal">Em branco mantém a atual</span>
+                  {equipmentToEdit ? (
+                    <span className="text-[10px] text-slate-400 font-normal whitespace-nowrap">Em branco mantém a atual</span>
+                  ) : (
+                    <span className="text-[10px] text-slate-400 font-normal whitespace-nowrap">Criptografado</span>
                   )}
                 </label>
-                <input
-                  type="password"
-                  placeholder={equipmentToEdit ? '•••••••• (digite para alterar no cofre)' : 'Opcional: guardar no cofre'}
-                  value={formData.admin_password}
-                  onChange={(e) => setFormData(p => ({ ...p, admin_password: e.target.value }))}
-                  className="w-full bg-[#101C31] border border-[#24375A] focus:border-blue-500 rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none placeholder:text-slate-500"
-                />
+                <div className="relative">
+                  <input
+                    type={showAdminPassword ? 'text' : 'password'}
+                    placeholder={equipmentToEdit ? '•••••••• (digite para alterar no cofre)' : 'Opcional: guardar no cofre'}
+                    value={formData.admin_password}
+                    onChange={(e) => setFormData(p => ({ ...p, admin_password: e.target.value }))}
+                    className="w-full bg-[#101C31] border border-[#24375A] focus:border-blue-500 rounded-lg px-3 py-1.5 pr-9 text-slate-200 font-mono text-sm focus:outline-none placeholder:text-slate-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowAdminPassword(p => !p)}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 p-0.5 transition"
+                    title={showAdminPassword ? 'Ocultar senha' : 'Exibir senha'}
+                  >
+                    {showAdminPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
             </div>
 
