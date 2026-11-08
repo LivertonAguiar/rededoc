@@ -40,7 +40,9 @@ jobs:
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Instalar Dependências do Projeto
-        run: npm install
+        run: |
+          npm install
+          npm install --workspace=client
 
       - name: Compilar Frontend Vite (client)
         run: npm run build --workspace=client
@@ -56,6 +58,21 @@ jobs:
       - name: Compilar APK de Debug
         working-directory: ./client/android
         run: ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Exibir Log do Gradle em Caso de Falha
+        if: failure()
+        working-directory: ./client/android
+        run: |
+          echo "=== DIAGNÓSTICO DE FALHA DO GRADLE ==="
+          ./gradlew assembleDebug --no-daemon --info || true
+
+      - name: Salvar Relatórios do Gradle (se houver erro)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gradle-failure-reports
+          path: client/android/app/build/reports/
+          retention-days: 7
 
       - name: Identificar e Renomear APK Gerado
         run: |
