@@ -103,6 +103,22 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, results, selectedIndex]);
 
+  // Suporte ao botão voltar do celular (popstate) para fechar o modal
+  useEffect(() => {
+    if (!isOpen) return;
+
+    window.history.pushState({ quickSearchModal: true }, '');
+
+    const handlePopState = () => {
+      onClose();
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isOpen]);
+
   // Rola o item ativo para a visão
   useEffect(() => {
     if (listRef.current) {
@@ -154,27 +170,35 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-start justify-center p-4 sm:pt-20 animate-in fade-in duration-150">
+    <div
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-start justify-center p-3 sm:p-4 sm:pt-20 animate-in fade-in duration-150"
+    >
       <div
         className="w-full max-w-2xl bg-[#0F172A] border border-slate-700/80 rounded-2xl shadow-2xl overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Campo de Busca Superior */}
-        <div className="relative flex items-center px-4 py-3.5 border-b border-slate-800 bg-[#0B132B]/50">
-          <Search className="w-5 h-5 text-slate-400 ml-1 mr-3 flex-shrink-0" />
+        <div className="relative flex items-center px-3.5 sm:px-4 py-3 sm:py-3.5 border-b border-slate-800 bg-[#0B132B]/50 gap-2">
+          <Search className="w-5 h-5 text-slate-400 shrink-0" />
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar por IP, MAC, equipamento, porta, cliente, procedimento..."
-            className="w-full bg-transparent text-slate-100 placeholder-slate-400 text-sm sm:text-base focus:outline-none"
+            placeholder="Buscar por IP, MAC, equipamento, porta, cliente..."
+            className="flex-1 bg-transparent text-slate-100 placeholder-slate-400 text-sm sm:text-base focus:outline-none min-w-0"
           />
-          {loading && <Loader2 className="w-4 h-4 text-blue-400 animate-spin mr-2 flex-shrink-0" />}
+          {loading && <Loader2 className="w-4 h-4 text-blue-400 animate-spin shrink-0" />}
+
+          {/* Botão Limpar Texto */}
           {query && (
             <button
+              type="button"
               onClick={() => setQuery('')}
-              className="p-1 text-slate-400 hover:text-slate-200 transition-colors mr-2"
+              className="p-1 text-slate-400 hover:text-slate-200 transition-colors shrink-0"
               title="Limpar busca"
             >
               <X className="w-4 h-4" />
@@ -185,13 +209,24 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
           <button
             type="button"
             onClick={() => setIsScannerOpen(true)}
-            className="p-1.5 rounded-lg text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 transition-colors mr-2"
-            title="Escanear Código de Barras / QR Code da etiqueta com a câmera"
+            className="p-1.5 rounded-lg text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 transition-colors shrink-0"
+            title="Escanear Código de Barras / QR Code com a câmera"
           >
             <Scan className="w-4 h-4" />
           </button>
 
-          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono font-medium text-slate-400 bg-slate-800 border border-slate-700 rounded-md">
+          {/* Botão de Fechar Modal (Visível no Celular e no Desktop) */}
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shrink-0 flex items-center justify-center border border-slate-700/60 sm:border-transparent"
+            title="Fechar busca (ESC)"
+            aria-label="Fechar busca"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <kbd className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-mono font-medium text-slate-400 bg-slate-800 border border-slate-700 rounded-md shrink-0">
             ESC
           </kbd>
         </div>
@@ -260,9 +295,9 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
           })}
         </div>
 
-        {/* Rodapé com Dicas de Atalho */}
+        {/* Rodapé com Dicas de Atalho e Botão Fechar no Mobile */}
         <div className="px-4 py-2.5 border-t border-slate-800 bg-[#0B132B]/80 flex items-center justify-between text-[11px] text-slate-400 font-mono">
-          <div className="flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-3">
             <span className="flex items-center gap-1">
               <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded">↑</kbd>
               <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded">↓</kbd> Navegar
@@ -271,7 +306,18 @@ export const QuickSearchModal: React.FC<QuickSearchModalProps> = ({
               <kbd className="px-1.5 py-0.5 bg-slate-800 border border-slate-700 rounded">↵</kbd> Selecionar
             </span>
           </div>
-          <span>
+
+          <div className="sm:hidden flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-sans font-medium transition"
+            >
+              Fechar Busca
+            </button>
+          </div>
+
+          <span className="text-slate-500">
             {results.length > 0 ? `${results.length} resultados` : 'RedeDoc Search'}
           </span>
         </div>
