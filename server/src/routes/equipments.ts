@@ -125,7 +125,18 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
     internal_notes, additional_info, warranty_expires_at, custom_fields
   } = req.body;
 
-  if (!client_id || !location_id || !name || !category) {
+  let finalLocationId = location_id;
+  if (!finalLocationId) {
+    const defaultLoc = queryOne('SELECT id FROM locations WHERE client_id = ? ORDER BY created_at ASC LIMIT 1', client_id);
+    if (defaultLoc) {
+      finalLocationId = defaultLoc.id;
+    } else {
+      finalLocationId = 'loc_' + crypto.randomUUID().slice(0, 8);
+      execute('INSERT INTO locations (id, client_id, name) VALUES (?, ?, ?)', finalLocationId, client_id, 'Sede Principal');
+    }
+  }
+
+  if (!client_id || !finalLocationId || !name || !category) {
     return res.status(400).json({ error: 'Cliente, Local, Nome e Categoria são obrigatórios.' });
   }
 
@@ -149,7 +160,7 @@ equipmentsRouter.post('/', validateBody(equipmentSchema), (req: AuthRequest, res
       ?, ?, ?, ?
     )
   `,
-    id, client_id, location_id, name, category, manufacturer || null, model || null, serial_number || null,
+    id, client_id, finalLocationId, name, category, manufacturer || null, model || null, serial_number || null,
     mac_address || null, physical_location || null, photo_url || null, notes || null,
     local_ip || null, subnet_mask || '255.255.255.0', gateway || null, primary_dns || null, secondary_dns || null, dhcp_range || null,
     interface_name || null, vlan || null, is_mac_reserved ? 1 : 0, public_wan_ip || null,

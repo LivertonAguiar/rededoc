@@ -69,6 +69,30 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
   const [existingEquipments, setExistingEquipments] = useState<Equipment[]>([]);
   const [ipConflictWarning, setIpConflictWarning] = useState<string | null>(null);
 
+  // Localidades disponíveis para vincular o equipamento
+  const [availableLocations, setAvailableLocations] = useState<Location[]>(locations || []);
+
+  useEffect(() => {
+    if (locations && locations.length > 0) {
+      setAvailableLocations(locations);
+      setFormData(p => ({
+        ...p,
+        location_id: p.location_id || locations[0].id
+      }));
+    } else if (isOpen && clientId) {
+      api.getClient(clientId).then(fullClient => {
+        const locs = fullClient?.locations;
+        if (locs && locs.length > 0) {
+          setAvailableLocations(locs);
+          setFormData(p => ({
+            ...p,
+            location_id: p.location_id || locs[0].id
+          }));
+        }
+      }).catch(() => {});
+    }
+  }, [isOpen, clientId, locations]);
+
   useEffect(() => {
     if (isOpen && clientId) {
       api.getEquipments(clientId)
@@ -460,16 +484,22 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
     setErrorMessage(null);
 
     if (!formData.name.trim()) {
-      setErrorMessage('O nome de identificação é obrigatório.');
+      const msg = 'O nome de identificação no sistema é obrigatório.';
+      setErrorMessage(msg);
+      showToast(msg, 'error');
       return;
     }
     if (!formData.local_ip.trim()) {
-      setErrorMessage('O IP Local é obrigatório.');
+      const msg = 'O endereço IP Local é obrigatório.';
+      setErrorMessage(msg);
+      showToast(msg, 'error');
       return;
     }
 
@@ -624,10 +654,13 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
       }
 
       sessionStorage.removeItem(`rededoc_draft_eq_${clientId}`);
+      showToast(equipmentToEdit ? 'Equipamento atualizado com sucesso!' : 'Equipamento salvo com sucesso no condomínio!', 'success');
       onSuccess();
       onClose();
     } catch (err: any) {
-      setErrorMessage(err.message || 'Erro ao salvar equipamento.');
+      const msg = err.message || 'Erro ao salvar equipamento.';
+      setErrorMessage(msg);
+      showToast(msg, 'error');
     } finally {
       setIsSubmitting(false);
     }
@@ -1039,12 +1072,12 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                   onChange={(e) => setFormData(p => ({ ...p, location_id: e.target.value }))}
                   className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500 cursor-pointer"
                 >
-                  {locations.length > 0 ? (
-                    locations.map(loc => (
+                  {availableLocations.length > 0 ? (
+                    availableLocations.map(loc => (
                       <option key={loc.id} value={loc.id}>{loc.name}</option>
                     ))
                   ) : (
-                    <option value={locationId}>Local Padrão</option>
+                    <option value={locationId || ''}>Local Padrão</option>
                   )}
                 </select>
               </div>
@@ -1594,8 +1627,12 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
             <button
               type="submit"
               form="equipment-form"
+              onClick={(e) => {
+                e.preventDefault();
+                handleSubmit(e);
+              }}
               disabled={isSubmitting}
-              className="px-5 py-2 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/20 transition flex items-center gap-2"
+              className="px-5 py-2 rounded-lg text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/20 transition flex items-center gap-2 cursor-pointer"
             >
               {isSubmitting ? (
                 <span>Salvando...</span>

@@ -1049,6 +1049,7 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
         onClose={() => setShowCreateEquipmentModal(false)}
         clientId={client.id}
         locationId={client.locations?.[0]?.id || ''}
+        locations={client.locations || []}
         onSuccess={() => {
           setShowCreateEquipmentModal(false);
           onRefresh();

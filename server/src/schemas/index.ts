@@ -21,7 +21,7 @@ export const clientSchema = z.object({
  */
 export const equipmentSchema = z.object({
   client_id: z.string().min(1, 'O cliente vinculado é obrigatório.').optional(),
-  location_id: z.string().min(1, 'O local vinculado é obrigatório.').optional(),
+  location_id: z.string().optional().nullable().or(z.literal('')),
   name: z.string().min(1, 'O nome do equipamento é obrigatório.').optional(),
   category: z.string().min(1, 'A categoria do equipamento é obrigatória.').optional(),
   manufacturer: z.string().optional().nullable(),
