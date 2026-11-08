@@ -270,13 +270,13 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
 
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <a
-                href="https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk"
-                download="itfy.apk"
+                href="https://itfy.lpaguiar.com.br/download/apk"
+                download="ITFY-v1.0.1.apk"
                 className="flex-1 sm:flex-none py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
-                title="Download direto do APK sem compactação ZIP"
+                title="Download direto do aplicativo ITFY-v1.0.1.apk"
               >
                 <Download className="w-4 h-4" />
-                <span>Baixar APK Direto</span>
+                <span>Baixar ITFY-v1.0.1.apk</span>
               </a>
               <button
                 type="button"

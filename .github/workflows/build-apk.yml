@@ -86,16 +86,19 @@ jobs:
       - name: Identificar e Renomear APK Gerado
         run: |
           mkdir -p output
-          echo "### Busca por arquivos compilados" >> $GITHUB_STEP_SUMMARY
+          APP_VER=$(node -p "require('./client/package.json').version")
+          echo "APP_VER=$APP_VER" >> $GITHUB_ENV
+          echo "### Busca por arquivos compilados (Versão $APP_VER)" >> $GITHUB_STEP_SUMMARY
           echo '```text' >> $GITHUB_STEP_SUMMARY
           find . -name "*.apk" -o -name "*.aab" | tee found_apks.txt >> $GITHUB_STEP_SUMMARY
           echo '```' >> $GITHUB_STEP_SUMMARY
           APK_PATH=$(head -n 1 found_apks.txt | tr -d '\r')
           echo "APK_PATH detectado: '$APK_PATH'"
           if [ -n "$APK_PATH" ]; then
-            cp "$APK_PATH" output/itfy.apk
-            cp "$APK_PATH" output/itfy-app-debug.apk
-            echo "APK copiado com sucesso para output/itfy.apk e output/itfy-app-debug.apk" >> $GITHUB_STEP_SUMMARY
+            cp "$APK_PATH" "output/ITFY-v${APP_VER}.apk"
+            cp "$APK_PATH" "output/ITFY-latest.apk"
+            cp "$APK_PATH" "output/itfy.apk"
+            echo "APK nomeado como ITFY-v${APP_VER}.apk, ITFY-latest.apk e itfy.apk com sucesso!" >> $GITHUB_STEP_SUMMARY
             ls -lh output/
           else
             echo "Nenhum APK gerado encontrado no workspace." >> $GITHUB_STEP_SUMMARY
@@ -108,35 +111,38 @@ jobs:
       - name: Disponibilizar APK para Download (Artifacts)
         uses: actions/upload-artifact@v4
         with:
-          name: ITFY-Android-APK
+          name: ITFY-v${{ env.APP_VER || '1.0.1' }}-Android-APK
           path: |
+            output/ITFY-v*.apk
+            output/ITFY-latest.apk
             output/itfy.apk
-            output/itfy-app-debug.apk
           retention-days: 14
 
       - name: Publicar Release no GitHub com Download Direto do APK
         uses: softprops/action-gh-release@v2
         with:
           tag_name: app-latest
-          name: "ITFY Mobile Android APK (Download Direto)"
+          name: "ITFY Mobile Android APK v${{ env.APP_VER || '1.0.1' }}"
           body: |
-            ### 📱 ITFY Android - Versão Oficial
+            ### 📱 ITFY Android - Versão Oficial v${{ env.APP_VER || '1.0.1' }}
             
             Aplicativo nativo compilado automaticamente pelo GitHub Actions.
             
-            - 🚀 **Download Direto do APK:** [Baixar itfy.apk](https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk)
+            - 🚀 **Download com Nome e Versão:** [Baixar ITFY-v${{ env.APP_VER || '1.0.1' }}.apk](https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/ITFY-v${{ env.APP_VER || '1.0.1' }}.apk)
+            - ⚡ **Download Sempre Atualizado:** [Baixar ITFY-latest.apk](https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/ITFY-latest.apk)
             - 📦 **Tamanho aproximado:** ~3.8 MB
             - 🔒 **Integridade:** Verificação automática via SHA-256 no GitHub Actions
             
             #### Como instalar no smartphone:
-            1. Baixe o arquivo `itfy.apk` diretamente no seu celular Android.
+            1. Baixe o arquivo `ITFY-v${{ env.APP_VER || '1.0.1' }}.apk` diretamente no seu celular Android.
             2. Toque no arquivo baixado na pasta **Downloads** do celular.
             3. Se solicitado, permita a instalação a partir do navegador (**Configurações > Permitir desta fonte**).
             4. Conclua a instalação e abra o aplicativo!
           draft: false
           prerelease: false
           files: |
+            output/ITFY-v*.apk
+            output/ITFY-latest.apk
             output/itfy.apk
-            output/itfy-app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

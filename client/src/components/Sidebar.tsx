@@ -383,17 +383,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
 
           <a
-            href="https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk"
-            download="itfy.apk"
+            href="https://itfy.lpaguiar.com.br/download/apk"
+            download={`ITFY-v${CURRENT_CLIENT_VERSION}.apk`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all cursor-pointer mt-2"
-            title="Download direto do APK Android (sem ZIP)"
+            title={`Download direto do aplicativo Android ITFY-v${CURRENT_CLIENT_VERSION}.apk`}
           >
             <span className="flex items-center gap-3 truncate">
               <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />
-              <span className="truncate font-semibold">Baixar App Android</span>
+              <span className="truncate font-semibold">Baixar ITFY-v{CURRENT_CLIENT_VERSION}.apk</span>
             </span>
             <span className="text-[9px] font-bold uppercase bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30">
-              APK
+              v{CURRENT_CLIENT_VERSION}
             </span>
           </a>
         </div>

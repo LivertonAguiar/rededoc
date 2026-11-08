@@ -109,12 +109,20 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Download direto do aplicativo Android nativo (APK)
+// Download direto do aplicativo Android nativo (APK) com nome e versão amigáveis
 app.get(['/api/download/apk', '/download/apk'], (req, res) => {
-  const directGithubUrl = 'https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk';
-  const localApk = path.resolve(uploadsPath, 'itfy.apk');
-  if (fs.existsSync(localApk)) {
-    return res.download(localApk, 'itfy.apk');
+  const currentVersion = '1.0.1';
+  const apkFileName = `ITFY-v${currentVersion}.apk`;
+  const directGithubUrl = `https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/${apkFileName}`;
+
+  const namedApk = path.resolve(uploadsPath, apkFileName);
+  const fallbackApk = path.resolve(uploadsPath, 'itfy.apk');
+
+  if (fs.existsSync(namedApk)) {
+    return res.download(namedApk, apkFileName);
+  }
+  if (fs.existsSync(fallbackApk)) {
+    return res.download(fallbackApk, apkFileName);
   }
   return res.redirect(directGithubUrl);
 });
@@ -150,7 +158,8 @@ app.get('/api/app/version', (req, res) => {
         desc: 'Registro e histórico de versões acessíveis no sistema.'
       }
     ],
-    apkDownloadUrl: 'https://itfy.lpaguiar.com.br/download/apk'
+    apkDownloadUrl: 'https://itfy.lpaguiar.com.br/download/apk',
+    apkFileName: 'ITFY-v1.0.1.apk'
   });
 });
 

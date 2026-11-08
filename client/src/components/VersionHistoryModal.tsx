@@ -171,12 +171,13 @@ export const VersionHistoryModal: React.FC<VersionHistoryModalProps> = ({
         <div className="p-4 bg-[#0C1525] border-t border-[#1E3150] flex flex-wrap items-center justify-between gap-3">
           <a
             href="https://itfy.lpaguiar.com.br/download/apk"
+            download={`ITFY-v${CURRENT_CLIENT_VERSION}.apk`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1.5 transition"
           >
             <Download className="w-4 h-4" />
-            <span>Baixar APK Nativo (Android)</span>
+            <span>Baixar ITFY-v{CURRENT_CLIENT_VERSION}.apk</span>
           </a>
 
           <div className="flex items-center gap-2">
