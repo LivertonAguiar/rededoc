@@ -15,6 +15,8 @@ jobs:
   build-apk:
     name: Compilar APK Android
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout do Repositório
@@ -91,9 +93,10 @@ jobs:
           APK_PATH=$(head -n 1 found_apks.txt | tr -d '\r')
           echo "APK_PATH detectado: '$APK_PATH'"
           if [ -n "$APK_PATH" ]; then
+            cp "$APK_PATH" output/itfy.apk
             cp "$APK_PATH" output/itfy-app-debug.apk
-            echo "APK copiado com sucesso de $APK_PATH para output/itfy-app-debug.apk" >> $GITHUB_STEP_SUMMARY
-            ls -lh output/itfy-app-debug.apk
+            echo "APK copiado com sucesso para output/itfy.apk e output/itfy-app-debug.apk" >> $GITHUB_STEP_SUMMARY
+            ls -lh output/
           else
             echo "Nenhum APK gerado encontrado no workspace." >> $GITHUB_STEP_SUMMARY
             echo '```text' >> $GITHUB_STEP_SUMMARY
@@ -106,13 +109,34 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ITFY-Android-APK
-          path: output/itfy-app-debug.apk
+          path: |
+            output/itfy.apk
+            output/itfy-app-debug.apk
           retention-days: 14
 
-      - name: Anexar APK na Release (se disparado por tag/release)
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Publicar Release no GitHub com Download Direto do APK
         uses: softprops/action-gh-release@v2
         with:
-          files: output/itfy-app-debug.apk
+          tag_name: app-latest
+          name: "ITFY Mobile Android APK (Download Direto)"
+          body: |
+            ### 📱 ITFY Android - Versão Oficial
+            
+            Aplicativo nativo compilado automaticamente pelo GitHub Actions.
+            
+            - 🚀 **Download Direto do APK:** [Baixar itfy.apk](https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk)
+            - 📦 **Tamanho aproximado:** ~3.8 MB
+            - 🔒 **Integridade:** Verificação automática via SHA-256 no GitHub Actions
+            
+            #### Como instalar no smartphone:
+            1. Baixe o arquivo `itfy.apk` diretamente no seu celular Android.
+            2. Toque no arquivo baixado na pasta **Downloads** do celular.
+            3. Se solicitado, permita a instalação a partir do navegador (**Configurações > Permitir desta fonte**).
+            4. Conclua a instalação e abra o aplicativo!
+          draft: false
+          prerelease: false
+          files: |
+            output/itfy.apk
+            output/itfy-app-debug.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

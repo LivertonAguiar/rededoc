@@ -20,7 +20,8 @@ import {
   BookOpen,
   Globe,
   Layers,
-  Users
+  Users,
+  Smartphone
 } from 'lucide-react';
 import { User } from '../types';
 
@@ -385,6 +386,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <span className="truncate">Gestão de Usuários</span>
             </button>
           )}
+
+          <a
+            href="https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk"
+            download="itfy.apk"
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all cursor-pointer mt-2"
+            title="Download direto do APK Android (sem ZIP)"
+          >
+            <span className="flex items-center gap-3 truncate">
+              <Smartphone className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span className="truncate font-semibold">Baixar App Android</span>
+            </span>
+            <span className="text-[9px] font-bold uppercase bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-500/30">
+              APK
+            </span>
+          </a>
         </div>
       </div>
 

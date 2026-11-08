@@ -109,6 +109,16 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Download direto do aplicativo Android nativo (APK)
+app.get(['/api/download/apk', '/download/apk'], (req, res) => {
+  const directGithubUrl = 'https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk';
+  const localApk = path.resolve(uploadsPath, 'itfy.apk');
+  if (fs.existsSync(localApk)) {
+    return res.download(localApk, 'itfy.apk');
+  }
+  return res.redirect(directGithubUrl);
+});
+
 app.use('/api/auth', authRouter);
 
 // Portal do cliente (exclusivo para o papel 'cliente', filtrado pelo token)

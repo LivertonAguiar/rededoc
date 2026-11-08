@@ -13,7 +13,13 @@ import {
   Play,
   Clock,
   ExternalLink,
-  Check
+  Check,
+  Smartphone,
+  CheckCircle,
+  Zap,
+  Camera,
+  Layers,
+  Sparkles
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useDialog } from '../context/DialogContext';
@@ -26,7 +32,7 @@ interface BackupViewProps {
 export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
   const { showToast, confirm } = useDialog();
 
-  const [activeTab, setActiveTab] = useState<'backup' | 'alerts'>('backup');
+  const [activeTab, setActiveTab] = useState<'backup' | 'alerts' | 'app'>('backup');
   const [importing, setImporting] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
@@ -216,6 +222,18 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
             <Bell className="w-4 h-4" />
             <span>Alertas & Webhooks</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab('app')}
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-semibold transition ${
+              activeTab === 'app'
+                ? 'bg-emerald-600 text-white shadow-sm'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            <Smartphone className="w-4 h-4" />
+            <span>App Android (APK)</span>
+          </button>
         </div>
       </div>
 
@@ -233,6 +251,42 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
       {activeTab === 'backup' ? (
         /* ABA 1: BACKUP E RESTAURAÇÃO */
         <>
+          {/* Card de Download Rápido do APK Mobile Android */}
+          <div className="bg-gradient-to-r from-emerald-950/40 via-[#101C31] to-[#0A1424] border border-emerald-500/30 rounded-2xl p-5 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-500/30 shadow-lg shadow-emerald-500/10">
+                <Smartphone className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-white">Aplicativo Nativo Android (.apk)</h3>
+                  <span className="text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">Disponível</span>
+                </div>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Baixe o arquivo direto sem compactação ZIP para instalar no celular de campo com suporte offline total.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <a
+                href="https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk"
+                download="itfy.apk"
+                className="flex-1 sm:flex-none py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
+                title="Download direto do APK sem compactação ZIP"
+              >
+                <Download className="w-4 h-4" />
+                <span>Baixar APK Direto</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => setActiveTab('app')}
+                className="py-2.5 px-3 rounded-xl text-xs font-semibold text-slate-300 bg-[#15233D] hover:bg-[#1D3250] border border-[#223B67] transition"
+              >
+                Mais Opções
+              </button>
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Exportar Backup */}
             <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl p-6 shadow-xl flex flex-col justify-between space-y-4">
@@ -463,6 +517,147 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
                   </div>
                 ))
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'app' && (
+        /* ABA 3: APLICATIVO ANDROID */
+        <div className="space-y-6">
+          {/* Card Principal de Download */}
+          <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl p-6 sm:p-8 shadow-xl space-y-6">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-6 border-b border-[#1D3054]">
+              <div className="flex items-start gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 to-cyan-500 flex items-center justify-center text-white shadow-xl shadow-emerald-500/20 shrink-0">
+                  <Smartphone className="w-7 h-7" />
+                </div>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <h2 className="text-xl font-bold text-white">ITFY Android Mobile</h2>
+                    <span className="text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">
+                      v1.0.0 Oficial
+                    </span>
+                    <span className="text-[10px] font-bold uppercase bg-blue-500/20 text-blue-300 border border-blue-500/30 px-2 py-0.5 rounded-full">
+                      APK Direto
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1 max-w-xl leading-relaxed">
+                    Aplicativo compilado para smartphones e tablets Android. Não requer compactação (.zip): o download entrega o arquivo instalador <strong className="text-emerald-400 font-mono">itfy.apk</strong> pronto para uso.
+                  </p>
+                </div>
+              </div>
+
+              {/* Botões de Ação */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+                <a
+                  href="https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk"
+                  download="itfy.apk"
+                  className="py-3 px-6 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2.5 active:scale-95 text-center"
+                >
+                  <Download className="w-5 h-5" />
+                  <span>Baixar APK Direto (itfy.apk)</span>
+                </a>
+
+                <a
+                  href="https://github.com/LivertonAguiar/rededoc/releases/tag/app-latest"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="py-3 px-4 rounded-xl text-xs font-semibold text-slate-300 bg-[#162744] hover:bg-[#1E345B] border border-[#233C68] transition-all flex items-center justify-center gap-2 text-center"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  <span>Ver no GitHub Releases</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Destaques Técnicos do App */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+              <div className="p-4 rounded-xl bg-[#091122] border border-[#1b2b48] space-y-1.5">
+                <div className="flex items-center gap-2 text-amber-400 font-bold text-xs">
+                  <Zap className="w-4 h-4" />
+                  <span>Offline-First Total</span>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  Trabalha perfeitamente em subsolos, garagens e salas de máquinas sem sinal de internet ou operadora móvel.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-[#091122] border border-[#1b2b48] space-y-1.5">
+                <div className="flex items-center gap-2 text-blue-400 font-bold text-xs">
+                  <Camera className="w-4 h-4" />
+                  <span>Câmera & Código de Barras</span>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  Escaneamento instantâneo de etiquetas de equipamentos, números de série e endereços MAC com leitor ótico.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-xl bg-[#091122] border border-[#1b2b48] space-y-1.5">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                  <ShieldCheck className="w-4 h-4" />
+                  <span>Criptografia Local AES-256</span>
+                </div>
+                <p className="text-[11px] text-slate-400 leading-relaxed">
+                  Cofre de senhas com proteção biométrica/local e fila de sincronização em segundo plano assim que houver rede.
+                </p>
+              </div>
+            </div>
+
+            {/* Guia de Instalação Passo a Passo */}
+            <div className="pt-4 border-t border-[#1D3054] space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                Guia Rápido de Instalação no Android
+              </h3>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="p-3.5 rounded-xl bg-[#0B1528] border border-[#1E3258] space-y-1">
+                  <div className="flex items-center gap-2 text-white font-bold text-xs">
+                    <span className="w-5 h-5 rounded-full bg-blue-600/30 text-blue-400 flex items-center justify-center text-[10px] font-bold border border-blue-500/40">1</span>
+                    <span>Download do APK</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Clique no botão acima ou acesse o link direto no navegador do celular para baixar o arquivo <strong className="text-slate-200">itfy.apk</strong> (~3.8 MB).
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-[#0B1528] border border-[#1E3258] space-y-1">
+                  <div className="flex items-center gap-2 text-white font-bold text-xs">
+                    <span className="w-5 h-5 rounded-full bg-amber-600/30 text-amber-400 flex items-center justify-center text-[10px] font-bold border border-amber-500/40">2</span>
+                    <span>Permitir Fontes Desconhecidas</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Ao abrir o APK, caso o Android alerte sobre aplicativo fora da Play Store, toque em <em>Configurações</em> e marque <em>Permitir desta fonte</em>.
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl bg-[#0B1528] border border-[#1E3258] space-y-1">
+                  <div className="flex items-center gap-2 text-white font-bold text-xs">
+                    <span className="w-5 h-5 rounded-full bg-emerald-600/30 text-emerald-400 flex items-center justify-center text-[10px] font-bold border border-emerald-500/40">3</span>
+                    <span>Concluir Instalação</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Toque em <em>Instalar</em>. O ícone oficial do <strong>ITFY Pro</strong> ficará disponível na gaveta de aplicativos do seu Android!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Informações de Compatibilidade */}
+            <div className="p-4 rounded-xl bg-[#08101E] border border-[#182B4B] flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400">
+              <div className="flex items-center gap-4">
+                <span>📱 <strong>Requisitos:</strong> Android 8.0 Oreo (API 24) até Android 15 (API 35)</span>
+                <span>📦 <strong>Pacote:</strong> <code className="text-blue-300 font-mono">br.com.lpaguiar.itfy</code></span>
+              </div>
+              <a
+                href="https://github.com/LivertonAguiar/rededoc/releases"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
+              >
+                <span>Repositório GitHub Releases</span>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
             </div>
           </div>
         </div>
