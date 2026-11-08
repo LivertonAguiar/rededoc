@@ -475,7 +475,7 @@ export async function runSeed() {
       ip: '203.0.113.45',
       type: 'internet',
       x: 350,
-      y: 20
+      y: 80
     },
     {
       id: eqOntId,
@@ -484,7 +484,7 @@ export async function runSeed() {
       ip: '192.168.1.1',
       type: 'router',
       x: 350,
-      y: 120
+      y: 220
     },
     {
       id: eqDvrId,
@@ -493,7 +493,7 @@ export async function runSeed() {
       ip: '192.168.1.70',
       type: 'dvr',
       x: 120,
-      y: 260,
+      y: 360,
       portBadge: '8070 -> 80 +2',
       status: 'com_falha'
     },
@@ -504,7 +504,7 @@ export async function runSeed() {
       ip: '192.168.1.50',
       type: 'facial',
       x: 350,
-      y: 260,
+      y: 360,
       portBadge: '8050 -> 80',
       status: 'funcionando'
     },
@@ -515,7 +515,7 @@ export async function runSeed() {
       ip: '192.168.1.60',
       type: 'gate',
       x: 580,
-      y: 260,
+      y: 360,
       portBadge: '8060 -> 8000',
       status: 'funcionando'
     }

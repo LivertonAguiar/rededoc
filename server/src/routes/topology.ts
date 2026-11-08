@@ -68,7 +68,7 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
       ip: wanIp,
       type: 'internet',
       x: 400,
-      y: 40
+      y: 80
     }
   ];
 
@@ -83,7 +83,7 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
       type: router.category || 'router_ont',
       photo_url: router.photo_url || null,
       x: 400,
-      y: 160
+      y: 220
     });
     edges.push({ from: 'internet', to: router.id, label: 'WAN' });
 
@@ -112,7 +112,7 @@ topologyRouter.get('/', (req: Request, res: Response): any => {
         type: eq.category,
         photo_url: eq.photo_url || null,
         x: others.length === 1 ? 400 : Math.round(startX + idx * spacing),
-        y: 300,
+        y: 360,
         portBadge,
         status
       });

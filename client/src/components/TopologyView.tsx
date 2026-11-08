@@ -75,6 +75,19 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
     setLoading(true);
     try {
       const data = await api.getTopology(client.id, client.locations?.[0]?.id);
+
+      // Normalização automática de coordenadas antigas para evitar nós cortados no topo
+      if (data && data.nodes && data.nodes.length > 0) {
+        const internetNode = data.nodes.find((n: any) => n.id === 'internet');
+        if (internetNode && internetNode.y < 70) {
+          const shiftY = 80 - internetNode.y;
+          data.nodes = data.nodes.map((n: any) => ({
+            ...n,
+            y: Math.round(n.y + shiftY)
+          }));
+        }
+      }
+
       setTopology(data);
       setHasUnsavedChanges(false);
     } catch (err: any) {
@@ -368,7 +381,7 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
 
       const spacing = totalInLevel > 1 ? canvasWidth / (totalInLevel + 1) : canvasWidth / 2;
       const newX = Math.round(spacing * (indexInLevel + 1));
-      const newY = 50 + d * 140;
+      const newY = 80 + d * 140;
 
       return {
         ...n,
@@ -417,7 +430,7 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
     const mouseY = e.clientY - canvasRect.top;
 
     const newX = Math.max(90, Math.min(canvasRect.width - 90, mouseX - dragOffset.x));
-    const newY = Math.max(40, Math.min(canvasRect.height - 40, mouseY - dragOffset.y));
+    const newY = Math.max(60, Math.min(canvasRect.height - 60, mouseY - dragOffset.y));
 
     setTopology(prev => {
       if (!prev) return prev;
@@ -535,33 +548,36 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
       </div>
 
       {/* Canvas da Topologia (Área Gráfica com SVG e Cartões Interativos) */}
-      <div
-        ref={canvasRef}
-        onMouseMove={handleMouseMove}
-        className="bg-[#0A1224] border border-[#1D3054] rounded-2xl relative overflow-hidden select-none shadow-2xl min-h-[580px]"
-        style={{
-          backgroundImage: 'radial-gradient(#1E3A8A 0.75px, transparent 0.75px)',
-          backgroundSize: '24px 24px',
-          backgroundPosition: '0 0'
-        }}
-      >
+      <div className="bg-[#0A1224] border border-[#1D3054] rounded-2xl overflow-hidden select-none shadow-2xl flex flex-col">
         {/* Barra superior de status interno do mapa */}
-        <div className="absolute top-3 left-4 right-4 z-20 flex items-center justify-between pointer-events-none text-xs text-slate-400">
-          <div className="flex items-center gap-2 bg-[#0E1A30]/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-[#1D3054]">
+        <div className="flex items-center justify-between px-5 py-3 bg-[#0E1A30]/90 border-b border-[#1D3054] text-xs text-slate-400">
+          <div className="flex items-center gap-2">
             <span className="font-semibold text-white">{client.name}</span>
-            <span>•</span>
-            <span>{topology?.nodes.length || 0} dispositivos mapeados</span>
+            <span className="text-slate-500">•</span>
+            <span className="text-slate-300">{topology?.nodes.length || 0} dispositivos mapeados</span>
           </div>
 
-          <div className="flex items-center gap-3 bg-[#0E1A30]/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-[#1D3054]">
-            <span className="flex items-center gap-1.5 text-[11px]">
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
               <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Operacional
             </span>
-            <span className="flex items-center gap-1.5 text-[11px]">
+            <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
               <span className="w-2 h-2 rounded-full bg-rose-500"></span> Com falha
             </span>
           </div>
         </div>
+
+        {/* Área Gráfica Interativa */}
+        <div
+          ref={canvasRef}
+          onMouseMove={handleMouseMove}
+          className="relative overflow-hidden min-h-[580px] w-full"
+          style={{
+            backgroundImage: 'radial-gradient(#1E3A8A 0.75px, transparent 0.75px)',
+            backgroundSize: '24px 24px',
+            backgroundPosition: '0 0'
+          }}
+        >
 
         {/* Camada SVG para desenho das Conexões (Edges) */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
@@ -739,6 +755,7 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
             <LinkIcon className="w-3.5 h-3.5 text-indigo-400" />
             Clique no ícone de corrente no nó para ligá-lo a outro equipamento.
           </span>
+        </div>
         </div>
       </div>
 
