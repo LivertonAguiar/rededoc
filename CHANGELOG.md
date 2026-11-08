@@ -7,6 +7,15 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [1.0.4] - 2026-11-08
+
+### 🚀 Melhorias de Experiência Mobile & Atualizações
+- **Fluxo de Atualização no Aplicativo Android Nativo**:
+  - Ajustado o banner de atualização (`OtaUpdateNotifier`) para reconhecer o ambiente nativo do Capacitor. Ao invés de tentar recarregar assets estáticos internos que estão gravados na partição read-only do APK, o botão agora aciona diretamente o download do novo instalador `ITFY-v1.0.4.apk` e abre o assistente de instalação do Android.
+  - Eliminação de valores fixos legados (`v1.0.1`): O botão de download em *Configurações > Banco & Backup* agora consulta em tempo real a versão disponível no servidor e reflete dinamicamente a versão mais recente (`Baixar ITFY-v1.0.4.apk`).
+
+---
+
 ## [1.0.3] - 2026-11-08
 
 ### 🐛 Correções de Falhas

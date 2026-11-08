@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Sparkles, RefreshCw, X, ArrowRight, ShieldCheck, Info } from 'lucide-react';
-import { checkForOtaUpdate, applyOtaUpdate, VersionInfo, CURRENT_CLIENT_VERSION } from '../services/otaService';
+import { Sparkles, RefreshCw, X, ArrowRight, ShieldCheck, Info, Download } from 'lucide-react';
+import { checkForOtaUpdate, applyOtaUpdate, VersionInfo, CURRENT_CLIENT_VERSION, isNativeMobile } from '../services/otaService';
 import { useDialog } from '../context/DialogContext';
 
 interface OtaUpdateNotifierProps {
@@ -12,6 +12,7 @@ export const OtaUpdateNotifier: React.FC<OtaUpdateNotifierProps> = ({ onOpenChan
   const [updateInfo, setUpdateInfo] = useState<VersionInfo | null>(null);
   const [isDismissed, setIsDismissed] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<boolean>(false);
+  const isNative = isNativeMobile();
 
   useEffect(() => {
     // Verifica ao abrir o aplicativo
@@ -31,12 +32,18 @@ export const OtaUpdateNotifier: React.FC<OtaUpdateNotifierProps> = ({ onOpenChan
 
   const handleApplyUpdate = async () => {
     setIsUpdating(true);
-    showToast('Baixando e sincronizando novos recursos do ITFY...', 'info');
-    try {
-      await applyOtaUpdate();
-    } catch {
-      setIsUpdating(false);
-      showToast('Falha ao aplicar atualização OTA. Tente novamente.', 'error');
+    if (isNative) {
+      showToast(`Iniciando download do ITFY-v${updateInfo?.version || ''}.apk... Toque na notificação para concluir a instalação.`, 'success');
+      applyOtaUpdate(updateInfo?.apkDownloadUrl);
+      setTimeout(() => setIsUpdating(false), 2000);
+    } else {
+      showToast('Baixando e sincronizando novos recursos do ITFY...', 'info');
+      try {
+        await applyOtaUpdate();
+      } catch {
+        setIsUpdating(false);
+        showToast('Falha ao aplicar atualização OTA. Tente novamente.', 'error');
+      }
     }
   };
 
@@ -57,8 +64,12 @@ export const OtaUpdateNotifier: React.FC<OtaUpdateNotifierProps> = ({ onOpenChan
               <span className="font-bold text-xs sm:text-sm tracking-tight text-white">
                 Nova Versão Disponível ({updateInfo.version})
               </span>
-              <span className="px-1.5 py-0.5 rounded-full text-[9px] font-black bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 uppercase">
-                OTA Instantâneo
+              <span className={`px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase border ${
+                isNative
+                  ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                  : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+              }`}>
+                {isNative ? 'Novo APK Disponível' : 'OTA Instantâneo'}
               </span>
             </div>
             <p className="text-[11px] text-slate-300 truncate">
@@ -111,10 +122,23 @@ export const OtaUpdateNotifier: React.FC<OtaUpdateNotifierProps> = ({ onOpenChan
           <button
             onClick={handleApplyUpdate}
             disabled={isUpdating}
-            className="px-4 py-1.5 rounded-xl text-xs font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 shadow-md shadow-cyan-500/25 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50 ${
+              isNative
+                ? 'text-white bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 shadow-md shadow-emerald-500/25'
+                : 'text-slate-950 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 shadow-md shadow-cyan-500/25'
+            }`}
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isUpdating ? 'animate-spin' : ''}`} />
-            <span>{isUpdating ? 'Atualizando...' : 'Atualizar Agora (OTA)'}</span>
+            {isNative ? (
+              <>
+                <Download className={`w-3.5 h-3.5 ${isUpdating ? 'animate-bounce' : ''}`} />
+                <span>{isUpdating ? 'Iniciando...' : `Baixar e Instalar APK (v${updateInfo.version})`}</span>
+              </>
+            ) : (
+              <>
+                <RefreshCw className={`w-3.5 h-3.5 ${isUpdating ? 'animate-spin' : ''}`} />
+                <span>{isUpdating ? 'Atualizando...' : 'Atualizar Agora (OTA)'}</span>
+              </>
+            )}
           </button>
         </div>
       </div>

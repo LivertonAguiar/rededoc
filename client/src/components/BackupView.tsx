@@ -24,6 +24,7 @@ import {
 import { api } from '../services/api';
 import { useDialog } from '../context/DialogContext';
 import { NotificationSetting, NotificationLog } from '../types';
+import { CURRENT_CLIENT_VERSION } from '../services/otaService';
 
 interface BackupViewProps {
   onRefresh: () => void;
@@ -35,6 +36,7 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
   const [activeTab, setActiveTab] = useState<'backup' | 'alerts' | 'app'>('backup');
   const [importing, setImporting] = useState(false);
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+  const [appVersion, setAppVersion] = useState<string>(CURRENT_CLIENT_VERSION);
 
   // Estados de Configuração de Notificações (Fase 3)
   const [webhookUrl, setWebhookUrl] = useState('');
@@ -43,6 +45,16 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
   const [settingId, setSettingId] = useState<string | null>(null);
   const [savingSettings, setSavingSettings] = useState(false);
   const [testingWebhook, setTestingWebhook] = useState(false);
+
+  useEffect(() => {
+    api.getAppVersion()
+      .then(info => {
+        if (info?.version) {
+          setAppVersion(info.version);
+        }
+      })
+      .catch(() => {});
+  }, []);
   const [dispatchingNow, setDispatchingNow] = useState(false);
 
   // Histórico de Alertas
@@ -271,12 +283,12 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
             <div className="flex items-center gap-2 w-full sm:w-auto">
               <a
                 href="https://itfy.lpaguiar.com.br/download/apk"
-                download="ITFY-v1.0.1.apk"
+                download={`ITFY-v${appVersion}.apk`}
                 className="flex-1 sm:flex-none py-2.5 px-4 rounded-xl text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
-                title="Download direto do aplicativo ITFY-v1.0.1.apk"
+                title={`Download direto do aplicativo ITFY-v${appVersion}.apk`}
               >
                 <Download className="w-4 h-4" />
-                <span>Baixar ITFY-v1.0.1.apk</span>
+                <span>Baixar ITFY-v{appVersion}.apk</span>
               </a>
               <button
                 type="button"
@@ -536,14 +548,14 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
                   <div className="flex flex-wrap items-center gap-2.5">
                     <h2 className="text-xl font-bold text-white">ITFY Android Mobile</h2>
                     <span className="text-[10px] font-bold uppercase bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full">
-                      v1.0.0 Oficial
+                      v{appVersion} Oficial
                     </span>
                     <span className="text-[10px] font-bold uppercase bg-blue-500/20 text-blue-300 border border-blue-500/30 px-2 py-0.5 rounded-full">
                       APK Direto
                     </span>
                   </div>
                   <p className="text-xs text-slate-400 mt-1 max-w-xl leading-relaxed">
-                    Aplicativo compilado para smartphones e tablets Android. Não requer compactação (.zip): o download entrega o arquivo instalador <strong className="text-emerald-400 font-mono">itfy.apk</strong> pronto para uso.
+                    Aplicativo compilado para smartphones e tablets Android. Não requer compactação (.zip): o download entrega o instalador <strong className="text-emerald-400 font-mono">ITFY-v{appVersion}.apk</strong> pronto para instalação.
                   </p>
                 </div>
               </div>
@@ -551,12 +563,12 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
               {/* Botões de Ação */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
                 <a
-                  href="https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/itfy.apk"
-                  download="itfy.apk"
+                  href="https://itfy.lpaguiar.com.br/download/apk"
+                  download={`ITFY-v${appVersion}.apk`}
                   className="py-3 px-6 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2.5 active:scale-95 text-center"
                 >
                   <Download className="w-5 h-5" />
-                  <span>Baixar APK Direto (itfy.apk)</span>
+                  <span>Baixar APK Direto (ITFY-v{appVersion}.apk)</span>
                 </a>
 
                 <a

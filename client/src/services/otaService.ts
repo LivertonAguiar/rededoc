@@ -1,7 +1,8 @@
 import { api } from './api';
+import { Capacitor } from '@capacitor/core';
 
-export const CURRENT_CLIENT_VERSION = '1.0.3'; // Versão instalada no bundle local
-export const CURRENT_CLIENT_BUILD = 4;
+export const CURRENT_CLIENT_VERSION = '1.0.4'; // Versão instalada no bundle local
+export const CURRENT_CLIENT_BUILD = 5;
 
 export interface VersionInfo {
   version: string;
@@ -12,6 +13,18 @@ export interface VersionInfo {
   minSupportedVersion: string;
   changelog: { tag: string; desc: string }[];
   apkDownloadUrl: string;
+}
+
+/**
+ * Detecta se a execução atual é no aplicativo nativo Android/iOS via Capacitor
+ */
+export function isNativeMobile(): boolean {
+  if (typeof window === 'undefined') return false;
+  return (
+    Capacitor.isNativePlatform() ||
+    window.location.protocol === 'capacitor:' ||
+    (window.location.hostname === 'localhost' && window.location.port === '')
+  );
 }
 
 /**
@@ -48,19 +61,29 @@ export async function checkForOtaUpdate(): Promise<{ hasUpdate: boolean; info?: 
 }
 
 /**
- * Aplica a atualização OTA instantaneamente no aplicativo
- * 1. Limpa Service Workers e caches locais de arquivos estáticos
- * 2. Recarrega o WebView/aplicativo com os arquivos atualizados
+ * Aplica a atualização:
+ * - No APK nativo Android: redireciona para download do novo instalador APK.
+ * - No Web / PWA: limpa CacheStorage e Service Workers e recarrega.
  */
-export async function applyOtaUpdate(): Promise<void> {
+export async function applyOtaUpdate(apkDownloadUrl?: string): Promise<void> {
+  const downloadUrl = apkDownloadUrl || 'https://itfy.lpaguiar.com.br/download/apk';
+
+  // No APK nativo, o pacote estático está gravado na pasta assets do app.
+  // Baixamos o APK para o Android disparar a instalação/atualização.
+  if (isNativeMobile()) {
+    if (typeof window !== 'undefined') {
+      window.location.href = downloadUrl;
+    }
+    return;
+  }
+
+  // No navegador Web ou PWA convencional
   try {
-    // 1. Limpa todas as instâncias de CacheStorage do navegador/WebView
     if (typeof window !== 'undefined' && 'caches' in window) {
       const cacheNames = await caches.keys();
       await Promise.all(cacheNames.map(name => caches.delete(name)));
     }
 
-    // 2. Atualiza ou desregistra os Service Workers antigos
     if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
       const registrations = await navigator.serviceWorker.getRegistrations();
       for (const reg of registrations) {
@@ -68,12 +91,10 @@ export async function applyOtaUpdate(): Promise<void> {
       }
     }
 
-    // 3. Marca que a atualização foi aplicada
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('itfy_last_ota_update', new Date().toISOString());
     }
 
-    // 4. Recarrega o aplicativo forçando busca de novos recursos
     setTimeout(() => {
       window.location.reload();
     }, 400);
