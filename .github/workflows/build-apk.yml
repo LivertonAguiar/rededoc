@@ -71,8 +71,15 @@ jobs:
       - name: Identificar e Renomear APK Gerado
         run: |
           mkdir -p output
-          find client/android/app/build/outputs/apk -name "*.apk" -exec cp {} output/itfy-app-debug.apk \;
-          ls -la output/
+          APK_PATH=$(find client/android -name "*.apk" | head -n 1)
+          echo "APK encontrado em: $APK_PATH"
+          if [ -n "$APK_PATH" ]; then
+            cp "$APK_PATH" output/itfy-app-debug.apk
+            ls -lh output/itfy-app-debug.apk
+          else
+            echo "Nenhum APK gerado encontrado em client/android"
+            exit 1
+          fi
 
       - name: Disponibilizar APK para Download (Artifacts)
         uses: actions/upload-artifact@v4
