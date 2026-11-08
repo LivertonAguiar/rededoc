@@ -71,13 +71,21 @@ jobs:
       - name: Identificar e Renomear APK Gerado
         run: |
           mkdir -p output
-          APK_PATH=$(find client/android -name "*.apk" | head -n 1)
-          echo "APK encontrado em: $APK_PATH"
+          echo "### Busca por arquivos compilados" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          find . -name "*.apk" -o -name "*.aab" | tee found_apks.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          APK_PATH=$(head -n 1 found_apks.txt | tr -d '\r')
+          echo "APK_PATH detectado: '$APK_PATH'"
           if [ -n "$APK_PATH" ]; then
             cp "$APK_PATH" output/itfy-app-debug.apk
+            echo "APK copiado com sucesso de $APK_PATH para output/itfy-app-debug.apk" >> $GITHUB_STEP_SUMMARY
             ls -lh output/itfy-app-debug.apk
           else
-            echo "Nenhum APK gerado encontrado em client/android"
+            echo "Nenhum APK gerado encontrado no workspace." >> $GITHUB_STEP_SUMMARY
+            echo '```text' >> $GITHUB_STEP_SUMMARY
+            ls -R client/android/app/build >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
 
