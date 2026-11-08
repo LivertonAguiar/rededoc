@@ -26,7 +26,7 @@ import {
   CloudOff
 } from 'lucide-react';
 import { Equipment, Client, Location } from '../types';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 import { AddEquipmentModal } from './AddEquipmentModal';
 import { EquipmentLabelModal } from './EquipmentLabelModal';
 import { EquipmentTemplatesModal } from './EquipmentTemplatesModal';
@@ -287,13 +287,16 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
 
               {/* Vitrine Estúdio do Equipamento (sem corte e sem achatar) */}
               {eq.photo_url ? (
-                <div className="relative my-3 w-full h-32 rounded-xl bg-gradient-to-b from-[#13233c]/90 via-[#0c1626] to-[#070d18] border border-[#1e3559] flex items-center justify-center p-3 shadow-inner group/photo overflow-hidden">
+                <div className="equipment-photo-container relative my-3 w-full h-32 rounded-xl bg-gradient-to-b from-[#13233c]/90 via-[#0c1626] to-[#070d18] border border-[#1e3559] flex items-center justify-center p-3 shadow-inner group/photo overflow-hidden">
                   <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none"></div>
                   <img
-                    src={eq.photo_url}
+                    src={resolveMediaUrl(eq.photo_url)}
                     alt={eq.name}
                     className="relative z-10 max-h-full max-w-full object-contain filter drop-shadow-[0_6px_14px_rgba(0,0,0,0.65)] transition-transform duration-300 group-hover/photo:scale-105 select-none"
-                    onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                    onError={(e) => {
+                      const parent = (e.target as HTMLElement).closest('.equipment-photo-container') as HTMLElement;
+                      if (parent) parent.style.display = 'none';
+                    }}
                   />
                 </div>
               ) : null}

@@ -31,7 +31,7 @@ import {
   EyeOff
 } from 'lucide-react';
 import { Equipment, Location, EquipmentCatalogItem, EquipmentTemplate } from '../types';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 import { queueOfflineMutation } from '../services/offlineSyncService';
 import { ImageSearchModal } from './ImageSearchModal';
 import { BarcodeScannerModal } from './BarcodeScannerModal';
@@ -933,7 +933,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
                           {item.photo_url ? (
                             <img
-                              src={item.photo_url}
+                              src={resolveMediaUrl(item.photo_url)}
                               alt={item.name}
                               className="relative z-10 max-h-full max-w-full object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)] transition-transform duration-200 group-hover:scale-105 select-none"
                               onError={(e) => {
@@ -1218,7 +1218,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                   <div className="relative w-36 h-32 rounded-xl bg-gradient-to-b from-[#13233c] via-[#0c1626] to-[#070d18] border border-[#223659] p-2.5 flex items-center justify-center shrink-0 overflow-hidden shadow-inner group">
                     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none"></div>
                     <img
-                      src={formData.photo_url}
+                      src={resolveMediaUrl(formData.photo_url)}
                       alt="Foto do equipamento"
                       className="relative z-10 max-h-full max-w-full object-contain filter drop-shadow-[0_4px_10px_rgba(0,0,0,0.65)] select-none transition-transform duration-200 group-hover:scale-105"
                       onError={(e) => {
@@ -1896,7 +1896,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                   <div className="flex items-center gap-3">
                     <div className="w-16 h-16 rounded-xl bg-gradient-to-b from-[#13233c] via-[#0c1626] to-[#070d18] border border-[#203456] p-1.5 flex items-center justify-center shrink-0 overflow-hidden shadow-inner">
                       <img
-                        src={newModelForm.photo_url}
+                        src={resolveMediaUrl(newModelForm.photo_url)}
                         alt="Preview"
                         className="max-h-full max-w-full object-contain filter drop-shadow-md select-none"
                       />

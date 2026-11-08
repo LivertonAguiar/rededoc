@@ -32,7 +32,7 @@ import {
   Maximize2
 } from 'lucide-react';
 import { Client, Equipment, PortForward, TopologyData, TopologyNode, TopologyEdge } from '../types';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 import { useDialog } from '../context/DialogContext';
 import { AddEquipmentModal } from './AddEquipmentModal';
 
@@ -287,7 +287,7 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
       ip: eq.local_ip || undefined,
       mac: eq.mac_address || undefined,
       type: eq.category,
-      photo_url: eq.photo_url || null,
+      photo_url: eq.photo_url ? resolveMediaUrl(eq.photo_url) : null,
       x: posX,
       y: posY,
       portBadge,

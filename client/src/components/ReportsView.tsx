@@ -22,7 +22,7 @@ import {
   Info
 } from 'lucide-react';
 import { TechnicalReportData, Client } from '../types';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 import { useDialog } from '../context/DialogContext';
 
 interface ReportsViewProps {
@@ -307,7 +307,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ client, onBack }) => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           {eqAttachments.map(att => {
                             const isImg = att.mime_type.startsWith('image/');
-                            const fileUrl = att.file_path.startsWith('/') ? att.file_path : `/${att.file_path}`;
+                            const fileUrl = resolveMediaUrl(att.file_path);
 
                             return (
                               <div
@@ -444,7 +444,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ client, onBack }) => {
 
             <div className="space-y-4">
               {imageAttachments.map((att, idx) => {
-                const fileUrl = att.file_path.startsWith('/') ? att.file_path : `/${att.file_path}`;
+                const fileUrl = resolveMediaUrl(att.file_path);
                 const linkedEq = report.equipments.find(e => e.id === att.equipment_id);
 
                 return (

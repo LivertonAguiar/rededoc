@@ -20,7 +20,7 @@ import {
   Info
 } from 'lucide-react';
 import { ServiceOrder, Client, Equipment, Attachment } from '../types';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 import { ImageSearchModal } from './ImageSearchModal';
 import { RelatedItems } from './RelatedItems';
 import { CameraCaptureModal } from './CameraCaptureModal';
@@ -537,7 +537,7 @@ export const ServiceOrdersView: React.FC<ServiceOrdersViewProps> = ({
               ) : orderAttachments.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 pt-1">
                   {orderAttachments.map(att => {
-                    const imgUrl = att.file_path.startsWith('/') ? att.file_path : `/${att.file_path}`;
+                    const imgUrl = resolveMediaUrl(att.file_path);
                     return (
                       <div
                         key={att.id}

@@ -7,6 +7,16 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [1.0.3] - 2026-11-08
+
+### 🐛 Correções de Falhas
+- **Resolução de Imagens e Fotos de Equipamentos no Aplicativo Mobile**:
+  - Implementada a função de resolução universal `resolveMediaUrl` em todos os nós da Topologia, vitrines de equipamentos, modais de cadastro/edição, relatórios técnicos, ordens de serviço e portal do cliente.
+  - No aplicativo nativo Android (Capacitor), URLs relativas (`/uploads/...`) agora são automaticamente direcionadas para o endpoint de produção absoluto (`https://itfy.lpaguiar.com.br/uploads/...`), permitindo que as fotos de roteadores/ONTs, leitores faciais e câmeras sejam renderizadas sem falha.
+  - Tratamento defensivo no evento `onError` das imagens para ocultar o contêiner vazio caso o arquivo não exista no servidor, evitando caixas pretas sem conteúdo.
+
+---
+
 ## [1.0.2] - 2026-11-08
 
 ### 🚀 Novas Funcionalidades & Design

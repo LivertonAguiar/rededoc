@@ -41,12 +41,32 @@ export function getApiBaseUrl(): string {
 }
 
 export function resolveMediaUrl(url?: string | null): string {
-  if (!url) return '';
-  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) {
-    return url;
+  if (!url || typeof url !== 'string' || !url.trim()) return '';
+  const trimmed = url.trim();
+
+  // Preserva Data URLs e Blob URLs
+  if (trimmed.startsWith('data:') || trimmed.startsWith('blob:')) {
+    return trimmed;
   }
+
+  // Base do backend (no APK Android/iOS via Capacitor retorna 'https://itfy.lpaguiar.com.br')
   const backend = getBackendBaseUrl();
-  return `${backend}${url.startsWith('/') ? '' : '/'}${url}`;
+
+  // Se por ventura a URL veio gravada como absoluta em localhost/127.0.0.1 em testes locais
+  if (trimmed.startsWith('http://localhost') || trimmed.startsWith('http://127.0.0.1') || trimmed.startsWith('https://localhost')) {
+    const pathname = trimmed.replace(/^https?:\/\/[^/]+/, '');
+    const base = backend || 'https://itfy.lpaguiar.com.br';
+    return `${base}${pathname.startsWith('/') ? '' : '/'}${pathname}`;
+  }
+
+  // URLs externas completas legítimas (ex: https://images.unsplash.com)
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+
+  // Caminho relativo (ex: /uploads/foto.png)
+  const cleanPath = trimmed.startsWith('/') ? trimmed : `/${trimmed}`;
+  return backend ? `${backend}${cleanPath}` : cleanPath;
 }
 
 // Cache em memória para navegação rápida e sem telas de carregamento repetitivas

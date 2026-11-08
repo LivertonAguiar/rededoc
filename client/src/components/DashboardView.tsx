@@ -38,7 +38,7 @@ import {
   Loader2
 } from 'lucide-react';
 import { Client, Location, Equipment, PortForward, Attachment, ServiceOrder } from '../types';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 import { AddEquipmentModal } from './AddEquipmentModal';
 import { useDialog } from '../context/DialogContext';
 import { WanAlertBanner } from './dashboard/WanAlertBanner';
@@ -755,12 +755,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       <Edit className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity ml-1" />
                     </div>
                     {routerOnt.photo_url && (
-                      <div className="relative w-full h-16 my-1.5 flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-b from-black/50 to-black/20 p-1 border border-blue-500/30 shadow-inner">
+                      <div className="equipment-photo-container relative w-full h-16 my-1.5 flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-b from-black/50 to-black/20 p-1 border border-blue-500/30 shadow-inner">
                         <img
-                          src={routerOnt.photo_url}
+                          src={resolveMediaUrl(routerOnt.photo_url)}
                           alt={routerOnt.name}
                           className="h-full max-w-full object-contain filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]"
-                          onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                          onError={(e) => {
+                            const parent = (e.target as HTMLElement).closest('.equipment-photo-container') as HTMLElement;
+                            if (parent) parent.style.display = 'none';
+                          }}
                         />
                       </div>
                     )}
@@ -813,12 +816,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                               <Edit className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-opacity ml-0.5" />
                             </div>
                             {eq.photo_url && (
-                              <div className="relative w-full h-14 my-1 flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-b from-black/50 to-black/20 p-1 border border-[#243a62] shadow-inner">
+                              <div className="equipment-photo-container relative w-full h-14 my-1 flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-b from-black/50 to-black/20 p-1 border border-[#243a62] shadow-inner">
                                 <img
-                                  src={eq.photo_url}
+                                  src={resolveMediaUrl(eq.photo_url)}
                                   alt={eq.name}
                                   className="h-full max-w-full object-contain filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.6)]"
-                                  onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                                  onError={(e) => {
+                                    const parent = (e.target as HTMLElement).closest('.equipment-photo-container') as HTMLElement;
+                                    if (parent) parent.style.display = 'none';
+                                  }}
                                 />
                               </div>
                             )}
@@ -1012,15 +1018,18 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
 
                     {/* Vitrine Estúdio do Equipamento (sem corte e sem achatar) */}
                     {eq.photo_url ? (
-                      <div className="relative my-3.5 w-full h-32 rounded-xl bg-gradient-to-b from-[#13233c]/90 via-[#0c1626] to-[#070d18] border border-[#1e3559] flex items-center justify-center p-3 shadow-inner group/photo overflow-hidden">
+                      <div className="equipment-photo-container relative my-3.5 w-full h-32 rounded-xl bg-gradient-to-b from-[#13233c]/90 via-[#0c1626] to-[#070d18] border border-[#1e3559] flex items-center justify-center p-3 shadow-inner group/photo overflow-hidden">
                         {/* Iluminação de estúdio central */}
                         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none"></div>
 
                         <img
-                          src={eq.photo_url}
+                          src={resolveMediaUrl(eq.photo_url)}
                           alt={eq.name}
                           className="relative z-10 max-h-full max-w-full object-contain filter drop-shadow-[0_6px_14px_rgba(0,0,0,0.65)] transition-transform duration-300 group-hover/photo:scale-105 select-none"
-                          onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                          onError={(e) => {
+                            const parent = (e.target as HTMLElement).closest('.equipment-photo-container') as HTMLElement;
+                            if (parent) parent.style.display = 'none';
+                          }}
                         />
                       </div>
                     ) : null}
@@ -1150,7 +1159,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                         <div className="grid grid-cols-2 gap-1.5 pt-0.5">
                           {eqAttachments.slice(0, 4).map(att => {
                             const isImg = att.mime_type.startsWith('image/');
-                            const fileUrl = att.file_path.startsWith('/') ? att.file_path : `/${att.file_path}`;
+                            const fileUrl = resolveMediaUrl(att.file_path);
                             return (
                               <a
                                 key={att.id}

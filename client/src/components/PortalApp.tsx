@@ -23,7 +23,7 @@ import {
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { User, PortalOverview, PortalEquipment, PortalServiceOrder, PortalArticle } from '../types';
-import { api } from '../services/api';
+import { api, resolveMediaUrl } from '../services/api';
 import { useDialog } from '../context/DialogContext';
 import { PullToRefresh } from './PullToRefresh';
 
@@ -479,7 +479,7 @@ export const PortalApp: React.FC<PortalAppProps> = ({ currentUser, onLogout }) =
                           {eq.photo_url ? (
                             <div className="w-full h-36 rounded-xl overflow-hidden bg-slate-900 border border-slate-800">
                               <img
-                                src={eq.photo_url}
+                                src={resolveMediaUrl(eq.photo_url)}
                                 alt={eq.name}
                                 className="w-full h-full object-cover"
                                 loading="lazy"
