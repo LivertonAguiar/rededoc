@@ -49,3 +49,7 @@ desktop.ini
 scratch/
 server/scratch/
 
+# Uploads de fotos e arquivos anexos
+uploads/*
+!uploads/.gitkeep
+

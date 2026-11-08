@@ -114,6 +114,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
     gateway: '192.168.1.1',
     primary_dns: '',
     secondary_dns: '',
+    dhcp_range: '',
     is_mac_reserved: 1,
     public_wan_ip: '',
     management_port: 80,
@@ -172,6 +173,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           gateway: equipmentToEdit.gateway || '192.168.1.1',
           primary_dns: equipmentToEdit.primary_dns || '',
           secondary_dns: equipmentToEdit.secondary_dns || '',
+          dhcp_range: equipmentToEdit.dhcp_range || '',
           is_mac_reserved: equipmentToEdit.is_mac_reserved ? 1 : 0,
           public_wan_ip: equipmentToEdit.public_wan_ip || '',
           management_port: equipmentToEdit.management_port || 80,
@@ -214,6 +216,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           gateway: '192.168.1.1',
           primary_dns: '',
           secondary_dns: '',
+          dhcp_range: '',
           is_mac_reserved: 1,
           public_wan_ip: '',
           management_port: 80,
@@ -488,6 +491,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           gateway: formData.gateway,
           primary_dns: formData.primary_dns ?? '',
           secondary_dns: formData.secondary_dns ?? '',
+          dhcp_range: formData.dhcp_range ?? '',
           is_mac_reserved: formData.is_mac_reserved ? 1 : 0,
           public_wan_ip: formData.public_wan_ip,
           management_port: Number(formData.management_port) || 80,
@@ -500,6 +504,37 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           warranty_expires_at: formData.warranty_expires_at || null,
           custom_fields: formData.custom_fields || {}
         });
+
+        // Se o técnico informou uma nova senha na edição, atualiza ou cria a credencial no cofre (AES-256-GCM)
+        if (formData.admin_password.trim()) {
+          try {
+            const credentials = await api.getCredentials(clientId, equipmentToEdit.id);
+            const existingCred = credentials?.[0];
+            if (existingCred) {
+              await api.updateCredential(existingCred.id, {
+                ...existingCred,
+                username: formData.admin_username || existingCred.username || 'admin',
+                password: formData.admin_password,
+                access_url: `${formData.protocol}://${formData.local_ip}`,
+                port: Number(formData.management_port) || 80
+              });
+            } else {
+              await api.createCredential({
+                client_id: clientId,
+                equipment_id: equipmentToEdit.id,
+                name: `Acesso Admin - ${formData.name}`,
+                category: 'equipamento',
+                username: formData.admin_username || 'admin',
+                password: formData.admin_password,
+                access_url: `${formData.protocol}://${formData.local_ip}`,
+                port: Number(formData.management_port) || 80,
+                notes: 'Atualizado junto com o equipamento'
+              });
+            }
+          } catch (credErr) {
+            console.error('Aviso ao sincronizar credencial no cofre:', credErr);
+          }
+        }
       } else {
         // Cria novo equipamento no condomínio
         savedEquipment = await api.createEquipment({
@@ -518,7 +553,7 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
           gateway: formData.gateway,
           primary_dns: formData.primary_dns ?? '',
           secondary_dns: formData.secondary_dns ?? '',
-          dhcp_range: '',
+          dhcp_range: formData.dhcp_range ?? '',
           interface_name: '',
           vlan: '',
           is_mac_reserved: formData.is_mac_reserved ? 1 : 0,
@@ -1259,6 +1294,22 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                       className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none focus:border-blue-500"
                     />
                   </div>
+                  <div className="col-span-1 sm:col-span-2">
+                    <label className="text-slate-300 font-semibold block mb-1 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-amber-400"></span>
+                        Faixa de Concessão DHCP
+                      </span>
+                      <span className="text-[10px] text-amber-400 font-normal">Ex: 192.168.1.100 - 192.168.1.200</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Ex: 192.168.1.100 - 192.168.1.200 ou 192.168.1.100-199"
+                      value={formData.dhcp_range}
+                      onChange={(e) => updateFormData('dhcp_range', e.target.value)}
+                      className="w-full bg-[#101C31] border border-[#24375A] focus:border-amber-400 rounded-lg px-3 py-1.5 text-amber-300 font-mono focus:outline-none placeholder:text-slate-600"
+                    />
+                  </div>
                 </>
               )}
 
@@ -1290,20 +1341,21 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
                 />
               </div>
 
-              {!equipmentToEdit && (
-                <div>
-                  <label className="text-slate-300 font-semibold block mb-1">
-                    Senha (Cofre AES-256)
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="Opcional: guardar no cofre"
-                    value={formData.admin_password}
-                    onChange={(e) => setFormData(p => ({ ...p, admin_password: e.target.value }))}
-                    className="w-full bg-[#101C31] border border-[#24375A] rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none"
-                  />
-                </div>
-              )}
+              <div>
+                <label className="text-slate-300 font-semibold block mb-1 flex items-center justify-between">
+                  <span>Senha (Cofre AES-256)</span>
+                  {equipmentToEdit && (
+                    <span className="text-[10px] text-slate-400 font-normal">Em branco mantém a atual</span>
+                  )}
+                </label>
+                <input
+                  type="password"
+                  placeholder={equipmentToEdit ? '•••••••• (digite para alterar no cofre)' : 'Opcional: guardar no cofre'}
+                  value={formData.admin_password}
+                  onChange={(e) => setFormData(p => ({ ...p, admin_password: e.target.value }))}
+                  className="w-full bg-[#101C31] border border-[#24375A] focus:border-blue-500 rounded-lg px-3 py-1.5 text-slate-200 font-mono focus:outline-none placeholder:text-slate-500"
+                />
+              </div>
             </div>
 
             {/* Caminho de Configuração e Observações Técnicas */}
