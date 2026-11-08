@@ -13,7 +13,10 @@
     "build": "npm run build --workspace=server && npm run build --workspace=client",
     "start": "node server/dist/index.js",
     "seed": "npm run seed --workspace=server",
-    "import:articles": "npm run import:articles --workspace=server"
+    "import:articles": "npm run import:articles --workspace=server",
+    "version:patch": "node scripts/bump-version.js patch",
+    "version:minor": "node scripts/bump-version.js minor",
+    "version:major": "node scripts/bump-version.js major"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
