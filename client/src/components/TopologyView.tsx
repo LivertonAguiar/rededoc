@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import {
   Network,
@@ -26,7 +26,10 @@ import {
   Radio,
   Sliders,
   X,
-  ArrowRight
+  ArrowRight,
+  ZoomIn,
+  ZoomOut,
+  Maximize2
 } from 'lucide-react';
 import { Client, Equipment, PortForward, TopologyData, TopologyNode, TopologyEdge } from '../types';
 import { api } from '../services/api';
@@ -70,6 +73,27 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
   const canvasRef = useRef<HTMLDivElement>(null);
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  // Controle de Zoom e Escala da Topologia
+  const [zoomScale, setZoomScale] = useState<number>(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 640) {
+      return 0.45;
+    }
+    return 1;
+  });
+
+  const handleFitToScreen = useCallback(() => {
+    if (!canvasRef.current) return;
+    const containerWidth = canvasRef.current.parentElement?.clientWidth || (typeof window !== 'undefined' ? window.innerWidth : 860);
+    const fitScale = Math.min(1, Math.max(0.35, (containerWidth - 24) / 860));
+    setZoomScale(Number(fitScale.toFixed(2)));
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.innerWidth < 640) {
+      handleFitToScreen();
+    }
+  }, [handleFitToScreen]);
 
   // Carrega a topologia do backend
   const loadTopology = async () => {
@@ -403,7 +427,7 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
     showToast('Topologia organizada automaticamente!', 'success');
   };
 
-  // Gerenciamento de Drag & Drop no canvas
+  // Gerenciamento de Drag & Drop no canvas (Mouse e Touch com suporte a Zoom)
   const handleMouseDown = (e: React.MouseEvent, nodeId: string) => {
     // Apenas com o botão esquerdo
     if (e.button !== 0) return;
@@ -413,8 +437,8 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
     if (!node || !canvasRef.current) return;
 
     const canvasRect = canvasRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - canvasRect.left;
-    const mouseY = e.clientY - canvasRect.top;
+    const mouseX = (e.clientX - canvasRect.left) / zoomScale;
+    const mouseY = (e.clientY - canvasRect.top) / zoomScale;
 
     setDraggingNodeId(nodeId);
     setDragOffset({
@@ -427,11 +451,11 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
     if (!draggingNodeId || !canvasRef.current || !topology) return;
 
     const canvasRect = canvasRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - canvasRect.left;
-    const mouseY = e.clientY - canvasRect.top;
+    const mouseX = (e.clientX - canvasRect.left) / zoomScale;
+    const mouseY = (e.clientY - canvasRect.top) / zoomScale;
 
-    const newX = Math.max(90, Math.min(canvasRect.width - 90, mouseX - dragOffset.x));
-    const newY = Math.max(60, Math.min(canvasRect.height - 60, mouseY - dragOffset.y));
+    const newX = Math.max(90, Math.min(860 - 90, mouseX - dragOffset.x));
+    const newY = Math.max(60, Math.min(650 - 60, mouseY - dragOffset.y));
 
     setTopology(prev => {
       if (!prev) return prev;
@@ -446,7 +470,49 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
     }
   };
 
-  const handleMouseUp = () => {
+  const handleTouchStart = (e: React.TouchEvent, nodeId: string) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    const node = topology?.nodes.find(n => n.id === nodeId);
+    if (!node || !canvasRef.current) return;
+
+    const canvasRect = canvasRef.current.getBoundingClientRect();
+    const touchX = (touch.clientX - canvasRect.left) / zoomScale;
+    const touchY = (touch.clientY - canvasRect.top) / zoomScale;
+
+    setDraggingNodeId(nodeId);
+    setDragOffset({
+      x: touchX - node.x,
+      y: touchY - node.y
+    });
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!draggingNodeId || !canvasRef.current || !topology) return;
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const canvasRect = canvasRef.current.getBoundingClientRect();
+    const touchX = (touch.clientX - canvasRect.left) / zoomScale;
+    const touchY = (touch.clientY - canvasRect.top) / zoomScale;
+
+    const newX = Math.max(90, Math.min(860 - 90, touchX - dragOffset.x));
+    const newY = Math.max(60, Math.min(650 - 60, touchY - dragOffset.y));
+
+    setTopology(prev => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        nodes: prev.nodes.map(n => n.id === draggingNodeId ? { ...n, x: Math.round(newX), y: Math.round(newY) } : n)
+      };
+    });
+
+    if (!hasUnsavedChanges) {
+      setHasUnsavedChanges(true);
+    }
+  };
+
+  const handleDragEnd = () => {
     if (draggingNodeId) {
       setDraggingNodeId(null);
     }
@@ -464,20 +530,26 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
   }, [topology, selectedNodeId]);
 
   return (
-    <div className="space-y-5" onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
+    <div
+      className="space-y-4 sm:space-y-5"
+      onMouseUp={handleDragEnd}
+      onMouseLeave={handleDragEnd}
+      onTouchEnd={handleDragEnd}
+      onTouchCancel={handleDragEnd}
+    >
       {/* Barra de Título e Ferramentas */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-[#101C31] border border-[#1D3054] rounded-2xl p-5 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#101C31] border border-[#1D3054] rounded-2xl p-3.5 sm:p-5 shadow-xl">
         <div>
-          <h1 className="text-xl font-bold text-white flex items-center gap-2.5">
-            <Network className="w-5 h-5 text-blue-400" />
+          <h1 className="text-base sm:text-xl font-bold text-white flex items-center gap-2 sm:gap-2.5">
+            <Network className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400 shrink-0" />
             Topologia de Rede Interativa
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="hidden xs:block text-xs text-slate-400 mt-0.5">
             Adicione dispositivos, conecte portas e organize o fluxo físico da infraestrutura em tempo real.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           {/* Botão Conectar */}
           <button
             onClick={() => {
@@ -487,46 +559,46 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
               }
               setShowConnectModal(true);
             }}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-blue-300 bg-blue-900/40 hover:bg-blue-800/60 border border-blue-500/40 shadow-sm transition"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-blue-300 bg-blue-900/40 hover:bg-blue-800/60 border border-blue-500/40 shadow-sm transition"
             title="Criar nova ligação entre dois equipamentos"
           >
             <LinkIcon className="w-3.5 h-3.5" />
-            <span>+ Conectar Nós</span>
+            <span>+ Conectar</span>
           </button>
 
           {/* Botão Adicionar Equipamento */}
           <button
             onClick={() => setShowAddNodeModal(true)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-emerald-300 bg-emerald-900/40 hover:bg-emerald-800/60 border border-emerald-500/40 shadow-sm transition"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-emerald-300 bg-emerald-900/40 hover:bg-emerald-800/60 border border-emerald-500/40 shadow-sm transition"
             title="Inserir equipamento existente ou cadastrar novo"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>+ Adicionar Equipamento</span>
+            <span>+ Adicionar</span>
           </button>
 
           {/* Botão Conexões Ativas */}
           <button
             onClick={() => setShowManageEdgesModal(true)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-[#172744] hover:bg-[#20365D] border border-[#24375A] transition"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-slate-300 bg-[#172744] hover:bg-[#20365D] border border-[#24375A] transition"
           >
             <Layers className="w-3.5 h-3.5 text-indigo-400" />
-            <span>Conexões ({topology?.edges.length || 0})</span>
+            <span className="hidden xs:inline">Conexões</span> ({topology?.edges.length || 0})
           </button>
 
           {/* Auto Organizar */}
           <button
             onClick={handleAutoOrganize}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-slate-300 bg-[#172744] hover:bg-[#20365D] border border-[#24375A] transition"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-slate-300 bg-[#172744] hover:bg-[#20365D] border border-[#24375A] transition"
             title="Alinhar e nivelar nós hierarquicamente"
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Auto-organizar</span>
+            <span className="hidden sm:inline">Auto-organizar</span>
           </button>
 
           {/* Redefinir para Padrão */}
           <button
             onClick={handleResetTopology}
-            className="p-2 rounded-xl text-slate-400 hover:text-slate-200 bg-[#172744] hover:bg-[#20365D] border border-[#24375A] transition"
+            className="p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-slate-200 bg-[#172744] hover:bg-[#20365D] border border-[#24375A] transition"
             title="Redefinir para estrutura automática da rede"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -536,227 +608,275 @@ export const TopologyView: React.FC<TopologyViewProps> = ({
           <button
             onClick={handleSaveTopology}
             disabled={isSaving}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold text-white shadow-md transition ${
+            className={`flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-white shadow-md transition ${
               hasUnsavedChanges
                 ? 'bg-amber-600 hover:bg-amber-500 animate-pulse'
                 : 'bg-blue-600 hover:bg-blue-500'
             }`}
           >
             <Save className="w-3.5 h-3.5" />
-            <span>{isSaving ? 'Salvando...' : hasUnsavedChanges ? 'Salvar Alterações *' : 'Salvar Topologia'}</span>
+            <span>{isSaving ? 'Salvando...' : hasUnsavedChanges ? 'Salvar *' : 'Salvar'}</span>
           </button>
         </div>
       </div>
 
       {/* Canvas da Topologia (Área Gráfica com SVG e Cartões Interativos) */}
       <div className="bg-[#0A1224] border border-[#1D3054] rounded-2xl overflow-hidden select-none shadow-2xl flex flex-col">
-        {/* Barra superior de status interno do mapa */}
-        <div className="flex items-center justify-between px-5 py-3 bg-[#0E1A30]/90 border-b border-[#1D3054] text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-white">{client.name}</span>
+        {/* Barra superior com Status e Controles de Zoom Mobile/Desktop */}
+        <div className="flex flex-wrap items-center justify-between gap-2 px-3 sm:px-5 py-2.5 sm:py-3 bg-[#0E1A30]/90 border-b border-[#1D3054] text-xs text-slate-400">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="font-semibold text-white truncate max-w-[140px] sm:max-w-none">{client.name}</span>
             <span className="text-slate-500">•</span>
-            <span className="text-slate-300">{topology?.nodes.length || 0} dispositivos mapeados</span>
+            <span className="text-slate-300 whitespace-nowrap">{topology?.nodes.length || 0} dispositivos</span>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Operacional
-            </span>
-            <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
-              <span className="w-2 h-2 rounded-full bg-rose-500"></span> Com falha
-            </span>
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Controles de Zoom Responsivo */}
+            <div className="flex items-center gap-1 bg-[#132238] border border-[#24375A] rounded-xl px-2 py-1">
+              <button
+                type="button"
+                onClick={() => setZoomScale(prev => Math.max(0.35, Number((prev - 0.1).toFixed(2))))}
+                className="p-1 rounded text-slate-400 hover:text-white transition"
+                title="Diminuir Zoom"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <span className="text-[11px] font-mono font-semibold text-slate-300 w-10 text-center select-none">
+                {Math.round(zoomScale * 100)}%
+              </span>
+              <button
+                type="button"
+                onClick={() => setZoomScale(prev => Math.min(1.5, Number((prev + 0.1).toFixed(2))))}
+                className="p-1 rounded text-slate-400 hover:text-white transition"
+                title="Aumentar Zoom"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                onClick={handleFitToScreen}
+                className="flex items-center gap-1 ml-1 px-2 py-0.5 rounded-lg text-[10px] font-semibold text-blue-300 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 transition"
+                title="Ajustar diagrama à tela"
+              >
+                <Maximize2 className="w-3 h-3" />
+                <span className="hidden sm:inline">Ajustar</span>
+              </button>
+            </div>
+
+            <div className="hidden xs:flex items-center gap-2">
+              <span className="flex items-center gap-1 text-[11px] text-slate-300">
+                <span className="w-2 h-2 rounded-full bg-emerald-500"></span> Operacional
+              </span>
+              <span className="flex items-center gap-1 text-[11px] text-slate-300">
+                <span className="w-2 h-2 rounded-full bg-rose-500"></span> Com falha
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Área Gráfica Interativa */}
+        {/* Área de Visualização com Scroll Horizontal e Zoom Suave */}
         <div
-          ref={canvasRef}
-          onMouseMove={handleMouseMove}
-          className="relative overflow-hidden min-h-[580px] w-full"
+          className="relative w-full overflow-x-auto overflow-y-hidden overscroll-x-contain select-none"
           style={{
-            backgroundImage: 'radial-gradient(#1E3A8A 0.75px, transparent 0.75px)',
-            backgroundSize: '24px 24px',
-            backgroundPosition: '0 0'
+            minHeight: `${Math.max(500, Math.round(650 * zoomScale))}px`,
+            WebkitOverflowScrolling: 'touch'
           }}
         >
+          <div
+            ref={canvasRef}
+            onMouseMove={handleMouseMove}
+            onTouchMove={handleTouchMove}
+            className="relative transition-transform duration-75 origin-top-left"
+            style={{
+              width: '860px',
+              height: '650px',
+              transform: `scale(${zoomScale})`,
+              transformOrigin: 'top left',
+              backgroundImage: 'radial-gradient(#1E3A8A 0.75px, transparent 0.75px)',
+              backgroundSize: '24px 24px',
+              backgroundPosition: '0 0'
+            }}
+          >
 
-        {/* Camada SVG para desenho das Conexões (Edges) */}
-        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-          <defs>
-            <linearGradient id="edgeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.8" />
-            </linearGradient>
-          </defs>
+          {/* Camada SVG para desenho das Conexões (Edges) */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
+            <defs>
+              <linearGradient id="edgeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#3B82F6" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="#60A5FA" stopOpacity="0.8" />
+              </linearGradient>
+            </defs>
 
-          {topology?.edges.map((edge, idx) => {
-            const sourceNode = topology.nodes.find(n => n.id === edge.from);
-            const targetNode = topology.nodes.find(n => n.id === edge.to);
-            if (!sourceNode || !targetNode) return null;
+            {topology?.edges.map((edge, idx) => {
+              const sourceNode = topology.nodes.find(n => n.id === edge.from);
+              const targetNode = topology.nodes.find(n => n.id === edge.to);
+              if (!sourceNode || !targetNode) return null;
 
-            // Pontos de ancoragem
-            const startX = sourceNode.x;
-            const startY = sourceNode.y + 36;
-            const endX = targetNode.x;
-            const endY = targetNode.y - 36;
+              // Pontos de ancoragem
+              const startX = sourceNode.x;
+              const startY = sourceNode.y + 36;
+              const endX = targetNode.x;
+              const endY = targetNode.y - 36;
 
-            const midX = (startX + endX) / 2;
-            const midY = (startY + endY) / 2;
+              const midX = (startX + endX) / 2;
+              const midY = (startY + endY) / 2;
 
-            // Curva suave em Bezier cúbico
-            const deltaY = Math.abs(endY - startY);
-            const controlOffset = Math.max(30, deltaY * 0.4);
-            const pathData = `M ${startX} ${startY} C ${startX} ${startY + controlOffset}, ${endX} ${endY - controlOffset}, ${endX} ${endY}`;
+              // Curva suave em Bezier cúbico
+              const deltaY = Math.abs(endY - startY);
+              const controlOffset = Math.max(30, deltaY * 0.4);
+              const pathData = `M ${startX} ${startY} C ${startX} ${startY + controlOffset}, ${endX} ${endY - controlOffset}, ${endX} ${endY}`;
 
-            return (
-              <g key={`edge-${edge.from}-${edge.to}-${idx}`}>
-                {/* Linha externa de brilho */}
-                <path
-                  d={pathData}
-                  fill="none"
-                  stroke="#1D4ED8"
-                  strokeWidth="4"
-                  strokeOpacity="0.4"
-                />
-                {/* Linha principal */}
-                <path
-                  d={pathData}
-                  fill="none"
-                  stroke="url(#edgeGradient)"
-                  strokeWidth="2.5"
-                  strokeDasharray={edge.label?.toLowerCase().includes('wi-fi') ? '4 4' : undefined}
-                />
+              return (
+                <g key={`edge-${edge.from}-${edge.to}-${idx}`}>
+                  {/* Linha externa de brilho */}
+                  <path
+                    d={pathData}
+                    fill="none"
+                    stroke="#1D4ED8"
+                    strokeWidth="4"
+                    strokeOpacity="0.4"
+                  />
+                  {/* Linha principal */}
+                  <path
+                    d={pathData}
+                    fill="none"
+                    stroke="url(#edgeGradient)"
+                    strokeWidth="2.5"
+                    strokeDasharray={edge.label?.toLowerCase().includes('wi-fi') ? '4 4' : undefined}
+                  />
 
-                {/* Badge do Rótulo da Conexão / Porta (Interativo) */}
-                <foreignObject
-                  x={midX - 55}
-                  y={midY - 12}
-                  width="110"
-                  height="26"
-                  className="pointer-events-auto"
-                >
-                  <div className="flex items-center justify-center">
-                    <div
-                      className="group flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#0D1829] border border-blue-500/50 text-[10px] font-mono text-blue-300 font-semibold shadow-md hover:border-rose-500 hover:text-white transition cursor-pointer select-none"
-                      onClick={() => handleRemoveEdge(edge.from, edge.to)}
-                      title="Clique para remover esta conexão"
-                    >
-                      <span className="truncate max-w-[70px]">{edge.label || 'Link'}</span>
-                      <X className="w-2.5 h-2.5 opacity-60 group-hover:opacity-100 group-hover:text-rose-400" />
+                  {/* Badge do Rótulo da Conexão / Porta (Interativo) */}
+                  <foreignObject
+                    x={midX - 55}
+                    y={midY - 12}
+                    width="110"
+                    height="26"
+                    className="pointer-events-auto"
+                  >
+                    <div className="flex items-center justify-center">
+                      <div
+                        className="group flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#0D1829] border border-blue-500/50 text-[10px] font-mono text-blue-300 font-semibold shadow-md hover:border-rose-500 hover:text-white transition cursor-pointer select-none"
+                        onClick={() => handleRemoveEdge(edge.from, edge.to)}
+                        title="Clique para remover esta conexão"
+                      >
+                        <span className="truncate max-w-[70px]">{edge.label || 'Link'}</span>
+                        <X className="w-2.5 h-2.5 opacity-60 group-hover:opacity-100 group-hover:text-rose-400" />
+                      </div>
                     </div>
-                  </div>
-                </foreignObject>
-              </g>
-            );
-          })}
-        </svg>
+                  </foreignObject>
+                </g>
+              );
+            })}
+          </svg>
 
-        {/* Nós do Diagrama (Renderizados em HTML Absoluto sobre o SVG) */}
-        <div className="absolute inset-0 pointer-events-none">
-          {topology?.nodes.map((node) => {
-            const isSelected = selectedNodeId === node.id;
-            const isDragging = draggingNodeId === node.id;
-            const isInternet = node.id === 'internet';
+          {/* Nós do Diagrama (Renderizados em HTML Absoluto sobre o SVG) */}
+          <div className="absolute inset-0 pointer-events-none">
+            {topology?.nodes.map((node) => {
+              const isSelected = selectedNodeId === node.id;
+              const isDragging = draggingNodeId === node.id;
+              const isInternet = node.id === 'internet';
 
-            return (
-              <div
-                key={node.id}
-                style={{
-                  left: `${node.x}px`,
-                  top: `${node.y}px`,
-                  transform: 'translate(-50%, -50%)'
-                }}
-                className={`absolute pointer-events-auto transition-shadow ${
-                  isDragging ? 'cursor-grabbing z-30 scale-105' : 'cursor-grab z-10'
-                }`}
-                onMouseDown={(e) => handleMouseDown(e, node.id)}
-                onClick={() => setSelectedNodeId(node.id)}
-              >
-                {/* Cartão do Nó */}
+              return (
                 <div
-                  className={`w-44 rounded-2xl p-3 text-center transition-all shadow-xl backdrop-blur-md ${
-                    isInternet
-                      ? 'bg-blue-600 border-2 border-blue-400 text-white font-bold'
-                      : isSelected
-                      ? 'bg-[#182B4B] border-2 border-blue-400 shadow-blue-500/30'
-                      : 'bg-[#121F38]/95 border border-[#223961] hover:border-blue-500/70'
+                  key={node.id}
+                  style={{
+                    left: `${node.x}px`,
+                    top: `${node.y}px`,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                  className={`absolute pointer-events-auto transition-shadow ${
+                    isDragging ? 'cursor-grabbing z-30 scale-105' : 'cursor-grab z-10'
                   }`}
+                  onMouseDown={(e) => handleMouseDown(e, node.id)}
+                  onTouchStart={(e) => handleTouchStart(e, node.id)}
+                  onClick={() => setSelectedNodeId(node.id)}
                 >
-                  {/* Cabeçalho do Nó com Ícone e Tipo */}
-                  <div className="flex items-center justify-between pb-1.5 border-b border-white/10 mb-1.5">
-                    <div className="flex items-center gap-1.5">
-                      {getNodeIcon(node.type)}
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">
-                        {node.type === 'internet' ? 'WAN' : node.type.replace('_', ' ')}
-                      </span>
+                  {/* Cartão do Nó */}
+                  <div
+                    className={`w-44 rounded-2xl p-3 text-center transition-all shadow-xl backdrop-blur-md ${
+                      isInternet
+                        ? 'bg-blue-600 border-2 border-blue-400 text-white font-bold'
+                        : isSelected
+                        ? 'bg-[#182B4B] border-2 border-blue-400 shadow-blue-500/30'
+                        : 'bg-[#121F38]/95 border border-[#223961] hover:border-blue-500/70'
+                    }`}
+                  >
+                    {/* Cabeçalho do Nó com Ícone e Tipo */}
+                    <div className="flex items-center justify-between pb-1.5 border-b border-white/10 mb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        {getNodeIcon(node.type)}
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">
+                          {node.type === 'internet' ? 'WAN' : node.type.replace('_', ' ')}
+                        </span>
+                      </div>
+
+                      {!isInternet && (
+                        <div className="flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenConnectForNode(node.id);
+                            }}
+                            className="p-1 rounded-md text-blue-400 hover:text-white hover:bg-blue-600/40 transition"
+                            title="Conectar a outro equipamento"
+                          >
+                            <LinkIcon className="w-3 h-3" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleRemoveNodeFromTopology(node.id);
+                            }}
+                            className="p-1 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-900/30 transition"
+                            title="Remover do mapa"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      )}
                     </div>
 
-                    {!isInternet && (
-                      <div className="flex items-center gap-1">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleOpenConnectForNode(node.id);
-                          }}
-                          className="p-1 rounded-md text-blue-400 hover:text-white hover:bg-blue-600/40 transition"
-                          title="Conectar a outro equipamento"
-                        >
-                          <LinkIcon className="w-3 h-3" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleRemoveNodeFromTopology(node.id);
-                          }}
-                          className="p-1 rounded-md text-slate-400 hover:text-rose-400 hover:bg-rose-900/30 transition"
-                          title="Remover do mapa"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
+                    {/* Nome e Modelo */}
+                    <div className="font-bold text-white text-xs truncate">
+                      {node.label}
+                    </div>
+                    {node.sublabel && (
+                      <div className="text-[10px] text-slate-400 truncate">
+                        {node.sublabel}
+                      </div>
+                    )}
+
+                    {/* Endereço IP */}
+                    <div className="mt-1 font-mono text-[11px] font-bold text-emerald-400">
+                      {node.ip || 'IP não inf.'}
+                    </div>
+
+                    {/* Badge de Portas / NAT (se houver) */}
+                    {node.portBadge && (
+                      <div className="mt-1 px-1.5 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-[10px] font-mono text-amber-300 font-semibold truncate">
+                        {node.portBadge}
                       </div>
                     )}
                   </div>
-
-                  {/* Nome e Modelo */}
-                  <div className="font-bold text-white text-xs truncate">
-                    {node.label}
-                  </div>
-                  {node.sublabel && (
-                    <div className="text-[10px] text-slate-400 truncate">
-                      {node.sublabel}
-                    </div>
-                  )}
-
-                  {/* Endereço IP */}
-                  <div className="mt-1 font-mono text-[11px] font-bold text-emerald-400">
-                    {node.ip || 'IP não inf.'}
-                  </div>
-
-                  {/* Badge de Portas / NAT (se houver) */}
-                  {node.portBadge && (
-                    <div className="mt-1 px-1.5 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-[10px] font-mono text-amber-300 font-semibold truncate">
-                      {node.portBadge}
-                    </div>
-                  )}
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
 
-        {/* Dica no rodapé do canvas */}
-        <div className="absolute bottom-3 left-4 right-4 z-20 flex items-center justify-between pointer-events-none text-[11px] text-slate-400 bg-[#0E1A30]/80 backdrop-blur-md px-4 py-2 rounded-xl border border-[#1D3054]">
-          <span className="flex items-center gap-1.5">
-            <Move className="w-3.5 h-3.5 text-blue-400" />
-            Clique e arraste qualquer cartão para reorganizar o mapa livremente.
-          </span>
-          <span className="flex items-center gap-1.5">
-            <LinkIcon className="w-3.5 h-3.5 text-indigo-400" />
-            Clique no ícone de corrente no nó para ligá-lo a outro equipamento.
-          </span>
-        </div>
+          {/* Dica no rodapé do canvas */}
+          <div className="absolute bottom-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none text-[10px] sm:text-[11px] text-slate-400 bg-[#0E1A30]/85 backdrop-blur-md px-3 py-1.5 rounded-xl border border-[#1D3054]">
+            <span className="flex items-center gap-1.5">
+              <Move className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+              <span>Toque ou clique e arraste para reposicionar os dispositivos.</span>
+            </span>
+            <span className="hidden sm:flex items-center gap-1.5">
+              <LinkIcon className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+              <span>Clique no ícone de link para conectar portas.</span>
+            </span>
+          </div>
+          </div>
         </div>
       </div>
 

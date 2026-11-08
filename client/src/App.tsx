@@ -74,6 +74,21 @@ export function App() {
       .finally(() => {
         setAuthChecking(false);
       });
+
+    // Atualização automática quando novo Service Worker assumir o controle (PWA)
+    if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator) {
+      let refreshing = false;
+      const onControllerChange = () => {
+        if (!refreshing) {
+          refreshing = true;
+          window.location.reload();
+        }
+      };
+      navigator.serviceWorker.addEventListener('controllerchange', onControllerChange);
+      return () => {
+        navigator.serviceWorker.removeEventListener('controllerchange', onControllerChange);
+      };
+    }
   }, []);
 
   const handleLoginSuccess = (user: User) => {
