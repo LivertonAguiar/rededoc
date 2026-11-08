@@ -58,14 +58,19 @@ jobs:
       - name: Compilar APK de Debug
         working-directory: ./client/android
         run: |
+          set -o pipefail
           ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee ../../gradle_build.log
 
-      - name: Publicar Diagnóstico no Summary (se houver erro)
-        if: failure()
+      - name: Publicar Diagnóstico do Gradle no Summary
+        if: always()
         run: |
-          echo "## ❌ Falha na Compilação do Gradle" >> $GITHUB_STEP_SUMMARY
+          echo "## 📋 Relatório de Execução do Gradle" >> $GITHUB_STEP_SUMMARY
           echo '```text' >> $GITHUB_STEP_SUMMARY
-          tail -n 120 gradle_build.log >> $GITHUB_STEP_SUMMARY || true
+          if [ -f gradle_build.log ]; then
+            tail -n 150 gradle_build.log >> $GITHUB_STEP_SUMMARY
+          else
+            echo "gradle_build.log não foi gerado." >> $GITHUB_STEP_SUMMARY
+          fi
           echo '```' >> $GITHUB_STEP_SUMMARY
 
       - name: Identificar e Renomear APK Gerado
