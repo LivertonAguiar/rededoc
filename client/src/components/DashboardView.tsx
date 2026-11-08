@@ -535,7 +535,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       form.append('notes', uploadNotes);
 
       const token = api.getToken();
-      const res = await fetch('/api/attachments', {
+      const res = await fetch(`${api.getApiBaseUrl()}/attachments`, {
         method: 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: form

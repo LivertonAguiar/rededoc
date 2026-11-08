@@ -22,7 +22,8 @@ import {
   Loader2,
   Wifi,
   Link2,
-  Clock
+  Clock,
+  CloudOff
 } from 'lucide-react';
 import { Equipment, Client, Location } from '../types';
 import { api } from '../services/api';
@@ -266,7 +267,15 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
             <div>
               <div className="flex items-start justify-between gap-2 pb-3 border-b border-[#1D3054]">
                 <div>
-                  <h3 className="text-base font-bold text-white">{eq.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-bold text-white">{eq.name}</h3>
+                    {(eq._isOffline || (typeof eq.id === 'string' && eq.id.startsWith('offline_'))) && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse">
+                        <CloudOff className="w-3 h-3" />
+                        Salvo Offline
+                      </span>
+                    )}
+                  </div>
                   <div className="text-xs text-slate-400 mt-0.5">
                     {eq.category.replace('_', ' ').toUpperCase()} • {eq.physical_location || 'Local não especificado'}
                   </div>

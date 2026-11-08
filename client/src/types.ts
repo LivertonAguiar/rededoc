@@ -107,6 +107,9 @@ export interface PortForward {
   equipment_category?: string;
   client_name?: string;
   location_name?: string;
+  // Suporte a cadastro offline-first
+  _isOffline?: boolean;
+  _offlineTimestamp?: string;
 }
 
 export interface Equipment {
@@ -150,6 +153,9 @@ export interface Equipment {
   credential_id?: string;
   client_name?: string;
   location_name?: string;
+  // Suporte a cadastro offline-first
+  _isOffline?: boolean;
+  _offlineTimestamp?: string;
 }
 
 export interface Credential {

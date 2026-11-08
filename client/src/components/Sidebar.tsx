@@ -24,6 +24,8 @@ import {
   Smartphone
 } from 'lucide-react';
 import { User } from '../types';
+import { ItfyLogo } from './ItfyLogo';
+import { CURRENT_CLIENT_VERSION } from '../services/otaService';
 
 interface SidebarProps {
   activeTab: string;
@@ -33,6 +35,7 @@ interface SidebarProps {
   onCloseMobile?: () => void;
   currentUser?: User | null;
   onLogout?: () => void;
+  onOpenVersionHistory?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -42,7 +45,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isOpenMobile = false,
   onCloseMobile,
   currentUser,
-  onLogout
+  onLogout,
+  onOpenVersionHistory
 }) => {
   const [isInfraOpen, setIsInfraOpen] = useState(true);
   const [isOpsOpen, setIsOpsOpen] = useState(true);
@@ -71,17 +75,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Cabeçalho do App / Logo */}
       <div className="p-4 sm:p-5 flex-1 overflow-y-auto scrollbar-thin">
         <div className="flex items-center justify-between pb-4 border-b border-[#1D3054]">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-bold">
-              <Network className="w-5 h-5" />
-            </div>
-            <div>
-              <div className="text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
-                ITFY
-                <span className="text-[10px] uppercase font-semibold bg-blue-500/20 text-blue-400 px-1.5 py-0.5 rounded border border-blue-500/30">Pro</span>
-              </div>
-              <div className="text-[11px] text-slate-400">Documentação de Redes</div>
-            </div>
+          <div className="cursor-pointer" onClick={() => handleSelectTab('overview')}>
+            <ItfyLogo variant="horizontal" size={32} />
           </div>
 
           {/* Botão fechar em telas móveis */}
@@ -414,7 +409,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </span>
             <span className="text-[11px] font-semibold text-emerald-400">Sistema Online</span>
           </div>
-          <span className="text-[10px] text-slate-500 font-mono">v1.0.0</span>
+          <button
+            onClick={onOpenVersionHistory}
+            className="text-[10px] text-slate-400 hover:text-cyan-300 font-mono transition cursor-pointer flex items-center gap-1 bg-[#122036] px-1.5 py-0.5 rounded border border-[#1E3352]"
+            title="Ver notas de versão e atualizações"
+          >
+            v{CURRENT_CLIENT_VERSION}
+          </button>
         </div>
 
         <div className="pt-1 flex items-center justify-between text-xs text-slate-400">

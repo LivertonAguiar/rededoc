@@ -119,6 +119,41 @@ app.get(['/api/download/apk', '/download/apk'], (req, res) => {
   return res.redirect(directGithubUrl);
 });
 
+// Verificação de versão e suporte a atualizações OTA (Over-The-Air)
+app.get('/api/app/version', (req, res) => {
+  res.json({
+    version: '1.0.1',
+    buildNumber: 2,
+    releaseName: 'ITFY 1.0.1 (Cyber Nexus, OTA & Offline-First)',
+    releaseDate: '2026-11-08',
+    otaSupported: true,
+    minSupportedVersion: '1.0.0',
+    changelog: [
+      {
+        tag: 'Correção Crítica',
+        desc: 'Resolvido erro de login no aplicativo Android APK (comunicação com API remota).'
+      },
+      {
+        tag: 'Offline-First',
+        desc: 'Cadastro e alteração de equipamentos salvos no celular e sincronizados automaticamente ao reconectar.'
+      },
+      {
+        tag: 'Atualização OTA',
+        desc: 'Atualização Over-The-Air: receba melhorias e correções instantaneamente sem baixar novo APK.'
+      },
+      {
+        tag: 'Design & Marca',
+        desc: 'Novo logotipo oficial ITFY Cyber Nexus e ícone de alta fidelidade no Android.'
+      },
+      {
+        tag: 'Documentação',
+        desc: 'Registro e histórico de versões acessíveis no sistema.'
+      }
+    ],
+    apkDownloadUrl: 'https://itfy.lpaguiar.com.br/download/apk'
+  });
+});
+
 app.use('/api/auth', authRouter);
 
 // Portal do cliente (exclusivo para o papel 'cliente', filtrado pelo token)

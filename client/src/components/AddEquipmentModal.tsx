@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { Equipment, Location, EquipmentCatalogItem, EquipmentTemplate } from '../types';
 import { api } from '../services/api';
+import { queueOfflineMutation } from '../services/offlineSyncService';
 import { ImageSearchModal } from './ImageSearchModal';
 import { BarcodeScannerModal } from './BarcodeScannerModal';
 import { useDialog } from '../context/DialogContext';
@@ -511,6 +512,64 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
     }
   };
 
+  const saveOfflineFallback = async () => {
+    const localId = equipmentToEdit?.id || `offline_eq_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+    const eqPayload = {
+      id: localId,
+      client_id: clientId,
+      location_id: formData.location_id || locationId,
+      name: formData.name,
+      category: formData.category,
+      manufacturer: formData.manufacturer,
+      model: formData.model,
+      serial_number: formData.serial_number,
+      mac_address: formData.mac_address,
+      physical_location: formData.physical_location,
+      photo_url: formData.photo_url,
+      local_ip: formData.local_ip,
+      subnet_mask: formData.subnet_mask,
+      gateway: formData.gateway,
+      primary_dns: formData.primary_dns ?? '',
+      secondary_dns: formData.secondary_dns ?? '',
+      dhcp_range: formData.dhcp_range ?? '',
+      interface_name: '',
+      vlan: '',
+      is_mac_reserved: formData.is_mac_reserved ? 1 : 0,
+      public_wan_ip: formData.public_wan_ip,
+      access_url: `${formData.protocol}://${formData.local_ip}`,
+      management_port: Number(formData.management_port) || 80,
+      protocol: formData.protocol,
+      admin_username: formData.admin_username,
+      config_path: formData.config_path,
+      notes: formData.notes,
+      internal_notes: formData.internal_notes,
+      additional_info: formData.additional_info,
+      warranty_expires_at: formData.warranty_expires_at || null,
+      custom_fields: formData.custom_fields || {}
+    };
+
+    await queueOfflineMutation('equipment', equipmentToEdit ? 'update' : 'create', eqPayload, clientId);
+
+    if (formData.admin_password.trim()) {
+      await queueOfflineMutation('credential', 'create', {
+        client_id: clientId,
+        equipment_id: localId,
+        name: `Acesso Admin - ${formData.name}`,
+        category: 'equipamento',
+        username: formData.admin_username || 'admin',
+        password: formData.admin_password,
+        access_url: `${formData.protocol}://${formData.local_ip}`,
+        port: Number(formData.management_port) || 80,
+        notes: 'Cadastrado offline junto com o equipamento'
+      }, clientId);
+    }
+
+    sessionStorage.removeItem(`rededoc_draft_eq_${clientId}`);
+    showToast('💾 Cadastro salvo offline no aparelho com total segurança! A sincronização ocorrerá automaticamente com a internet.', 'warning');
+    onSuccess();
+    onClose();
+  };
+
   const handleSubmit = async (e?: React.FormEvent) => {
     if (e && e.preventDefault) {
       e.preventDefault();
@@ -527,6 +586,12 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
       const msg = 'O endereço IP Local é obrigatório.';
       setErrorMessage(msg);
       showToast(msg, 'error');
+      return;
+    }
+
+    // Se estiver explicitamente offline, salva no IndexedDB diretamente sem esperar timeout de rede
+    if (typeof navigator !== 'undefined' && !navigator.onLine) {
+      await saveOfflineFallback();
       return;
     }
 
@@ -685,6 +750,20 @@ export const AddEquipmentModal: React.FC<AddEquipmentModalProps> = ({
       onSuccess();
       onClose();
     } catch (err: any) {
+      const isNetworkErr = (typeof navigator !== 'undefined' && !navigator.onLine) ||
+        err.message?.includes('fetch') ||
+        err.message?.includes('Network') ||
+        err.message?.includes('Failed to fetch') ||
+        err.message?.includes('Conexão') ||
+        err.message?.includes('HTML') ||
+        err.message?.includes('servidor');
+
+      if (isNetworkErr) {
+        console.warn('Conexão instável ou offline detectada. Salvando cadastro localmente no IndexedDB...', err);
+        await saveOfflineFallback();
+        return;
+      }
+
       const msg = err.message || 'Erro ao salvar equipamento.';
       setErrorMessage(msg);
       showToast(msg, 'error');

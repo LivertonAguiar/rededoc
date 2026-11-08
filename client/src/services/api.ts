@@ -1,3 +1,4 @@
+import { Capacitor } from '@capacitor/core';
 import {
   User, Client, Location, Equipment, PortForward, Credential,
   CredentialAuditLog, ServiceOrder, TopologyData, Attachment,
@@ -10,7 +11,43 @@ import {
   EquipmentTemplate
 } from '../types';
 
-const API_BASE = '/api';
+// Determina o endereço base do backend para Web, PWA e APK Nativo
+export function getBackendBaseUrl(): string {
+  if (typeof window === 'undefined') return '';
+
+  // 1. Permite servidor customizado salvo em localStorage
+  const custom = localStorage.getItem('itfy_server_url');
+  if (custom && custom.trim()) {
+    return custom.trim().replace(/\/+$/, '');
+  }
+
+  // 2. Se estiver executando nativamente no APK Android/iOS via Capacitor
+  const isCapacitor = Capacitor.isNativePlatform() ||
+    window.location.protocol === 'capacitor:' ||
+    (window.location.hostname === 'localhost' && window.location.port === '') ||
+    (window.location.hostname === 'localhost' && window.location.protocol === 'https:');
+
+  if (isCapacitor) {
+    return 'https://itfy.lpaguiar.com.br';
+  }
+
+  // 3. No navegador web comum
+  return '';
+}
+
+export function getApiBaseUrl(): string {
+  const backend = getBackendBaseUrl();
+  return backend ? `${backend}/api` : '/api';
+}
+
+export function resolveMediaUrl(url?: string | null): string {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:') || url.startsWith('blob:')) {
+    return url;
+  }
+  const backend = getBackendBaseUrl();
+  return `${backend}${url.startsWith('/') ? '' : '/'}${url}`;
+}
 
 // Cache em memória para navegação rápida e sem telas de carregamento repetitivas
 const apiCache = new Map<string, { data: any; expiresAt: number }>();
@@ -43,14 +80,26 @@ async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
     }
   }
 
-  const res = await fetch(`${API_BASE}${url}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...authHeaders,
-      ...(options?.headers || {})
-    },
-    ...options
-  });
+  const apiBase = getApiBaseUrl();
+  const cleanEndpoint = url.startsWith('/') ? url : `/${url}`;
+  const fullUrl = `${apiBase}${cleanEndpoint}`;
+
+  let res: Response;
+  try {
+    res = await fetch(fullUrl, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeaders,
+        ...(options?.headers || {})
+      },
+      ...options
+    });
+  } catch (netErr: any) {
+    throw new Error(`Sem conexão com o servidor (${getBackendBaseUrl() || 'local'}). Verifique sua internet.`);
+  }
+
+  const contentType = res.headers.get('content-type') || '';
+  const isJson = contentType.includes('application/json');
 
   if (!res.ok) {
     if (res.status === 401) {
@@ -60,8 +109,27 @@ async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
         localStorage.removeItem('rededoc_user');
       }
     }
-    const errorData = await res.json().catch(() => ({ error: 'Erro de comunicação com o servidor' }));
-    throw new Error(errorData.error || `Erro HTTP ${res.status}`);
+    let errorMsg = `Erro HTTP ${res.status}`;
+    if (isJson) {
+      const errorData = await res.json().catch(() => ({}));
+      errorMsg = errorData.error || errorData.message || errorMsg;
+    } else {
+      const text = await res.text().catch(() => '');
+      if (text.includes('<!doctype') || text.includes('<html')) {
+        errorMsg = 'O servidor retornou uma página inesperada em vez de dados JSON. Verifique a conexão com o backend.';
+      } else if (text) {
+        errorMsg = text.slice(0, 100);
+      }
+    }
+    throw new Error(errorMsg);
+  }
+
+  if (!isJson) {
+    const text = await res.text().catch(() => '');
+    if (text.includes('<!doctype') || text.includes('<html')) {
+      throw new Error('O servidor respondeu com uma página HTML em vez de dados JSON. Verifique a URL do backend.');
+    }
+    throw new Error('Resposta do servidor em formato inesperado.');
   }
 
   const data = await res.json();
@@ -99,6 +167,19 @@ export const api = {
       return null;
     }
   },
+
+  // Telemetria, Versão e Atualizações OTA (Over-The-Air)
+  getAppVersion: () =>
+    fetchJson<{
+      version: string;
+      buildNumber: number;
+      releaseName: string;
+      releaseDate: string;
+      otaSupported: boolean;
+      minSupportedVersion: string;
+      changelog: { tag: string; desc: string }[];
+      apkDownloadUrl: string;
+    }>('/app/version'),
 
   // Dashboard & Busca Rápida
   getDashboardStats: (clientId?: string) =>
@@ -348,7 +429,7 @@ export const api = {
     if (data.notes) formData.append('notes', data.notes);
 
     const token = localStorage.getItem('rededoc_token');
-    const res = await fetch(`${API_BASE}/attachments`, {
+    const res = await fetch(`${getApiBaseUrl()}/attachments`, {
       method: 'POST',
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: formData
@@ -372,8 +453,8 @@ export const api = {
   },
 
   // Backup & Restore
-  exportBackupUrl: () => `${API_BASE}/backup/export?token=${localStorage.getItem('rededoc_token') || ''}`,
-  exportBackupZipUrl: () => `${API_BASE}/backup/export-zip?token=${localStorage.getItem('rededoc_token') || ''}`,
+  exportBackupUrl: () => `${getApiBaseUrl()}/backup/export?token=${localStorage.getItem('rededoc_token') || ''}`,
+  exportBackupZipUrl: () => `${getApiBaseUrl()}/backup/export-zip?token=${localStorage.getItem('rededoc_token') || ''}`,
   importBackup: (backupJson: any) =>
     fetchJson<{ message: string }>('/backup/import', { method: 'POST', body: JSON.stringify(backupJson) }),
 
@@ -410,7 +491,7 @@ export const api = {
     if (extraData?.clientId) formData.append('clientId', extraData.clientId);
 
     const token = localStorage.getItem('rededoc_token');
-    const res = await fetch(`${API_BASE}/images/upload`, {
+    const res = await fetch(`${getApiBaseUrl()}/images/upload`, {
       method: 'POST',
       headers: token ? { Authorization: `Bearer ${token}` } : {},
       body: formData
@@ -525,5 +606,19 @@ export const api = {
   deleteEquipmentTemplate: (id: string) =>
     fetchJson<{ success: boolean; message: string }>(`/equipment-templates/${id}`, {
       method: 'DELETE'
-    })
+    }),
+
+  // Helpers de Conectividade e Ambiente (Web vs APK Nativo)
+  getBackendBaseUrl,
+  getApiBaseUrl,
+  resolveMediaUrl,
+  setCustomServerUrl: (url: string) => {
+    if (url && url.trim()) {
+      localStorage.setItem('itfy_server_url', url.trim());
+    } else {
+      localStorage.removeItem('itfy_server_url');
+    }
+    invalidateApiCache();
+  },
+  getCustomServerUrl: () => localStorage.getItem('itfy_server_url') || ''
 };

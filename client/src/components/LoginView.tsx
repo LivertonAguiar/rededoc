@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Globe,
   Lock,
   Mail,
   ArrowRight,
@@ -14,6 +13,7 @@ import {
 } from 'lucide-react';
 import { api } from '../services/api';
 import { User } from '../types';
+import { ItfyLogo } from './ItfyLogo';
 
 interface LoginViewProps {
   onLoginSuccess: (user: User, token: string) => void;
@@ -61,18 +61,9 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLoginSuccess }) => {
       <div className="absolute bottom-10 right-10 w-80 h-80 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
       <div className="w-full max-w-md relative z-10 space-y-6">
-        {/* Cabeçalho da Aplicação */}
+        {/* Cabeçalho da Aplicação com Logotipo Oficial ITFY */}
         <div className="text-center space-y-2">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white shadow-xl shadow-blue-500/25 mb-1 border border-blue-400/30">
-            <Globe className="w-7 h-7" />
-          </div>
-          <h1 className="text-2xl font-black text-white tracking-tight flex items-center justify-center gap-1.5">
-            <span>IT</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">FY</span>
-          </h1>
-          <p className="text-xs text-slate-400">
-            Sistema de Documentação e Gestão de Infraestrutura de Redes
-          </p>
+          <ItfyLogo variant="vertical" size={54} />
         </div>
 
         {/* Card de Login */}

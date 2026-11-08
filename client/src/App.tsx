@@ -21,10 +21,13 @@ import { LoginView } from './components/LoginView';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { OfflineQueueIndicator } from './components/OfflineQueueIndicator';
 import { PwaInstallPrompt } from './components/PwaInstallPrompt';
+import { OtaUpdateNotifier } from './components/OtaUpdateNotifier';
+import { VersionHistoryModal } from './components/VersionHistoryModal';
 import { PullToRefresh } from './components/PullToRefresh';
 import { ClientProfileHeader } from './components/ClientProfileHeader';
 import { Client, Equipment, PortForward, Attachment, User } from './types';
 import { api } from './services/api';
+import { getOfflineEquipmentsForClient } from './services/offlineSyncService';
 import { DialogProvider } from './context/DialogContext';
 
 export function App() {
@@ -42,6 +45,7 @@ export function App() {
   });
   const [historyStack, setHistoryStack] = useState<string[]>([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isVersionHistoryOpen, setIsVersionHistoryOpen] = useState<boolean>(false);
   const [clients, setClients] = useState<Client[]>([]);
   const [selectedClientId, setSelectedClientId] = useState<string>(() => {
     return localStorage.getItem('rededoc_selectedClientId') || '';
@@ -180,11 +184,37 @@ export function App() {
     if (!selectedClientId) return;
     setLoading(true);
     try {
-      const [eqs, ports, atts] = await Promise.all([
-        api.getEquipments(selectedClientId),
-        api.getPortForwards(selectedClientId),
-        api.getAttachments(selectedClientId)
-      ]);
+      let eqs: Equipment[] = [];
+      let ports: PortForward[] = [];
+      let atts: Attachment[] = [];
+
+      try {
+        [eqs, ports, atts] = await Promise.all([
+          api.getEquipments(selectedClientId),
+          api.getPortForwards(selectedClientId),
+          api.getAttachments(selectedClientId)
+        ]);
+      } catch (netErr) {
+        console.warn('Rede indisponível ao carregar infraestrutura remota:', netErr);
+      }
+
+      // Mescla com equipamentos criados localmente (offline-first)
+      try {
+        const offlineEqs = await getOfflineEquipmentsForClient(selectedClientId);
+        if (offlineEqs.length > 0) {
+          const remoteIds = new Set(eqs.map(e => e.id));
+          const merged = [...eqs];
+          for (const offEq of offlineEqs) {
+            if (!remoteIds.has(offEq.id)) {
+              merged.unshift(offEq);
+            }
+          }
+          eqs = merged;
+        }
+      } catch (offErr) {
+        console.warn('Aviso ao carregar itens offline locais:', offErr);
+      }
+
       setEquipments(eqs);
       setPortForwards(ports);
       setAttachments(atts);
@@ -194,6 +224,18 @@ export function App() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const handleOfflineEvent = () => {
+      loadClientData();
+    };
+    window.addEventListener('app:offline-item-queued', handleOfflineEvent);
+    window.addEventListener('app:offline-sync-completed', handleOfflineEvent);
+    return () => {
+      window.removeEventListener('app:offline-item-queued', handleOfflineEvent);
+      window.removeEventListener('app:offline-sync-completed', handleOfflineEvent);
+    };
+  }, [selectedClientId]);
 
   useEffect(() => {
     loadClients();
@@ -278,6 +320,9 @@ export function App() {
   return (
     <DialogProvider>
       <div className="flex min-h-screen bg-[#0B132B] text-slate-100">
+        {/* Notificador de Atualizações Over-The-Air (OTA) */}
+        <OtaUpdateNotifier onOpenChangelog={() => setIsVersionHistoryOpen(true)} />
+
         {/* Barra de Navegação Lateral (Desktop fixa + Mobile gaveta) */}
         <Sidebar
           activeTab={activeTab}
@@ -287,6 +332,7 @@ export function App() {
           onCloseMobile={() => setIsMobileMenuOpen(false)}
           currentUser={currentUser}
           onLogout={handleLogout}
+          onOpenVersionHistory={() => setIsVersionHistoryOpen(true)}
         />
 
         {/* Conteúdo Principal */}
@@ -499,6 +545,12 @@ export function App() {
 
         {/* Prompt PWA para Instalação no Celular */}
         <PwaInstallPrompt />
+
+        {/* Modal de Histórico e Registro de Versões */}
+        <VersionHistoryModal
+          isOpen={isVersionHistoryOpen}
+          onClose={() => setIsVersionHistoryOpen(false)}
+        />
       </div>
     </DialogProvider>
   );
