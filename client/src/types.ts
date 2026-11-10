@@ -705,4 +705,40 @@ export interface EquipmentTemplate {
   updated_at: string;
 }
 
+// ==========================================
+// Proteção e Snapshots de Banco de Dados
+// ==========================================
+export interface BackupSnapshot {
+  filename: string;
+  path: string;
+  type: 'automated' | 'manual' | 'pre-restore' | 'pre-import';
+  label?: string;
+  created_at: string;
+  size_bytes: number;
+  size_formatted: string;
+  sha256: string;
+  integrity: string;
+  counts?: {
+    clients: number;
+    equipments: number;
+    credentials: number;
+    users: number;
+    service_orders: number;
+    articles: number;
+  };
+}
+
+export interface DatabaseIntegrityStatus {
+  ok: boolean;
+  result: string;
+  database_file: string;
+  database_size_bytes: number;
+  wal_size_bytes: number;
+  journal_mode: string;
+  synchronous: string;
+  busy_timeout: number;
+  checked_at: string;
+}
+
+
 

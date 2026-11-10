@@ -15,6 +15,7 @@ build/
 data/*.sqlite
 data/*.sqlite-shm
 data/*.sqlite-wal
+data/backups/
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
@@ -48,6 +49,7 @@ desktop.ini
 # Temporários
 scratch/
 server/scratch/
+graphify-out/
 
 # Uploads de fotos e arquivos anexos
 uploads/*

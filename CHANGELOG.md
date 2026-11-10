@@ -7,6 +7,31 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [1.0.5] - 2026-11-10
+
+### 🛡️ Proteção do Banco de Dados contra Perda de Dados (Zero Data Loss)
+- **Motor de Snapshots Atômicos Periódicos (`backupService.ts`)**:
+  - Implementado sistema de backup online sem bloqueio com o comando nativo SQLite `VACUUM INTO`.
+  - Agendador automático executado a cada 12 horas com rotatividade inteligente (retenção automática dos últimos 14 pontos para prevenir esgotamento de disco).
+  - Cada snapshot acompanha manifesto JSON com data ISO, tamanho formatado, hash criptográfico SHA-256 e contadores de entidades (clientes, equipamentos, credenciais, ordens de serviço).
+- **Proteção Preventiva Pré-Restauração (Rollback Automático)**:
+  - Antes de qualquer importação de JSON ou restauração de snapshot, um backup de segurança do estado atual é gerado instantaneamente (`pre-import` / `pre-restore`). Em caso de falha ou engano, o administrador pode reverter a qualquer momento.
+- **Resiliência e Integridade do SQLite**:
+  - Configurados novos PRAGMAs: `synchronous = NORMAL`, `busy_timeout = 5000` (elimina erros de concorrência `SQLITE_BUSY`) e `wal_autocheckpoint = 1000`.
+  - Verificação de integridade no startup com `PRAGMA integrity_check` e endpoint `/api/backup/integrity`.
+- **Encerramento Gracioso (Graceful Shutdown)**:
+  - Captura dos sinais `SIGTERM` e `SIGINT` (reboot do host / restart do container docker) para descarregar o buffer WAL com `PRAGMA wal_checkpoint(TRUNCATE)` e fechar conexões de forma segura, evitando corrupção de páginas.
+- **Painel Interativo de Snapshots no Frontend (`BackupView.tsx`)**:
+  - Indicadores em tempo real da saúde da base (status de integridade, tamanho do arquivo ativo e buffer WAL).
+  - Tabela de pontos de restauração históricos com badges de identificação (automático, manual, pré-restauração), cópia rápida de SHA-256 e ações para baixar `.sqlite`, restaurar ponto ou excluir.
+
+### 🐛 Correções de Falhas Críticas
+- **Correção no Exportador ZIP de Backup**:
+  - Corrigido bug crítico em `backupRouter.get('/export-zip')` que referenciava o arquivo legado `rededoc.sqlite` em vez da base ativa `itfy.sqlite`, o que resultava no download de dados defasados.
+  - O exportador agora executa checkpoint do WAL e gera snapshot via `VACUUM INTO` em tempo real para inclusão no arquivo `.zip`.
+
+---
+
 ## [1.0.4] - 2026-11-08
 
 ### 🚀 Melhorias de Experiência Mobile & Atualizações

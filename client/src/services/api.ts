@@ -8,7 +8,7 @@ import {
   FavoriteItem, GroupedSearchResults, DashboardOverviewData,
   Subnet, SubnetUsageReport, SubnetSuggestion, ClientIpConflictsReport,
   SystemUser, PortalOverview, PortalEquipment, PortalServiceOrder, PortalArticle,
-  EquipmentTemplate
+  EquipmentTemplate, BackupSnapshot, DatabaseIntegrityStatus
 } from '../types';
 
 // Determina o endereço base do backend para Web, PWA e APK Nativo
@@ -476,7 +476,26 @@ export const api = {
   exportBackupUrl: () => `${getApiBaseUrl()}/backup/export?token=${localStorage.getItem('rededoc_token') || ''}`,
   exportBackupZipUrl: () => `${getApiBaseUrl()}/backup/export-zip?token=${localStorage.getItem('rededoc_token') || ''}`,
   importBackup: (backupJson: any) =>
-    fetchJson<{ message: string }>('/backup/import', { method: 'POST', body: JSON.stringify(backupJson) }),
+    fetchJson<{ message: string; preImportSnapshot?: string }>('/backup/import', { method: 'POST', body: JSON.stringify(backupJson) }),
+  getDatabaseIntegrity: () =>
+    fetchJson<DatabaseIntegrityStatus>('/backup/integrity'),
+  getBackupSnapshots: () =>
+    fetchJson<BackupSnapshot[]>('/backup/snapshots'),
+  createBackupSnapshot: (label?: string) =>
+    fetchJson<{ message: string; snapshot: BackupSnapshot }>('/backup/snapshots/create', {
+      method: 'POST',
+      body: JSON.stringify({ label })
+    }),
+  downloadSnapshotUrl: (filename: string) =>
+    `${getApiBaseUrl()}/backup/snapshots/${encodeURIComponent(filename)}/download?token=${localStorage.getItem('rededoc_token') || ''}`,
+  restoreSnapshot: (filename: string) =>
+    fetchJson<{ success: boolean; message: string; preRestoreSnapshot?: string }>(`/backup/snapshots/${encodeURIComponent(filename)}/restore`, {
+      method: 'POST'
+    }),
+  deleteSnapshot: (filename: string) =>
+    fetchJson<{ message: string }>(`/backup/snapshots/${encodeURIComponent(filename)}`, {
+      method: 'DELETE'
+    }),
 
   // Catálogo de Equipamentos
   getEquipmentCatalog: (category?: string, query?: string) => {

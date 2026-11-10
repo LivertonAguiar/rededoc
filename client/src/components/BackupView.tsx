@@ -19,11 +19,16 @@ import {
   Zap,
   Camera,
   Layers,
-  Sparkles
+  Sparkles,
+  Trash2,
+  Copy,
+  RotateCcw,
+  FileCheck,
+  ShieldAlert
 } from 'lucide-react';
 import { api } from '../services/api';
 import { useDialog } from '../context/DialogContext';
-import { NotificationSetting, NotificationLog } from '../types';
+import { NotificationSetting, NotificationLog, BackupSnapshot, DatabaseIntegrityStatus } from '../types';
 import { CURRENT_CLIENT_VERSION } from '../services/otaService';
 
 interface BackupViewProps {
@@ -57,6 +62,112 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
       .catch(() => {});
   }, []);
   const [dispatchingNow, setDispatchingNow] = useState(false);
+
+  // Estados de Snapshots e Integridade do Banco (Proteção Contra Perdas)
+  const [snapshots, setSnapshots] = useState<BackupSnapshot[]>([]);
+  const [loadingSnapshots, setLoadingSnapshots] = useState(false);
+  const [creatingSnapshot, setCreatingSnapshot] = useState(false);
+  const [restoringFilename, setRestoringFilename] = useState<string | null>(null);
+  const [integrityStatus, setIntegrityStatus] = useState<DatabaseIntegrityStatus | null>(null);
+  const [checkingIntegrity, setCheckingIntegrity] = useState(false);
+  const [copiedSha, setCopiedSha] = useState<string | null>(null);
+
+  const loadSnapshots = async () => {
+    try {
+      setLoadingSnapshots(true);
+      const data = await api.getBackupSnapshots();
+      setSnapshots(data);
+    } catch (err) {
+      console.error('Erro ao carregar snapshots:', err);
+    } finally {
+      setLoadingSnapshots(false);
+    }
+  };
+
+  const loadIntegrity = async () => {
+    try {
+      setCheckingIntegrity(true);
+      const status = await api.getDatabaseIntegrity();
+      setIntegrityStatus(status);
+    } catch (err) {
+      console.error('Erro ao verificar integridade:', err);
+    } finally {
+      setCheckingIntegrity(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'backup') {
+      loadSnapshots();
+      loadIntegrity();
+    }
+  }, [activeTab]);
+
+  const handleCreateSnapshot = async () => {
+    try {
+      setCreatingSnapshot(true);
+      await api.createBackupSnapshot();
+      showToast('Ponto de restauração manual criado com sucesso!', 'success');
+      await loadSnapshots();
+      await loadIntegrity();
+    } catch (err: any) {
+      showToast('Erro ao criar snapshot: ' + err.message, 'error');
+    } finally {
+      setCreatingSnapshot(false);
+    }
+  };
+
+  const handleRestoreSnapshot = (snapshot: BackupSnapshot) => {
+    confirm({
+      title: 'Restaurar Ponto de Segurança',
+      message: `Atenção: A base de dados será restaurada para o ponto "${snapshot.label || snapshot.filename}" (${snapshot.size_formatted}). Um backup de segurança do estado atual será criado automaticamente antes da restauração. Deseja continuar?`,
+      confirmText: 'Sim, Restaurar Agora',
+      danger: true,
+      onConfirm: async () => {
+        try {
+          setRestoringFilename(snapshot.filename);
+          const res = await api.restoreSnapshot(snapshot.filename);
+          if (res.success) {
+            showToast('Banco de dados restaurado com sucesso!', 'success');
+            await loadSnapshots();
+            await loadIntegrity();
+            onRefresh();
+          } else {
+            showToast('Falha na restauração: ' + res.message, 'error');
+          }
+        } catch (err: any) {
+          showToast('Erro ao restaurar: ' + err.message, 'error');
+        } finally {
+          setRestoringFilename(null);
+        }
+      }
+    });
+  };
+
+  const handleDeleteSnapshot = (filename: string) => {
+    confirm({
+      title: 'Excluir Ponto de Restauração',
+      message: `Tem certeza que deseja excluir o snapshot "${filename}"? Esta ação não pode ser desfeita.`,
+      confirmText: 'Excluir Arquivo',
+      danger: true,
+      onConfirm: async () => {
+        try {
+          await api.deleteSnapshot(filename);
+          showToast('Snapshot excluído com sucesso.', 'success');
+          await loadSnapshots();
+        } catch (err: any) {
+          showToast('Erro ao excluir: ' + err.message, 'error');
+        }
+      }
+    });
+  };
+
+  const handleCopySha = (sha: string) => {
+    navigator.clipboard?.writeText(sha);
+    setCopiedSha(sha);
+    showToast('Hash SHA-256 copiado!', 'info');
+    setTimeout(() => setCopiedSha(null), 3000);
+  };
 
   // Histórico de Alertas
   const [logs, setLogs] = useState<NotificationLog[]>([]);
@@ -165,7 +276,7 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
 
     confirm({
       title: 'Restaurar Backup do Banco de Dados',
-      message: 'Atenção: A restauração substituirá todos os dados existentes no sistema pelo conteúdo do arquivo de backup. Deseja prosseguir?',
+      message: 'Atenção: A restauração substituirá os dados atuais pelo arquivo selecionado. Um ponto de segurança do estado atual será salvo automaticamente antes de aplicar as mudanças. Deseja prosseguir?',
       confirmText: 'Restaurar Banco de Dados',
       danger: true,
       onConfirm: async () => {
@@ -178,7 +289,9 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
             const json = JSON.parse(event.target?.result as string);
             const res = await api.importBackup(json);
             setMessage({ text: res.message || 'Backup restaurado com sucesso!', type: 'success' });
-            showToast('Backup restaurado com sucesso!', 'success');
+            showToast('Backup restaurado com sucesso! Ponto de segurança salvo.', 'success');
+            await loadSnapshots();
+            await loadIntegrity();
             onRefresh();
           } catch (err: any) {
             setMessage({ text: 'Falha na restauração: ' + err.message, type: 'error' });
@@ -309,7 +422,7 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
                 </div>
                 <h2 className="text-base font-bold text-white">Exportar Backup Completo</h2>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Gera uma cópia integral da infraestrutura. O formato <strong className="text-white">ZIP</strong> inclui o banco de dados binário SQLite (<code className="text-emerald-400 font-mono">rededoc.sqlite</code>), todos os arquivos e fotos de equipamentos (<code className="text-blue-400 font-mono">uploads/</code>), e o manifesto JSON com criptografia AES-256-GCM preservada.
+                  Gera uma cópia integral da infraestrutura. O formato <strong className="text-white">ZIP</strong> inclui o banco de dados binário SQLite (<code className="text-emerald-400 font-mono">itfy.sqlite</code>), todos os arquivos e fotos de equipamentos (<code className="text-blue-400 font-mono">uploads/</code>), e o manifesto JSON com criptografia AES-256-GCM preservada.
                 </p>
               </div>
 
@@ -341,7 +454,7 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
                 </div>
                 <h2 className="text-base font-bold text-white">Restaurar Base de Dados</h2>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Substitui a base atual pelo conteúdo do arquivo de backup selecionado. Recomendado antes de manutenções críticas ou transferências de servidor.
+                  Substitui a base atual pelo arquivo selecionado. Um ponto de segurança é gerado automaticamente antes de qualquer alteração para possibilitar rollback a qualquer momento.
                 </p>
               </div>
 
@@ -356,6 +469,236 @@ export const BackupView: React.FC<BackupViewProps> = ({ onRefresh }) => {
                   className="hidden"
                 />
               </label>
+            </div>
+          </div>
+
+          {/* PAINEL DE PROTEÇÃO CONTRA PERDA & SNAPSHOTS ATÔMICOS */}
+          <div className="bg-[#101C31] border border-[#1D3054] rounded-2xl p-6 shadow-xl space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1D3054]">
+              <div>
+                <h2 className="text-base font-bold text-white flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                  <span>Proteção Ativa & Pontos de Restauração (.sqlite)</span>
+                </h2>
+                <p className="text-xs text-slate-400 mt-1">
+                  Snapshots atômicos via SQLite <code className="text-blue-300 font-mono">VACUUM INTO</code>. Não bloqueiam requisições em andamento e garantem restauração instantânea.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={loadIntegrity}
+                  disabled={checkingIntegrity}
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#172744] hover:bg-[#20365D] text-slate-300 hover:text-white border border-[#24375A] text-xs font-semibold transition cursor-pointer disabled:opacity-50"
+                  title="Executar verificação PRAGMA integrity_check no banco ativo"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${checkingIntegrity ? 'animate-spin text-blue-400' : ''}`} />
+                  <span>{checkingIntegrity ? 'Validando...' : 'Checar Integridade'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={handleCreateSnapshot}
+                  disabled={creatingSnapshot}
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition shadow-md shadow-emerald-500/20 cursor-pointer disabled:opacity-50"
+                  title="Criar um snapshot completo e verificado agora"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span>{creatingSnapshot ? 'Criando Snapshot...' : 'Criar Ponto Agora'}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Badges de Status da Proteção */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              <div className="p-3 rounded-xl bg-[#091122] border border-[#1b2b48] flex items-center gap-3">
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                  integrityStatus?.ok
+                    ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'
+                    : 'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+                }`}>
+                  {integrityStatus?.ok ? <CheckCircle2 className="w-5 h-5" /> : <ShieldAlert className="w-5 h-5" />}
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Integridade SQLite</span>
+                  <span className={`font-bold mt-0.5 block ${integrityStatus?.ok ? 'text-emerald-300' : 'text-rose-300'}`}>
+                    {integrityStatus?.ok ? '100% Saudável (PRAGMA OK)' : 'Falha na Integridade'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#091122] border border-[#1b2b48] flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-500/15 text-blue-400 border border-blue-500/30 flex items-center justify-center shrink-0">
+                  <Clock className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Backup Automático</span>
+                  <span className="font-bold text-slate-200 mt-0.5 block">A cada 12h (Retenção: 14)</span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#091122] border border-[#1b2b48] flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-purple-500/15 text-purple-400 border border-purple-500/30 flex items-center justify-center shrink-0">
+                  <Database className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-500 block">Banco Ativo</span>
+                  <span className="font-bold text-slate-200 font-mono mt-0.5 block">
+                    {integrityStatus?.database_file || 'itfy.sqlite'}
+                    {integrityStatus?.database_size_bytes ? ` (${(integrityStatus.database_size_bytes / 1024).toFixed(0)} KB)` : ''}
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-3 rounded-xl bg-[#091122] border border-[#1b2b48] flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 flex items-center justify-center shrink-0">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase font-bold text-slate-500 block">WAL Buffer</span>
+                  <span className="font-bold text-cyan-300 font-mono mt-0.5 block">
+                    {integrityStatus?.wal_size_bytes ? `${(integrityStatus.wal_size_bytes / 1024).toFixed(0)} KB (Auto-Flush)` : '0 KB (Sincronizado)'}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Lista de Snapshots Históricos */}
+            <div className="space-y-3 pt-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-bold text-slate-300 flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-blue-400" />
+                  <span>Histórico de Snapshots Disponíveis ({snapshots.length})</span>
+                </span>
+                <span className="text-[11px] text-slate-500">
+                  Ordenado por data (mais recentes primeiro)
+                </span>
+              </div>
+
+              {loadingSnapshots ? (
+                <div className="p-8 text-center text-xs text-slate-400 flex items-center justify-center gap-2">
+                  <RefreshCw className="w-4 h-4 animate-spin text-blue-400" />
+                  <span>Carregando pontos de restauração...</span>
+                </div>
+              ) : snapshots.length === 0 ? (
+                <div className="p-8 text-center bg-[#091122] border border-dashed border-[#1b2b48] rounded-2xl text-xs text-slate-400 space-y-2">
+                  <Database className="w-8 h-8 mx-auto text-slate-600" />
+                  <p className="font-semibold text-slate-300">Nenhum snapshot gerado ainda.</p>
+                  <p className="text-[11px] text-slate-500">
+                    O sistema gera um backup automático periodicamente a cada 12h, ou você pode clicar em "Criar Ponto Agora".
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
+                  {snapshots.map((snap) => {
+                    const isRestoringThis = restoringFilename === snap.filename;
+                    const isAutomated = snap.type === 'automated';
+                    const isPreRestore = snap.type === 'pre-restore';
+                    const isPreImport = snap.type === 'pre-import';
+
+                    const typeBadge = isAutomated
+                      ? { label: 'Rotina Automática (12h)', color: 'bg-blue-500/15 text-blue-300 border-blue-500/30' }
+                      : isPreRestore
+                      ? { label: 'Pré-Restauração (Segurança)', color: 'bg-amber-500/15 text-amber-300 border-amber-500/30' }
+                      : isPreImport
+                      ? { label: 'Pré-Importação JSON', color: 'bg-purple-500/15 text-purple-300 border-purple-500/30' }
+                      : { label: 'Ponto Manual', color: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30' };
+
+                    return (
+                      <div
+                        key={snap.filename}
+                        className="bg-[#091122] border border-[#1b2b48] hover:border-[#253d66] rounded-xl p-3.5 transition flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs"
+                      >
+                        <div className="space-y-1.5 flex-1 min-w-0">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="font-bold text-white text-sm truncate">
+                              {snap.label || snap.filename}
+                            </span>
+                            <span className={`text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full border ${typeBadge.color}`}>
+                              {typeBadge.label}
+                            </span>
+                            <span className="text-[11px] font-mono text-slate-400 bg-[#0E1A33] px-2 py-0.5 rounded-md border border-[#1b2b48]">
+                              {snap.size_formatted}
+                            </span>
+                          </div>
+
+                          <div className="flex flex-wrap items-center gap-3 text-[11px] text-slate-400">
+                            <span className="flex items-center gap-1 text-slate-300">
+                              <Clock className="w-3.5 h-3.5 text-slate-500" />
+                              {new Date(snap.created_at).toLocaleString('pt-BR')}
+                            </span>
+
+                            {snap.counts && (
+                              <span className="text-slate-400">
+                                <strong className="text-slate-300">{snap.counts.clients}</strong> clientes •{' '}
+                                <strong className="text-slate-300">{snap.counts.equipments}</strong> equip •{' '}
+                                <strong className="text-slate-300">{snap.counts.credentials}</strong> cred •{' '}
+                                <strong className="text-slate-300">{snap.counts.service_orders}</strong> ordens
+                              </span>
+                            )}
+                          </div>
+
+                          {/* SHA-256 Chip */}
+                          <div className="flex items-center gap-2 pt-0.5">
+                            <span className="text-[10px] text-slate-500 uppercase font-mono">SHA-256:</span>
+                            <code className="text-[10px] font-mono text-slate-400 bg-[#060D1A] px-2 py-0.5 rounded border border-[#15243E] truncate max-w-[280px]">
+                              {snap.sha256}
+                            </code>
+                            <button
+                              type="button"
+                              onClick={() => handleCopySha(snap.sha256)}
+                              className="text-slate-400 hover:text-white transition p-0.5 cursor-pointer"
+                              title="Copiar Hash SHA-256 completo"
+                            >
+                              {copiedSha === snap.sha256 ? (
+                                <Check className="w-3 h-3 text-emerald-400" />
+                              ) : (
+                                <Copy className="w-3 h-3" />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Botões de Ação */}
+                        <div className="flex items-center gap-2 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-[#1b2b48]">
+                          <a
+                            href={api.downloadSnapshotUrl(snap.filename)}
+                            download={snap.filename}
+                            className="p-2 rounded-lg bg-[#14233C] hover:bg-[#1E355B] text-slate-300 hover:text-white border border-[#233A63] transition flex items-center gap-1.5 cursor-pointer"
+                            title="Baixar arquivo de banco .sqlite deste ponto"
+                          >
+                            <Download className="w-3.5 h-3.5 text-blue-400" />
+                            <span className="text-[11px] font-semibold">Baixar .sqlite</span>
+                          </a>
+
+                          <button
+                            type="button"
+                            disabled={isRestoringThis}
+                            onClick={() => handleRestoreSnapshot(snap)}
+                            className="p-2 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/30 transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+                            title="Restaurar a base de dados para este snapshot (gera backup de segurança automático antes)"
+                          >
+                            <RotateCcw className={`w-3.5 h-3.5 text-amber-400 ${isRestoringThis ? 'animate-spin' : ''}`} />
+                            <span className="text-[11px] font-bold">
+                              {isRestoringThis ? 'Restaurando...' : 'Restaurar'}
+                            </span>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteSnapshot(snap.filename)}
+                            className="p-2 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 transition cursor-pointer"
+                            title="Excluir este snapshot"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 

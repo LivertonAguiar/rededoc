@@ -3,9 +3,16 @@ import path from 'node:path';
 import fs from 'node:fs';
 import jwt from 'jsonwebtoken';
 import { ZipArchive } from 'archiver';
-import { db } from '../db/database.js';
+import { db, dbFileName, dbPath, dataDir, walCheckpoint, runIntegrityCheck } from '../db/database.js';
 import { getJwtSecret } from '../middleware/auth.js';
 import { rebuildSearchIndex } from '../services/searchService.js';
+import {
+  createDatabaseSnapshot,
+  listSnapshots,
+  getSnapshotSafePath,
+  deleteSnapshot,
+  restoreSnapshot
+} from '../services/backupService.js';
 
 export const backupRouter = Router();
 
@@ -36,17 +43,101 @@ function backupAuth(req: Request, res: Response, next: NextFunction): any {
 
 backupRouter.use(backupAuth);
 
+// Endpoint: Verificação em tempo real da saúde e integridade do banco SQLite
+backupRouter.get('/integrity', (req: Request, res: Response) => {
+  try {
+    const integrity = runIntegrityCheck();
+    const dbStats = fs.existsSync(dbPath) ? fs.statSync(dbPath) : null;
+    const walPath = `${dbPath}-wal`;
+    const walStats = fs.existsSync(walPath) ? fs.statSync(walPath) : null;
+
+    res.json({
+      ok: integrity.ok,
+      result: integrity.result,
+      database_file: dbFileName,
+      database_size_bytes: dbStats?.size || 0,
+      wal_size_bytes: walStats?.size || 0,
+      journal_mode: 'WAL',
+      synchronous: 'NORMAL',
+      busy_timeout: 5000,
+      checked_at: new Date().toISOString()
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Erro ao verificar integridade: ' + err.message });
+  }
+});
+
+// Endpoint: Listagem de snapshots e pontos de restauração históricos
+backupRouter.get('/snapshots', (req: Request, res: Response) => {
+  try {
+    const snapshots = listSnapshots();
+    res.json(snapshots);
+  } catch (err: any) {
+    res.status(500).json({ error: 'Erro ao listar snapshots: ' + err.message });
+  }
+});
+
+// Endpoint: Criação imediata de um ponto de restauração manual
+backupRouter.post('/snapshots/create', (req: Request, res: Response) => {
+  try {
+    const label = req.body?.label;
+    const snapshot = createDatabaseSnapshot({ type: 'manual', label });
+    res.json({ message: 'Ponto de restauração criado com sucesso!', snapshot });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Erro ao criar ponto de restauração: ' + err.message });
+  }
+});
+
+// Endpoint: Download direto de um snapshot SQLite
+backupRouter.get('/snapshots/:filename/download', (req: Request, res: Response): any => {
+  try {
+    const filename = String(req.params.filename);
+    const safePath = getSnapshotSafePath(filename);
+    if (!safePath) {
+      return res.status(404).json({ error: 'Snapshot não encontrado ou inválido.' });
+    }
+    res.download(safePath, filename);
+  } catch (err: any) {
+    res.status(500).json({ error: 'Erro ao baixar snapshot: ' + err.message });
+  }
+});
+
+// Endpoint: Restauração da base de dados para um snapshot específico
+backupRouter.post('/snapshots/:filename/restore', (req: Request, res: Response): any => {
+  try {
+    const filename = String(req.params.filename);
+    const result = restoreSnapshot(filename);
+    if (!result.success) {
+      return res.status(500).json({ error: result.message, preRestoreSnapshot: result.preRestoreSnapshot });
+    }
+    res.json(result);
+  } catch (err: any) {
+    res.status(500).json({ error: 'Falha ao restaurar: ' + err.message });
+  }
+});
+
+// Endpoint: Exclusão de snapshot
+backupRouter.delete('/snapshots/:filename', (req: Request, res: Response): any => {
+  try {
+    const filename = String(req.params.filename);
+    const success = deleteSnapshot(filename);
+    if (!success) {
+      return res.status(400).json({ error: 'Não foi possível excluir o snapshot.' });
+    }
+    res.json({ message: 'Snapshot excluído com sucesso.' });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Erro ao excluir snapshot: ' + err.message });
+  }
+});
+
 // Endpoint: Exportação completa consolidada em ZIP (JSON + SQLite + Uploads)
 backupRouter.get('/export-zip', async (req: Request, res: Response) => {
+  let tempVacuumPath: string | null = null;
   try {
     // Força o SQLite a gravar alterações do WAL no arquivo principal antes do empacotamento
-    try {
-      db.exec('PRAGMA wal_checkpoint(TRUNCATE);');
-    } catch (e) {
-      console.warn('Aviso no checkpoint WAL:', e);
-    }
+    walCheckpoint('TRUNCATE');
 
-    const filename = `rededoc-full-backup-${new Date().toISOString().slice(0, 10)}.zip`;
+    const filename = `itfy-full-backup-${new Date().toISOString().slice(0, 10)}.zip`;
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.setHeader('Content-Type', 'application/zip');
 
@@ -54,12 +145,22 @@ backupRouter.get('/export-zip', async (req: Request, res: Response) => {
       zlib: { level: 9 }
     });
 
+    const cleanupTemp = () => {
+      if (tempVacuumPath && fs.existsSync(tempVacuumPath)) {
+        try { fs.unlinkSync(tempVacuumPath); } catch {}
+      }
+    };
+
     archive.on('error', (err: any) => {
       console.error('Erro na geração do ZIP:', err);
+      cleanupTemp();
       if (!res.headersSent) {
         res.status(500).json({ error: 'Falha ao compactar backup: ' + (err?.message || 'Erro desconhecido') });
       }
     });
+
+    res.on('finish', cleanupTemp);
+    res.on('close', cleanupTemp);
 
     archive.pipe(res);
 
@@ -70,8 +171,9 @@ backupRouter.get('/export-zip', async (req: Request, res: Response) => {
     const portsCount = (db.prepare('SELECT COUNT(*) as c FROM port_forwards').get() as any)?.c || 0;
 
     const manifest = {
-      system: 'RedeDoc',
-      version: '1.0.0',
+      system: 'ITFY',
+      version: '1.0.4',
+      database: dbFileName,
       exported_at: new Date().toISOString(),
       summary: {
         total_clients: clientsCount,
@@ -104,11 +206,18 @@ backupRouter.get('/export-zip', async (req: Request, res: Response) => {
     };
     archive.append(JSON.stringify(fullJsonData, null, 2), { name: 'data_export.json' });
 
-    // 3. Anexa o arquivo binário rededoc.sqlite se existir
-    const resolvedDataDir = process.env.DATA_DIR || path.resolve(process.cwd(), 'data');
-    const sqlitePath = path.join(resolvedDataDir, 'rededoc.sqlite');
-    if (fs.existsSync(sqlitePath)) {
-      archive.file(sqlitePath, { name: 'database/rededoc.sqlite' });
+    // 3. Gera snapshot VACUUM INTO consistente e anexa ao ZIP
+    tempVacuumPath = path.join(dataDir, `temp_export_${Date.now()}.sqlite`);
+    try {
+      db.exec(`VACUUM INTO '${tempVacuumPath.replace(/'/g, "''")}';`);
+      if (fs.existsSync(tempVacuumPath)) {
+        archive.file(tempVacuumPath, { name: `database/${dbFileName}` });
+      }
+    } catch (vacuumErr) {
+      console.warn('Aviso: VACUUM INTO no export falhou, anexando banco diretamente:', vacuumErr);
+      if (fs.existsSync(dbPath)) {
+        archive.file(dbPath, { name: `database/${dbFileName}` });
+      }
     }
 
     // 4. Anexa a pasta uploads (fotos de equipamentos e arquivos de configuração)
@@ -126,12 +235,13 @@ backupRouter.get('/export-zip', async (req: Request, res: Response) => {
   }
 });
 
-// Endpoint: Exportação legada em formato JSON simples
+// Endpoint: Exportação em formato JSON simples
 backupRouter.get('/export', (req: Request, res: Response) => {
   const data = {
     exported_at: new Date().toISOString(),
-    version: '1.0.0',
-    system: 'RedeDoc',
+    version: '1.0.4',
+    system: 'ITFY',
+    database: dbFileName,
     users: db.prepare('SELECT id, name, email, role, created_at FROM users').all(),
     clients: db.prepare('SELECT * FROM clients').all(),
     locations: db.prepare('SELECT * FROM locations').all(),
@@ -154,7 +264,7 @@ backupRouter.get('/export', (req: Request, res: Response) => {
     equipment_templates: db.prepare('SELECT * FROM equipment_templates').all()
   };
 
-  const filename = `rededoc-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  const filename = `itfy-backup-${new Date().toISOString().slice(0, 10)}.json`;
   res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify(data, null, 2));
@@ -164,6 +274,17 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
   const data = req.body;
   if (!data || !data.clients || !Array.isArray(data.clients)) {
     return res.status(400).json({ error: 'Formato de backup inválido.' });
+  }
+
+  // 1. Gera ponto de proteção imediata pré-importação antes de tocar em qualquer dado
+  let preImportBackup: any = null;
+  try {
+    preImportBackup = createDatabaseSnapshot({
+      type: 'pre-import',
+      label: 'Ponto de segurança gerado automaticamente antes da importação JSON'
+    });
+  } catch (snapErr) {
+    console.warn('Aviso: Falha ao gerar snapshot de segurança pré-importação:', snapErr);
   }
 
   try {
@@ -412,11 +533,18 @@ backupRouter.post('/import', (req: Request, res: Response): any => {
     }
 
     db.exec('COMMIT;');
+    walCheckpoint('TRUNCATE');
     rebuildSearchIndex();
-    res.json({ message: 'Backup restaurado com sucesso!' });
+    res.json({
+      message: 'Backup restaurado com sucesso!',
+      preImportSnapshot: preImportBackup?.filename
+    });
   } catch (err: any) {
     db.exec('ROLLBACK;');
     console.error('Erro na restauração do backup:', err);
-    res.status(500).json({ error: 'Falha ao restaurar backup: ' + err.message });
+    res.status(500).json({
+      error: 'Falha ao restaurar backup: ' + err.message +
+        (preImportBackup ? ` (Os dados anteriores foram preservados no ponto de segurança "${preImportBackup.filename}")` : '')
+    });
   }
 });

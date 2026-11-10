@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 
-import { initDatabase } from './db/database.js';
+import { initDatabase, closeDatabase, walCheckpoint } from './db/database.js';
 import { requireAuth, requireRole, requireInternalRole, getJwtSecret } from './middleware/auth.js';
 import { authRouter } from './routes/auth.js';
 import { clientsRouter } from './routes/clients.js';
@@ -36,6 +36,7 @@ import { usersRouter } from './routes/users.js';
 import { equipmentTemplatesRouter } from './routes/equipmentTemplates.js';
 import { initSearchIndex } from './services/searchService.js';
 import { startNotificationScheduler } from './services/notificationService.js';
+import { startAutomatedBackupScheduler } from './services/backupService.js';
 
 dotenv.config();
 
@@ -56,6 +57,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Configura trust proxy para express-rate-limit atrás de Nginx/Cloudflare
+app.set('trust proxy', 1);
 
 // Inicializa banco de dados SQLite e índice de busca global FTS5
 initDatabase();
@@ -111,7 +115,7 @@ app.get('/api/health', (req, res) => {
 
 // Download direto do aplicativo Android nativo (APK) com nome e versão amigáveis
 app.get(['/api/download/apk', '/download/apk'], (req, res) => {
-  const currentVersion = '1.0.4';
+  const currentVersion = '1.0.5';
   const apkFileName = `ITFY-v${currentVersion}.apk`;
   const directGithubUrl = `https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/${apkFileName}`;
 
@@ -130,9 +134,9 @@ app.get(['/api/download/apk', '/download/apk'], (req, res) => {
 // Verificação de versão e suporte a atualizações OTA (Over-The-Air)
 app.get('/api/app/version', (req, res) => {
   res.json({
-    version: '1.0.1', // Mantém 1.0.1 para desarmar o popup invasivo em aparelhos que ainda possuem o APK inicial
+    version: '1.0.5', // Mantém 1.0.1 para desarmar o popup invasivo em aparelhos que ainda possuem o APK inicial
     latestVersion: '1.0.4',
-    buildNumber: 1,
+    buildNumber: 6,
     releaseName: 'ITFY 1.0.4 Oficial',
     releaseDate: '2026-11-08',
     otaSupported: false,
@@ -160,7 +164,7 @@ app.get('/api/app/version', (req, res) => {
       }
     ],
     apkDownloadUrl: 'https://itfy.lpaguiar.com.br/download/apk',
-    apkFileName: 'ITFY-v1.0.4.apk'
+    apkFileName: 'ITFY-v1.0.5.apk'
   });
 });
 
@@ -201,8 +205,9 @@ app.use('/api/favorites', favoritesRouter);
 app.use('/api/subnets', subnetsRouter);
 app.use('/api/equipment-templates', equipmentTemplatesRouter);
 
-// Inicia agendador de notificações em segundo plano
+// Inicia agendador de notificações e motor de backups periódicos em segundo plano
 startNotificationScheduler();
+startAutomatedBackupScheduler();
 
 // Servir frontend compilado em ambiente de produção
 const clientDist = path.resolve(__dirname, '../../client/dist');
@@ -213,9 +218,37 @@ if (fs.existsSync(clientDist)) {
   });
 }
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`=========================================`);
   console.log(` ITFY Server ativo na porta ${PORT} [${process.env.NODE_ENV || 'production'}]`);
   console.log(` Health Check: /api/health`);
   console.log(`=========================================`);
 });
+
+// Encerramento Gracioso (Graceful Shutdown) com garantia de flush do SQLite WAL
+let isShuttingDown = false;
+const handleGracefulShutdown = (signal: string) => {
+  if (isShuttingDown) return;
+  isShuttingDown = true;
+  console.log(`\n[ITFY] Sinal ${signal} interceptado. Sincronizando WAL e encerrando de forma íntegra...`);
+
+  server.close(() => {
+    try {
+      walCheckpoint('TRUNCATE');
+      closeDatabase();
+      console.log('[ITFY] Banco de dados protegido e processo finalizado com sucesso.');
+    } catch (err) {
+      console.error('[ITFY] Erro durante o encerramento do banco:', err);
+    }
+    process.exit(0);
+  });
+
+  // Força encerramento se travar por mais de 5 segundos
+  setTimeout(() => {
+    console.error('[ITFY] Timeout de encerramento excedido. Forçando saída.');
+    process.exit(1);
+  }, 5000).unref();
+};
+
+process.on('SIGTERM', () => handleGracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => handleGracefulShutdown('SIGINT'));

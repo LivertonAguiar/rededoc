@@ -1,8 +1,8 @@
 import { api } from './api';
 import { Capacitor } from '@capacitor/core';
 
-export const CURRENT_CLIENT_VERSION = '1.0.4'; // Versão instalada no bundle local
-export const CURRENT_CLIENT_BUILD = 5;
+export const CURRENT_CLIENT_VERSION = '1.0.5'; // Versão instalada no bundle local
+export const CURRENT_CLIENT_BUILD = 6;
 
 export interface VersionInfo {
   version: string;

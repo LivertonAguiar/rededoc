@@ -6,23 +6,56 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dataDir = process.env.DATA_DIR || path.resolve(__dirname, '../../../data');
+export const dataDir = process.env.DATA_DIR || path.resolve(__dirname, '../../../data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
 // Suporte transparente ao banco existente ou novo arquivo itfy.sqlite
-const dbFileName = process.env.DB_NAME || (
+export const dbFileName = process.env.DB_NAME || (
   fs.existsSync(path.join(dataDir, 'rededoc.sqlite')) && !fs.existsSync(path.join(dataDir, 'itfy.sqlite'))
     ? 'rededoc.sqlite'
     : 'itfy.sqlite'
 );
-const dbPath = path.join(dataDir, dbFileName);
+export const dbPath = path.join(dataDir, dbFileName);
 export const db = new DatabaseSync(dbPath);
 
-// Configuração de performance e integridade
+// Configuração de performance, resiliência e integridade contra perdas
 db.exec('PRAGMA journal_mode = WAL;');
 db.exec('PRAGMA foreign_keys = ON;');
+db.exec('PRAGMA busy_timeout = 5000;');
+db.exec('PRAGMA synchronous = NORMAL;');
+db.exec('PRAGMA wal_autocheckpoint = 1000;');
+
+export function walCheckpoint(mode: 'PASSIVE' | 'FULL' | 'RESTART' | 'TRUNCATE' = 'TRUNCATE'): boolean {
+  try {
+    db.exec(`PRAGMA wal_checkpoint(${mode});`);
+    return true;
+  } catch (err) {
+    console.error(`[SQLite] Erro ao executar checkpoint WAL (${mode}):`, err);
+    return false;
+  }
+}
+
+export function runIntegrityCheck(): { ok: boolean; result: string } {
+  try {
+    const row = (db.prepare('PRAGMA integrity_check(1);') as any).get() as { integrity_check?: string } | undefined;
+    const result = row?.integrity_check || 'unknown';
+    return { ok: result === 'ok', result };
+  } catch (err: any) {
+    return { ok: false, result: err?.message || 'Erro ao verificar integridade' };
+  }
+}
+
+export function closeDatabase(): void {
+  try {
+    walCheckpoint('TRUNCATE');
+    db.close();
+    console.log('[SQLite] Conexão com banco de dados encerrada com segurança e WAL sincronizado.');
+  } catch (err) {
+    console.error('[SQLite] Erro ao fechar banco de dados:', err);
+  }
+}
 
 export type SqlParam = string | number | bigint | null | Buffer;
 
@@ -481,7 +514,12 @@ export function initDatabase() {
   seedEquipmentCatalog();
   seedEquipmentTemplates();
 
-  console.log('Banco de dados inicializado com sucesso.');
+  const integrity = runIntegrityCheck();
+  if (integrity.ok) {
+    console.log(`[SQLite] Banco de dados "${dbFileName}" inicializado e 100% ÍNTEGRO (PRAGMA integrity_check = ok).`);
+  } else {
+    console.error(`[SQLite] ALERTA CRÍTICO: Integridade comprometida em "${dbFileName}":`, integrity.result);
+  }
 }
 
 function seedEquipmentTemplates() {
