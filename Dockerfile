@@ -29,6 +29,9 @@ ENV PORT=3001
 ENV DATA_DIR=/app/data
 ENV UPLOAD_DIR=/app/uploads
 
+# Instala utilitário nativo de ping ICMP
+RUN apt-get update && apt-get install -y --no-install-recommends iputils-ping && rm -rf /var/lib/apt/lists/*
+
 # Copia dependências e artefatos compilados
 COPY package.json package-lock.json* ./
 COPY server/package.json ./server/

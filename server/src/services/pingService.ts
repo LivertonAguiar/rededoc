@@ -35,9 +35,11 @@ function execIcmpPing(ip: string, timeoutMs: number): Promise<{ online: boolean;
         return resolve({ online: false, latencyMs: null });
       }
 
-      // Extrai latência
+      // Extrai latência (suporta Windows "tempo=1ms" e Linux "time=48.1 ms" ou rtt summary)
       let latency: number | null = null;
-      const match = stdout.match(/tempo[=<](\d+)ms/i) || stdout.match(/time[=<](\d+(\.\d+)?)ms/i);
+      const match = stdout.match(/tempo[=<\s]*(\d+(?:\.\d+)?)\s*ms/i) || 
+                    stdout.match(/time[=<\s]*(\d+(?:\.\d+)?)\s*ms/i) ||
+                    stdout.match(/rtt [^=]+= [^\/]+\/([^\/]+)/i);
       if (match) {
         latency = Math.max(1, Math.round(Number(match[1])));
       } else if (stdout.includes('tempo<1ms') || stdout.includes('time<1ms')) {

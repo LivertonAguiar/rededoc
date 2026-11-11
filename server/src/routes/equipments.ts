@@ -57,39 +57,72 @@ equipmentsRouter.get('/', (req: Request, res: Response) => {
 
 // Varredura de ping em todos os equipamentos do cliente
 equipmentsRouter.post('/ping-all', async (req: Request, res: Response): Promise<any> => {
-  const { clientId } = req.body;
-  let query = 'SELECT id, name, local_ip FROM equipments WHERE local_ip IS NOT NULL AND local_ip != ""';
-  const params: any[] = [];
-  if (clientId) {
-    query += ' AND client_id = ?';
-    params.push(clientId);
+  try {
+    const { clientId } = req.body;
+    let query = `
+      SELECT id, name, local_ip, public_wan_ip 
+      FROM equipments 
+      WHERE ((local_ip IS NOT NULL AND trim(local_ip) != '')
+         OR (public_wan_ip IS NOT NULL AND trim(public_wan_ip) != ''))
+    `;
+    const params: any[] = [];
+    if (clientId) {
+      query += ' AND client_id = ?';
+      params.push(clientId);
+    }
+    const equipments = queryAll(query, ...params);
+    const results = await Promise.all(
+      equipments.map(async (eq: any) => {
+        let ping: any = { online: false, latencyMs: null, method: 'none', lastChecked: new Date().toISOString() };
+        if (eq.local_ip && eq.local_ip.trim()) {
+          ping = await pingHost(eq.local_ip, true);
+        }
+        if (!ping.online && eq.public_wan_ip && eq.public_wan_ip.trim()) {
+          const wanPing = await pingHost(eq.public_wan_ip, true);
+          if (wanPing.online) {
+            ping = wanPing;
+          }
+        }
+        return {
+          equipment_id: eq.id,
+          equipment_name: eq.name,
+          ...ping
+        };
+      })
+    );
+    res.json(results);
+  } catch (error: any) {
+    console.error('[equipments/ping-all] Erro durante a varredura:', error);
+    res.status(500).json({ error: error.message || 'Erro ao realizar varredura de conectividade.' });
   }
-  const equipments = queryAll(query, ...params);
-  const results = await Promise.all(
-    equipments.map(async (eq: any) => {
-      const ping = await pingHost(eq.local_ip, true);
-      return {
-        equipment_id: eq.id,
-        equipment_name: eq.name,
-        ...ping
-      };
-    })
-  );
-  res.json(results);
 });
 
 // Teste de ping individual para um equipamento
 equipmentsRouter.post('/:id/ping', async (req: Request, res: Response): Promise<any> => {
-  const { id } = req.params;
-  const eq = queryOne('SELECT id, name, local_ip FROM equipments WHERE id = ?', id);
-  if (!eq) {
-    return res.status(404).json({ error: 'Equipamento não encontrado.' });
+  try {
+    const { id } = req.params;
+    const eq = queryOne('SELECT id, name, local_ip, public_wan_ip FROM equipments WHERE id = ?', id);
+    if (!eq) {
+      return res.status(404).json({ error: 'Equipamento não encontrado.' });
+    }
+    if (!eq.local_ip && !eq.public_wan_ip) {
+      return res.status(400).json({ error: 'Equipamento não possui endereço IP local ou WAN configurado.' });
+    }
+    let result: any = { online: false, latencyMs: null, method: 'none', lastChecked: new Date().toISOString() };
+    if (eq.local_ip && eq.local_ip.trim()) {
+      result = await pingHost(eq.local_ip, true);
+    }
+    if (!result.online && eq.public_wan_ip && eq.public_wan_ip.trim()) {
+      const wanResult = await pingHost(eq.public_wan_ip, true);
+      if (wanResult.online) {
+        result = wanResult;
+      }
+    }
+    res.json({ equipment_id: eq.id, equipment_name: eq.name, ...result });
+  } catch (error: any) {
+    console.error(`[equipments/${req.params.id}/ping] Erro ao testar conectividade:`, error);
+    res.status(500).json({ error: error.message || 'Erro ao testar conectividade do equipamento.' });
   }
-  if (!eq.local_ip) {
-    return res.status(400).json({ error: 'Equipamento não possui endereço IP local configurado.' });
-  }
-  const result = await pingHost(eq.local_ip, true);
-  res.json({ equipment_id: eq.id, equipment_name: eq.name, ...result });
 });
 
 equipmentsRouter.get('/:id', (req: Request, res: Response): any => {

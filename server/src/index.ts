@@ -205,6 +205,17 @@ app.use('/api/favorites', favoritesRouter);
 app.use('/api/subnets', subnetsRouter);
 app.use('/api/equipment-templates', equipmentTemplatesRouter);
 
+// Middleware global de tratamento de erros das rotas
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('[ITFY Global Error Handler]', err);
+  if (res.headersSent) {
+    return next(err);
+  }
+  res.status(err.status || 500).json({
+    error: err.message || 'Erro interno no processamento da requisição.'
+  });
+});
+
 // Inicia agendador de notificações e motor de backups periódicos em segundo plano
 startNotificationScheduler();
 startAutomatedBackupScheduler();
@@ -252,3 +263,11 @@ const handleGracefulShutdown = (signal: string) => {
 
 process.on('SIGTERM', () => handleGracefulShutdown('SIGTERM'));
 process.on('SIGINT', () => handleGracefulShutdown('SIGINT'));
+
+process.on('unhandledRejection', (reason) => {
+  console.error('[ITFY] Rejeição não tratada (unhandledRejection):', reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('[ITFY] Exceção não capturada (uncaughtException):', err);
+});

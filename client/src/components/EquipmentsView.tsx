@@ -76,8 +76,8 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
   }, [targetEquipmentId]);
 
   const handlePingSingle = async (eq: Equipment) => {
-    if (!eq.local_ip) {
-      showToast('Equipamento não possui IP cadastrado.', 'error');
+    if (!eq.local_ip && !eq.public_wan_ip) {
+      showToast('Equipamento não possui IP local ou WAN cadastrado.', 'error');
       return;
     }
     setPingStates(prev => ({ ...prev, [eq.id]: { online: false, latencyMs: null, loading: true } }));
@@ -92,15 +92,23 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
       } else {
         showToast(`${eq.name} não respondeu ao teste de rede (Offline)`, 'error');
       }
-    } catch {
+    } catch (err: any) {
       setPingStates(prev => ({ ...prev, [eq.id]: { online: false, latencyMs: null, loading: false } }));
-      showToast('Falha ao executar teste de ping.', 'error');
+      showToast('Falha ao executar teste de ping: ' + (err?.message || ''), 'error');
     }
   };
 
   const handlePingAll = async () => {
     setIsPingingAll(true);
     showToast('Iniciando varredura de conectividade dos equipamentos...', 'info');
+    // Ativa spinner nos cards dos equipamentos
+    setPingStates(prev => {
+      const next = { ...prev };
+      equipments.forEach(eq => {
+        next[eq.id] = { online: false, latencyMs: null, loading: true };
+      });
+      return next;
+    });
     try {
       const results = await api.pingAllEquipments(client.id);
       const newStates: Record<string, { online: boolean; latencyMs: number | null; loading?: boolean }> = {};
@@ -112,6 +120,15 @@ export const EquipmentsView: React.FC<EquipmentsViewProps> = ({
       setPingStates(prev => ({ ...prev, ...newStates }));
       showToast(`Varredura concluída: ${onlineCount} de ${results.length} equipamentos online.`, 'success');
     } catch (err: any) {
+      setPingStates(prev => {
+        const next = { ...prev };
+        equipments.forEach(eq => {
+          if (next[eq.id]?.loading) {
+            next[eq.id] = { ...next[eq.id], loading: false };
+          }
+        });
+        return next;
+      });
       showToast('Erro ao realizar varredura de ping: ' + err.message, 'error');
     } finally {
       setIsPingingAll(false);
