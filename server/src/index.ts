@@ -115,7 +115,7 @@ app.get('/api/health', (req, res) => {
 
 // Download direto do aplicativo Android nativo (APK) com nome e versão amigáveis
 app.get(['/api/download/apk', '/download/apk'], (req, res) => {
-  const currentVersion = '1.0.5';
+  const currentVersion = '1.0.4';
   const apkFileName = `ITFY-v${currentVersion}.apk`;
   const directGithubUrl = `https://github.com/LivertonAguiar/rededoc/releases/download/app-latest/${apkFileName}`;
 
@@ -134,9 +134,9 @@ app.get(['/api/download/apk', '/download/apk'], (req, res) => {
 // Verificação de versão e suporte a atualizações OTA (Over-The-Air)
 app.get('/api/app/version', (req, res) => {
   res.json({
-    version: '1.0.5', // Mantém 1.0.1 para desarmar o popup invasivo em aparelhos que ainda possuem o APK inicial
+    version: '1.0.1', // Mantém 1.0.1 para desarmar o popup invasivo em aparelhos que ainda possuem o APK inicial
     latestVersion: '1.0.4',
-    buildNumber: 6,
+    buildNumber: 1,
     releaseName: 'ITFY 1.0.4 Oficial',
     releaseDate: '2026-11-08',
     otaSupported: false,
@@ -164,7 +164,7 @@ app.get('/api/app/version', (req, res) => {
       }
     ],
     apkDownloadUrl: 'https://itfy.lpaguiar.com.br/download/apk',
-    apkFileName: 'ITFY-v1.0.5.apk'
+    apkFileName: 'ITFY-v1.0.4.apk'
   });
 });
 
